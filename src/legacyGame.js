@@ -662,7 +662,7 @@ function sprayAt(area,e){if(!G||G.ended)return;const px=e.clientX,py=e.clientY;
 /* =====================================================================
    GAME 10 — Word Catch (바구니 드래그)
    ===================================================================== */
-const CATCH_TIME=35;
+const CATCH_TIME=35,DROP_SIZE=74;
 function startCatch(){$('catch_score').textContent='0';$('catch_prompt').innerHTML='바구니로 '+POOL().phoneme+' 단어를 받아요!';
   const area=$('catchArea');area.innerHTML='<div id="basket">🧺</div>';go2('g_catch');startTimer(CATCH_TIME,'catch_timer');
   const mv=(e)=>{const r=area.getBoundingClientRect();const p=e.touches?e.touches[0]:e;let x=p.clientX-r.left;x=Math.max(30,Math.min(r.width-30,x));const bk=$('basket');if(bk){bk.style.left=x+'px';bk.style.transform='translateX(-50%)';}};
@@ -670,7 +670,8 @@ function startCatch(){$('catch_score').textContent='0';$('catch_prompt').innerHT
   let el=0;const spawn=setInterval(()=>{el++;spawnDrop(area,Math.max(2.2,4.5-el*0.06));},800);gAddTimer(spawn);
   const poll=setInterval(()=>checkCatch(area),60);gAddTimer(poll);}
 function spawnDrop(area,speed){if(!G||G.ended)return;const p=POOL();const good=Math.random()<0.55;const it=good?shuffle(p.words)[0]:shuffle(p.distractors)[0];
-  const d=document.createElement('div');d.className='drop'+(good?'':' obst');d.style.left=(8+Math.random()*78)+'%';d.dataset.good=good?1:0;d._it=it;
+  const pad=6,maxLeft=Math.max(pad,(area.clientWidth||DROP_SIZE)-DROP_SIZE-pad);
+  const d=document.createElement('div');d.className='drop'+(good?'':' obst');d.style.left=(pad+Math.random()*(maxLeft-pad))+'px';d.dataset.good=good?1:0;d._it=it;
   d.style.animation='fall '+speed+'s linear forwards';d.innerHTML=`<div class="be">${it.emo}</div><div class="bl">${it.w}</div>`;
   d.addEventListener('animationend',()=>{if(!d._res&&good){const r=d.getBoundingClientRect();escaped(r.left+r.width/2,Math.max(60,r.top));}d.remove();});area.appendChild(d);}
 function checkCatch(area){if(!G||G.ended)return;const bk=$('basket');if(!bk)return;const bR=bk.getBoundingClientRect();
