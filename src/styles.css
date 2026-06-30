@@ -256,7 +256,7 @@
   .hitem.wrong{border-color:#ff4b4b;background:#ffdfe0;}
   #scope{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle 84px at var(--sx,50%) var(--sy,50%),transparent 0 80px,rgba(18,30,55,.62) 130px);z-index:6;}
   #sprayArea{position:relative;flex:1;overflow:hidden;border-radius:16px;background:#f0fff4;}
-  .bug{position:absolute;width:72px;height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:50%;background:#fff;border:2px solid #e5e5e5;cursor:pointer;}
+  .bug{position:absolute;width:72px;height:72px;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:50%;background:#fff;border:2px solid #e5e5e5;cursor:pointer;}
   .bug .be{font-size:22px;line-height:1;} .bug .bl{font-size:15px;font-weight:900;}
   .spray{position:fixed;width:90px;height:90px;border-radius:50%;background:radial-gradient(rgba(120,220,150,.7),rgba(120,220,150,0) 70%);pointer-events:none;z-index:50;transform:translate(-50%,-50%);animation:sprayout .4s forwards;}
   @keyframes sprayout{from{opacity:1;transform:translate(-50%,-50%) scale(.4)}to{opacity:0;transform:translate(-50%,-50%) scale(1.7)}}
