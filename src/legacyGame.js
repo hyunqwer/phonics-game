@@ -1,6 +1,9 @@
 import { villageTheme, gameCopy } from './copy.js';
-import { initCloud, cloudEnabled, cloudLoad, cloudSave, nicknameAvailable, reserveNickname } from './cloud.js';
 import { suggestNickname, cleanNickname, isValidNickname } from './nickname.js';
+/* firebase는 무거우니 초기 번들에서 분리 — 첫 렌더 후 동적 로드(코드 스플릿) */
+let CLOUD=null,_cloudP=null;
+function ensureCloud(){if(CLOUD)return Promise.resolve(CLOUD);if(!_cloudP)_cloudP=import('./cloud.js').then(m=>{CLOUD=m;return m;}).catch(()=>null);return _cloudP;}
+function cloudEnabledFn(){return !!(CLOUD&&CLOUD.cloudEnabled&&CLOUD.cloudEnabled());}
 
 /* =====================================================================
    CONTENT DATA (엔진과 분리 — 다른 권/음가는 이 객체만 채우면 됨)
@@ -157,7 +160,7 @@ const DEFAULT={pearls:0,streak:0,lastStamp:null,owned:[],equipped:{},words:[],ca
 let SAVE=load();
 if(SAVE.curWorld&&WORLDS[SAVE.curWorld]&&!WORLDS[SAVE.curWorld].locked)CUR=SAVE.curWorld;
 function load(){try{const r=localStorage.getItem("soripang");if(r)return Object.assign({},JSON.parse(JSON.stringify(DEFAULT)),JSON.parse(r));}catch(e){}return JSON.parse(JSON.stringify(DEFAULT));}
-function save(){try{localStorage.setItem("soripang",JSON.stringify(SAVE));}catch(e){}try{cloudSave(SAVE);}catch(e){}}
+function save(){try{localStorage.setItem("soripang",JSON.stringify(SAVE));}catch(e){}try{if(CLOUD)CLOUD.cloudSave(SAVE);}catch(e){}}
 function today(){return new Date().toISOString().slice(0,10);}
 
 /* =====================================================================
@@ -747,22 +750,24 @@ function renderDex(){const c=$('dexChars');c.innerHTML='';
 
 /* ---- 클라우드(익명 로그인) 동기화 + 닉네임 ---- */
 async function syncCloud(){
-  const id=await initCloud();
+  const C=await ensureCloud();
+  if(!C)return; // 청크 로드 실패 → localStorage로 계속
+  const id=await C.initCloud();
   if(!id)return; // 오프라인/미설정 → localStorage로 계속
-  const cloud=await cloudLoad();
+  const cloud=await C.cloudLoad();
   if(cloud&&(cloud.pearls!=null||cloud.nickname)){ // 서버 진도 채택
     SAVE=Object.assign(JSON.parse(JSON.stringify(DEFAULT)),cloud);
     normalizeCurrentWorld();homeView=getLaunchRoute();
     try{localStorage.setItem("soripang",JSON.stringify(SAVE));}catch(e){}
     renderHome();
   }else{ // 서버 비어있으면 로컬 진도 업로드
-    cloudSave(SAVE);
+    C.cloudSave(SAVE);
   }
 }
 function getNickname(){return SAVE.nickname||null;}
 function nickSuggest(withNum){return suggestNickname(withNum);}
-async function nickCheck(name){const c=cleanNickname(name);if(!isValidNickname(c))return {ok:false,clean:c,reason:'len'};const avail=await nicknameAvailable(c);return {ok:avail,clean:c,reason:avail?null:'taken'};}
-async function setNickname(name){const c=cleanNickname(name);if(!isValidNickname(c))return false;const ok=await reserveNickname(c);if(!ok)return false;SAVE.nickname=c;save();renderHome();return true;}
+async function nickCheck(name){const c=cleanNickname(name);if(!isValidNickname(c))return {ok:false,clean:c,reason:'len'};const C=await ensureCloud();const avail=C?await C.nicknameAvailable(c):true;return {ok:avail,clean:c,reason:avail?null:'taken'};}
+async function setNickname(name){const c=cleanNickname(name);if(!isValidNickname(c))return false;const C=await ensureCloud();const ok=C?await C.reserveNickname(c):true;if(!ok)return false;SAVE.nickname=c;save();renderHome();return true;}
 
 export async function bootstrapGame(){
   try{speechSynthesis.getVoices();}catch(e){}
@@ -777,4 +782,4 @@ export async function bootstrapGame(){
 }
 Object.assign(window,{toggleMute,openDex,doStamp,openFreePlay,openShop,go,quitGame,quizRepeat,chestTap});
 window.__YPQ={getCastleHomeState,getCollectionState,getVillageState,getLaunchRoute,enterVillage,goMap,startTodayMission,playMission,chooseStartBook,openBookCastle,openCastleFromMap,startCastleQuest,openFreePlay,openShop,openDex,toggleMute,doStamp,go,sayWord:say,sayLetter,
-  getNickname,nickSuggest,nickCheck,setNickname,cloudEnabled};
+  getNickname,nickSuggest,nickCheck,setNickname,cloudEnabled:cloudEnabledFn};
