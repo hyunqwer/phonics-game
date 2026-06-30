@@ -571,6 +571,7 @@ function jumpRound(){
 /* =====================================================================
    GAME 7 — Memory Match (카드 뒤집기, 라운드↑·시간↓)
    ===================================================================== */
+const MEMORY_ROUND_SECONDS=[28,40,52];
 let memRound=0,memTime=0,memMax=0,memTimer=null,memFirst=null,memLock=false,memMatched=0,memPairs=0;
 function startMemory(){memRound=0;$('memory_score').textContent='0';go2('g_memory');nextMemRound();}
 function nextMemRound(){
@@ -584,7 +585,7 @@ function nextMemRound(){
   memFirst=null;memLock=false;memMatched=0;
   $('mem_prompt').innerHTML='같은 짝을 찾아요! (Round '+(memRound+1)+'/3)';
   cards.forEach(c=>{const d=document.createElement('div');d.className='mcard';d.innerHTML='<div class="mface">❓</div>';d.onclick=()=>flipCard(d,c);grid.appendChild(d);});
-  memTime=Math.max(8,18-memRound*3);memMax=memTime;$('mem_timer').style.width='100%';
+  memTime=MEMORY_ROUND_SECONDS[memRound]||40;memMax=memTime;$('mem_timer').style.width='100%';
   clearInterval(memTimer);memTimer=setInterval(()=>{memTime-=0.1;$('mem_timer').style.width=Math.max(0,memTime/memMax*100)+'%';if(memTime<=0){clearInterval(memTimer);finishGame();}},100);gAddTimer(memTimer);
 }
 function flipCard(d,c){
