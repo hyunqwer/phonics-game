@@ -30,7 +30,7 @@ let CUR="s"; // set from SAVE after load()
 const POOL=()=>WORLDS[CUR];
 let homeView="map"; // 'map' = 모험 지도, 'mission' = 오늘의 미션 랜딩
 
-const CONTENT_BOOKS_TO_LOAD=[1,2,3];
+const CONTENT_BOOKS_TO_LOAD=Array.from({length:18},(_,i)=>i+1); // 1~18권 전체 활성화
 let CONTENT_INDEX=null;
 let COLLECTION_BOOKS=[];
 const WORLD_META={
