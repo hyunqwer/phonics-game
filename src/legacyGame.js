@@ -33,16 +33,16 @@ const WORLD_META={
   b:{phoneme:"/b/",letter:"B b",character:"Bobby the Bear",kr:"바비 곰",emoji:"🐻"},
   h:{phoneme:"/h/",letter:"H h",character:"Henry the Hog",kr:"헨리 돼지",emoji:"🐷"},
   m:{phoneme:"/m/",letter:"M m",character:"Mindy the Mouse",kr:"민디 쥐",emoji:"🐭"},
-  k:{phoneme:"/k/",letter:"K k",character:"K Sound",kr:"K 소리",emoji:"🔑"},
-  j:{phoneme:"/j/",letter:"J j",character:"J Sound",kr:"J 소리",emoji:"🧃"},
-  f:{phoneme:"/f/",letter:"F f",character:"F Sound",kr:"F 소리",emoji:"🦊"},
-  g:{phoneme:"/g/",letter:"G g",character:"G Sound",kr:"G 소리",emoji:"🐐"},
-  l:{phoneme:"/l/",letter:"L l",character:"L Sound",kr:"L 소리",emoji:"🦁"},
-  d:{phoneme:"/d/",letter:"D d",character:"D Sound",kr:"D 소리",emoji:"🐶"},
-  n:{phoneme:"/n/",letter:"N n",character:"N Sound",kr:"N 소리",emoji:"👃"},
-  w:{phoneme:"/w/",letter:"W w",character:"W Sound",kr:"W 소리",emoji:"🐺"},
-  c:{phoneme:"/c/",letter:"C c",character:"C Sound",kr:"C 소리",emoji:"🐱"},
-  r:{phoneme:"/r/",letter:"R r",character:"R Sound",kr:"R 소리",emoji:"🐰"}
+  k:{phoneme:"/k/",letter:"K k",character:"Koko the Koala",kr:"코코 코알라",emoji:"🐨"},
+  j:{phoneme:"/j/",letter:"J j",character:"Jimmy the Jaguar",kr:"지미 재규어",emoji:"🐆"},
+  f:{phoneme:"/f/",letter:"F f",character:"Finn the Fox",kr:"핀 여우",emoji:"🦊"},
+  g:{phoneme:"/g/",letter:"G g",character:"Gus the Goat",kr:"거스 염소",emoji:"🐐"},
+  l:{phoneme:"/l/",letter:"L l",character:"Leo the Lion",kr:"레오 사자",emoji:"🦁"},
+  d:{phoneme:"/d/",letter:"D d",character:"Danny the Dog",kr:"대니 강아지",emoji:"🐶"},
+  n:{phoneme:"/n/",letter:"N n",character:"Nina the Newt",kr:"니나 도롱뇽",emoji:"🦎"},
+  w:{phoneme:"/w/",letter:"W w",character:"Willy the Wolf",kr:"윌리 늑대",emoji:"🐺"},
+  c:{phoneme:"/c/",letter:"C c",character:"Cathy the Cat",kr:"캐시 고양이",emoji:"🐱"},
+  r:{phoneme:"/r/",letter:"R r",character:"Robby the Rabbit",kr:"로비 토끼",emoji:"🐰"}
 };
 const WORD_EMOJI={
   sad:"😢",sand:"🏖️",salt:"🧂",same:"👯",seal:"🦭",sink:"🚰",six:"6️⃣",soap:"🧼",sock:"🧦",sun:"☀️",
