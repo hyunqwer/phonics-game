@@ -605,21 +605,33 @@ function flipCard(d,c){
 }
 
 /* =====================================================================
-   GAME 8 — Word Hunt (망원경 탐색 + 듣고찾기)
+   GAME 8 — Word Hunt (스나이퍼 조준경 + 움직이는 카드)
    ===================================================================== */
-const HUNT_TIME=35;let huntTarget=null,huntPresent=[];
-function startHunt(){$('hunt_score').textContent='0';scatterHunt();go2('g_hunt');startTimer(HUNT_TIME,'hunt_timer');
-  const area=$('huntArea');const mv=(e)=>{const r=area.getBoundingClientRect();const p=e.touches?e.touches[0]:e;area.style.setProperty('--sx',(p.clientX-r.left)+'px');area.style.setProperty('--sy',(p.clientY-r.top)+'px');};
-  area.onmousemove=mv;area.ontouchmove=mv;}
+const HUNT_TIME=40,HUNT_CARD_SIZE=58,HUNT_SCOPE_RADIUS=92;let huntTarget=null,huntPresent=[],huntCards=[];
+function startHunt(){$('hunt_score').textContent='0';go2('g_hunt');scatterHunt();startTimer(HUNT_TIME,'hunt_timer');
+  const area=$('huntArea');const aim=(e)=>{const r=area.getBoundingClientRect();const p=e.touches?e.touches[0]:e;aimHunt(area,p.clientX-r.left,p.clientY-r.top);};
+  area.onmousemove=aim;area.ontouchmove=(e)=>{aim(e);e.preventDefault();};area.onclick=(e)=>{const r=area.getBoundingClientRect();aimHunt(area,e.clientX-r.left,e.clientY-r.top);};
+  aimHunt(area,area.clientWidth/2,area.clientHeight/2);
+  let el=0;const mv=setInterval(()=>{el++;moveHuntCards(area,el);},50);gAddTimer(mv);}
+function huntBounds(area){const pad=HUNT_CARD_SIZE/2+6;const w=Math.max(HUNT_CARD_SIZE+12,area.clientWidth||HUNT_CARD_SIZE+12),h=Math.max(HUNT_CARD_SIZE+12,area.clientHeight||HUNT_CARD_SIZE+12);
+  return {minX:pad/w*100,maxX:100-pad/w*100,minY:pad/h*100,maxY:100-pad/h*100};}
 function scatterHunt(){
   const p=POOL();const tgts=shuffle(p.words).slice(0,4);const decoys=shuffle(p.distractors).slice(0,6);
-  const all=shuffle([...tgts,...decoys]);const area=$('huntArea');area.innerHTML='<div id="scope"></div>';
-  all.forEach(it=>{const d=document.createElement('div');d.className='hitem';d.style.left=(6+Math.random()*80)+'%';d.style.top=(8+Math.random()*76)+'%';d.dataset.w=it.w;
-    d.innerHTML=`<div class="be">${it.emo}</div><div class="bl">${it.w}</div>`;d.onclick=()=>pickHunt(d,it);area.appendChild(d);});
+  const all=shuffle([...tgts,...decoys]);const area=$('huntArea');const bd=huntBounds(area);area.innerHTML='<div id="scope"><div class="scope-ring"></div></div>';huntCards=[];
+  all.forEach(it=>{const d=document.createElement('div');d.className='hitem';d.dataset.w=it.w;
+    const card={it,el:d,x:bd.minX+Math.random()*(bd.maxX-bd.minX),y:bd.minY+Math.random()*(bd.maxY-bd.minY),vx:(Math.random()-.5)*0.45,vy:(Math.random()-.5)*0.45};
+    d.innerHTML=`<div class="be">${it.emo}</div><div class="bl">${it.w}</div>`;d.onclick=(e)=>{e.stopPropagation();const ar=area.getBoundingClientRect();aimHunt(area,e.clientX-ar.left,e.clientY-ar.top);pickHunt(d,it);};area.appendChild(d);huntCards.push(card);placeHuntCard(card);});
   huntPresent=tgts;newHuntTarget();}
-function newHuntTarget(){huntTarget=shuffle(huntPresent)[0];$('hunt_prompt').innerHTML='🔭 듣고 찾아요: <b>'+huntTarget.w+'</b> 🔊';say(huntTarget.w);}
-function pickHunt(d,it){if(!G||G.ended)return;const r=d.getBoundingClientRect();
-  if(huntTarget&&it.w===huntTarget.w){hit(it,r.left+r.width/2,r.top,{silent:true});setScoreLabel('hunt');d.style.transform='scale(1.3)';d.style.borderColor='#58cc02';setTimeout(()=>{d.style.transform='';d.style.borderColor='';},250);sayThen(it.w,()=>{if(G&&!G.ended)newHuntTarget();});}
+function placeHuntCard(card){card.el.style.left=card.x+'%';card.el.style.top=card.y+'%';}
+function aimHunt(area,x,y){area.style.setProperty('--sx',x+'px');area.style.setProperty('--sy',y+'px');
+  huntCards.forEach(c=>{const r=c.el.getBoundingClientRect(),ar=area.getBoundingClientRect();const cx=r.left+r.width/2-ar.left,cy=r.top+r.height/2-ar.top;c.el.classList.toggle('scoped',Math.hypot(cx-x,cy-y)<HUNT_SCOPE_RADIUS);});}
+function moveHuntCards(area,el){if(!G||G.ended)return;const bd=huntBounds(area),sp=1+el*0.0015;huntCards.forEach(c=>{if(Math.random()<0.025){c.vx=(Math.random()-.5)*0.45;c.vy=(Math.random()-.5)*0.45;}
+  c.x+=c.vx*sp;c.y+=c.vy*sp;if(c.x<bd.minX||c.x>bd.maxX){c.vx*=-1;c.x=Math.max(bd.minX,Math.min(bd.maxX,c.x));}if(c.y<bd.minY||c.y>bd.maxY){c.vy*=-1;c.y=Math.max(bd.minY,Math.min(bd.maxY,c.y));}placeHuntCard(c);});
+  const sx=parseFloat(getComputedStyle(area).getPropertyValue('--sx'))||area.clientWidth/2,sy=parseFloat(getComputedStyle(area).getPropertyValue('--sy'))||area.clientHeight/2;aimHunt(area,sx,sy);}
+function newHuntTarget(){huntTarget=shuffle(huntPresent)[0];$('hunt_prompt').innerHTML='🎯 Target: <b>'+huntTarget.w+'</b> 🔊';say(huntTarget.w);}
+function pickHunt(d,it){if(!G||G.ended)return;const r=d.getBoundingClientRect(),area=$('huntArea'),ar=area.getBoundingClientRect();const sx=parseFloat(getComputedStyle(area).getPropertyValue('--sx'))||ar.width/2,sy=parseFloat(getComputedStyle(area).getPropertyValue('--sy'))||ar.height/2;
+  const cx=r.left+r.width/2-ar.left,cy=r.top+r.height/2-ar.top;if(Math.hypot(cx-sx,cy-sy)>HUNT_SCOPE_RADIUS){fxPop(r.left+r.width/2,r.top,'Aim!');return;}
+  if(huntTarget&&it.w===huntTarget.w){hit(it,r.left+r.width/2,r.top,{silent:true});setScoreLabel('hunt');d.classList.add('hit');setTimeout(()=>d.classList.remove('hit'),250);sayThen(it.w,()=>{if(G&&!G.ended)newHuntTarget();});}
   else{miss();d.classList.add('wrong');setTimeout(()=>d.classList.remove('wrong'),300);}}
 
 /* =====================================================================
