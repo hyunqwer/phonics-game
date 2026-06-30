@@ -384,7 +384,7 @@ function finishGame(){
 /* =====================================================================
    GAME 1 — Bubble Pop (버블)  모드교차 + 황금 + 놓침
    ===================================================================== */
-const BUBBLE_TIME=35;let bubMode,bubTarget;
+const BUBBLE_TIME=35,BUBBLE_SIZE=84;let bubMode,bubTarget;
 function startBubble(){
   bubMode=Math.random()<0.5?'target':'all';
   if(bubMode==='target'){bubTarget=shuffle(POOL().words)[0];$('bub_prompt').innerHTML='듣고 찾아요: <b>'+bubTarget.w+'</b> 🔊';$('bub_prompt').onclick=()=>say(bubTarget.w);say(bubTarget.w);}
@@ -398,7 +398,8 @@ function spawnBubble(area){
   if(bubMode==='target'){const r=Math.random();if(r<0.4)item=bubTarget;else if(r<0.7)item=shuffle(p.words.filter(w=>w.w!==bubTarget.w))[0]||bubTarget;else item=shuffle(p.distractors)[0];good=(item.w===bubTarget.w);}
   else{good=Math.random()<0.5;item=good?shuffle(p.words)[0]:shuffle(p.distractors)[0];}
   const golden=good&&Math.random()<0.12;
-  const b=document.createElement('div');b.className='bubble'+(golden?' gold':'');b.style.left=(8+Math.random()*78)+'%';
+  const pad=6,maxLeft=Math.max(pad,(area.clientWidth||BUBBLE_SIZE)-BUBBLE_SIZE-pad);
+  const b=document.createElement('div');b.className='bubble'+(golden?' gold':'');b.style.left=(pad+Math.random()*(maxLeft-pad))+'px';
   b.style.animation='rise '+(4.0+Math.random()*1.6)+'s linear forwards';
   b.innerHTML=`<div class="be">${item.emo}</div><div class="bl">${item.w}</div>`;
   b.onclick=()=>{if(b._x)return;b._x=1;const r=b.getBoundingClientRect();
