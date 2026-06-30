@@ -1,0 +1,20 @@
+.nk-root{
+  position:absolute;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;padding:22px;
+  background:linear-gradient(180deg,#d8efff 0%,var(--cw-bg) 45%);
+  font-family:"Nunito","Trebuchet MS","Segoe UI",sans-serif;color:var(--cw-ink);
+}
+.nk-card{width:100%;max-width:330px;background:#fff;border:1px solid var(--cw-line);border-radius:24px;box-shadow:var(--cw-card);padding:22px 18px;text-align:center;}
+.nk-mascot{font-size:78px;filter:drop-shadow(0 6px 5px rgba(0,0,0,.2));animation:nk-bob 2.2s ease-in-out infinite;}
+@keyframes nk-bob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-8px) rotate(3deg)}}
+.nk-title{font-size:21px;font-weight:800;margin:6px 0 2px;color:var(--cw-ink);}
+.nk-sub{font-size:13px;font-weight:700;color:var(--cw-sub);margin:0 0 14px;}
+.nk-row{display:flex;gap:8px;align-items:stretch;}
+.nk-input{flex:1;min-width:0;border:2px solid var(--cw-line);border-radius:14px;padding:12px 14px;font-size:18px;font-weight:800;font-family:inherit;color:var(--cw-ink);text-align:center;outline:none;}
+.nk-input:focus{border-color:#1cb0f6;}
+.nk-dice{flex:none;width:50px;border:none;border-radius:14px;background:#fff6cc;font-size:22px;cursor:pointer;box-shadow:0 4px 0 #ffd23f;}
+.nk-dice:active{transform:translateY(3px);box-shadow:0 1px 0 #ffd23f;}
+.nk-msg{font-size:13px;font-weight:800;color:#e63946;margin:10px 0 0;}
+.nk-go{display:block;width:100%;border:none;border-radius:18px;padding:14px;font-size:20px;font-weight:800;color:#fff;background:#58cc02;box-shadow:0 5px 0 #46a302;cursor:pointer;margin-top:14px;}
+.nk-go:active{transform:translateY(3px);box-shadow:0 2px 0 #46a302;}
+.nk-go:disabled{background:#cfe0bf;box-shadow:0 5px 0 #b6cda6;}
+.nk-hint{font-size:11px;font-weight:700;color:var(--cw-sub);margin-top:10px;}

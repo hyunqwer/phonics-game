@@ -1,4 +1,6 @@
 import { villageTheme, gameCopy } from './copy.js';
+import { initCloud, cloudEnabled, cloudLoad, cloudSave, nicknameAvailable, reserveNickname } from './cloud.js';
+import { suggestNickname, cleanNickname, isValidNickname } from './nickname.js';
 
 /* =====================================================================
    CONTENT DATA (엔진과 분리 — 다른 권/음가는 이 객체만 채우면 됨)
@@ -151,11 +153,11 @@ const ITEMS=[
    SAVE
    ===================================================================== */
 const DEFAULT={pearls:0,streak:0,lastStamp:null,owned:[],equipped:{},words:[],cards:[],chars:["s"],
-  missionDate:null,missions:{},missionDone:{},chestDone:{},playedToday:[],xp:0,best:{},curWorld:"s",muted:false,castleStartBook:null,currentBook:null};
+  missionDate:null,missions:{},missionDone:{},chestDone:{},playedToday:[],xp:0,best:{},curWorld:"s",muted:false,castleStartBook:null,currentBook:null,nickname:null};
 let SAVE=load();
 if(SAVE.curWorld&&WORLDS[SAVE.curWorld]&&!WORLDS[SAVE.curWorld].locked)CUR=SAVE.curWorld;
 function load(){try{const r=localStorage.getItem("soripang");if(r)return Object.assign({},JSON.parse(JSON.stringify(DEFAULT)),JSON.parse(r));}catch(e){}return JSON.parse(JSON.stringify(DEFAULT));}
-function save(){try{localStorage.setItem("soripang",JSON.stringify(SAVE));}catch(e){}}
+function save(){try{localStorage.setItem("soripang",JSON.stringify(SAVE));}catch(e){}try{cloudSave(SAVE);}catch(e){}}
 function today(){return new Date().toISOString().slice(0,10);}
 
 /* =====================================================================
@@ -331,7 +333,7 @@ function getVillageState(){
   if(active){const k=recommendedWorldForBook(active);const w=WORLDS[k];if(w){curFriend=friendOf(w);
     const m=(SAVE.missions||{})[k]||[],d=(SAVE.missionDone||{})[k]||[];doneCount=d.length;
     mission=m.map(gk=>Object.assign({key:gk,emoji:(GAMES.find(g=>g.key===gk)||{}).emoji,done:d.includes(gk)},gameCopy(gk)));}}
-  return {homeView,route:getLaunchRoute(),pearls:SAVE.pearls,streak:SAVE.streak,muted:SAVE.muted,
+  return {homeView,route:getLaunchRoute(),pearls:SAVE.pearls,streak:SAVE.streak,muted:SAVE.muted,nickname:SAVE.nickname||null,
     villages,activeBook:active,activeTheme:active?villageTheme(active):null,curFriend,mission,doneCount};
 }
 function showHomeSurface(){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$('home').classList.add('active');stopGame();renderHome();emitNavigate('home');}
@@ -743,15 +745,36 @@ function renderDex(){const c=$('dexChars');c.innerHTML='';
   const allWords=[...POOL().words,...POOL().distractors];$('dexWordCount').textContent='('+SAVE.words.length+'/'+allWords.length+')';
   const wg=$('dexWords');wg.innerHTML='';allWords.forEach(it=>{const got=SAVE.words.includes(it.w);const d=document.createElement('div');d.className='dexItem'+(got?'':' lock');d.innerHTML=`<div class="e">${got?it.emo:'❓'}</div><div class="l">${got?it.w:'???'}</div>`;if(got)d.onclick=()=>say(it.w);wg.appendChild(d);});}
 
+/* ---- 클라우드(익명 로그인) 동기화 + 닉네임 ---- */
+async function syncCloud(){
+  const id=await initCloud();
+  if(!id)return; // 오프라인/미설정 → localStorage로 계속
+  const cloud=await cloudLoad();
+  if(cloud&&(cloud.pearls!=null||cloud.nickname)){ // 서버 진도 채택
+    SAVE=Object.assign(JSON.parse(JSON.stringify(DEFAULT)),cloud);
+    normalizeCurrentWorld();homeView=getLaunchRoute();
+    try{localStorage.setItem("soripang",JSON.stringify(SAVE));}catch(e){}
+    renderHome();
+  }else{ // 서버 비어있으면 로컬 진도 업로드
+    cloudSave(SAVE);
+  }
+}
+function getNickname(){return SAVE.nickname||null;}
+function nickSuggest(withNum){return suggestNickname(withNum);}
+async function nickCheck(name){const c=cleanNickname(name);if(!isValidNickname(c))return {ok:false,clean:c,reason:'len'};const avail=await nicknameAvailable(c);return {ok:avail,clean:c,reason:avail?null:'taken'};}
+async function setNickname(name){const c=cleanNickname(name);if(!isValidNickname(c))return false;const ok=await reserveNickname(c);if(!ok)return false;SAVE.nickname=c;save();renderHome();return true;}
+
 export async function bootstrapGame(){
   try{speechSynthesis.getVoices();}catch(e){}
   await loadContentDb();
   homeView=getLaunchRoute();
   renderHome();
+  syncCloud();
   if(!window.__ypqClickBound){
     document.addEventListener('click',e=>{const t=e.target&&e.target.closest&&e.target.closest('.btn,.iconbtn');if(t)uiClick();},true);
     window.__ypqClickBound=true;
   }
 }
 Object.assign(window,{toggleMute,openDex,doStamp,openFreePlay,openShop,go,quitGame,quizRepeat,chestTap});
-window.__YPQ={getCastleHomeState,getCollectionState,getVillageState,getLaunchRoute,enterVillage,goMap,startTodayMission,playMission,chooseStartBook,openBookCastle,openCastleFromMap,startCastleQuest,openFreePlay,openShop,openDex,toggleMute,doStamp,go,sayWord:say,sayLetter};
+window.__YPQ={getCastleHomeState,getCollectionState,getVillageState,getLaunchRoute,enterVillage,goMap,startTodayMission,playMission,chooseStartBook,openBookCastle,openCastleFromMap,startCastleQuest,openFreePlay,openShop,openDex,toggleMute,doStamp,go,sayWord:say,sayLetter,
+  getNickname,nickSuggest,nickCheck,setNickname,cloudEnabled};
