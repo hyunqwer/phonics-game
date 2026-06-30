@@ -387,7 +387,7 @@ function finishGame(){
 const BUBBLE_TIME=35,BUBBLE_SIZE=84;let bubMode,bubTarget;
 function startBubble(){
   bubMode=Math.random()<0.5?'target':'all';
-  if(bubMode==='target'){bubTarget=shuffle(POOL().words)[0];$('bub_prompt').innerHTML='듣고 찾아요: <b>'+bubTarget.w+'</b> 🔊';$('bub_prompt').onclick=()=>say(bubTarget.w);say(bubTarget.w);}
+  if(bubMode==='target'){bubTarget=shuffle(POOL().words)[0];$('bub_prompt').innerHTML='듣고 같은 단어를 찾아요! 🔊';$('bub_prompt').onclick=()=>say(bubTarget.w);say(bubTarget.w);}
   else{$('bub_prompt').innerHTML=POOL().phoneme+' 소리 친구를 모아!';$('bub_prompt').onclick=null;}
   $('bubble_score').textContent='0';$('bubbleArea').innerHTML='';go2('g_bubble');
   startTimer(BUBBLE_TIME,'bub_timer');
