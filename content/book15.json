@@ -1,0 +1,129 @@
+{
+  "book": 15,
+  "step": 4,
+  "stepTitle": "Step 4 연속자음·자음이중자 (Blends & Digraphs)",
+  "title": "자음이중자 wh·ph·ng·ck·wr·kn",
+  "category": "digraph",
+  "soundFocus": [
+    "wh",
+    "ph",
+    "ng",
+    "ck",
+    "wr",
+    "kn"
+  ],
+  "needsSourceVerify": false,
+  "wordCount": 45,
+  "units": [
+    {
+      "lesson": "1A",
+      "pages": "4-11",
+      "focus": "Digraphs wh, ph",
+      "groups": [
+        {
+          "key": "wh",
+          "words": [
+            "whale",
+            "wheel",
+            "whip",
+            "whiskers",
+            "whisper",
+            "whistle",
+            "white"
+          ]
+        },
+        {
+          "key": "ph",
+          "words": [
+            "pharmacy",
+            "phone",
+            "photo"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "1B",
+      "pages": "13-18",
+      "focus": "Digraph ng",
+      "groups": [
+        {
+          "key": "ng",
+          "words": [
+            "king",
+            "bring",
+            "hang",
+            "long",
+            "lung",
+            "ring",
+            "sing",
+            "song",
+            "strong",
+            "wing"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2A",
+      "pages": "20-25",
+      "focus": "Digraph ck",
+      "groups": [
+        {
+          "key": "ck",
+          "words": [
+            "duck",
+            "back",
+            "block",
+            "clock",
+            "kick",
+            "lock",
+            "neck",
+            "rock",
+            "sick",
+            "sock"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2B",
+      "pages": "26-31",
+      "focus": "Digraph wr",
+      "groups": [
+        {
+          "key": "wr",
+          "words": [
+            "wrap",
+            "wrench",
+            "wrestle",
+            "wrinkle",
+            "wrist",
+            "write",
+            "wrong"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "3A",
+      "pages": "32-37",
+      "focus": "Digraph kn",
+      "groups": [
+        {
+          "key": "kn",
+          "words": [
+            "knee",
+            "knife",
+            "knight",
+            "knit",
+            "knob",
+            "knock",
+            "knot",
+            "know"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>소리팡 — 첫 진입화면 기획 목업 v1</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --s1:#1cb0f6;--s1d:#1899d6; --s2:#58cc02;--s2d:#46a302; --s3:#ce82ff;--s3d:#a568cc;
+  --s4:#ff9600;--s4d:#e08400; --s5:#ff4b4b;--s5d:#e63946;
+  --ink:#3c3c3c;--sub:#777;--line:#e5e5e5;--soft:#f7f7f7;--gold:#ffc800;--goldD:#e6a700;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:#cfe8f6;font-family:"Nunito",system-ui,sans-serif;color:var(--ink);
+  display:flex;justify-content:center;padding:18px}
+.phone{width:412px;max-width:100%;background:#fff;border-radius:30px;overflow:hidden;
+  box-shadow:0 18px 50px rgba(20,50,80,.25);position:relative}
+.scroll{height:760px;overflow-y:auto;padding:14px 14px 90px}
+.scroll::-webkit-scrollbar{width:0}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.pill{display:flex;align-items:center;gap:5px;background:#fff;border:2px solid var(--line);
+  border-radius:999px;padding:6px 12px;font-weight:900;font-size:15px}
+.logo{font-weight:900;font-size:20px;color:var(--s1)}
+.avatar{width:42px;height:42px;border-radius:50%;background:#eaf6ff;border:2px solid var(--s1);
+  display:flex;align-items:center;justify-content:center;font-size:24px}
+
+.section-t{font-weight:900;font-size:14px;color:var(--sub);margin:16px 4px 8px;display:flex;
+  align-items:center;justify-content:space-between}
+.section-t .more{color:var(--s1);font-size:12px}
+
+/* HERO 이어서 복습 */
+.hero{border-radius:22px;padding:16px;color:#fff;background:var(--s2);
+  box-shadow:0 6px 0 var(--s2d);position:relative;overflow:hidden}
+.hero .tag{display:inline-block;background:rgba(255,255,255,.25);border-radius:999px;
+  padding:3px 10px;font-size:11px;font-weight:900;margin-bottom:8px}
+.hero .row{display:flex;align-items:center;gap:14px}
+.hero .ring{width:64px;height:64px;border-radius:50%;flex:none;
+  background:conic-gradient(#fff 0 50%, rgba(255,255,255,.3) 50% 100%);
+  display:flex;align-items:center;justify-content:center}
+.hero .ring i{width:50px;height:50px;border-radius:50%;background:var(--s2);
+  display:flex;align-items:center;justify-content:center;font-size:26px;font-style:normal}
+.hero .bk{font-size:13px;font-weight:800;opacity:.9}
+.hero .nm{font-size:22px;font-weight:900;line-height:1.1;margin:1px 0 2px}
+.hero .meta{font-size:12px;font-weight:800;opacity:.9}
+.hero .cta{margin-top:13px;display:flex;gap:8px}
+.btn{border:none;border-radius:16px;font-weight:900;font-family:inherit;cursor:pointer;
+  padding:13px 16px;font-size:16px;color:#fff;background:#fff;color:var(--s2d)}
+.btn.solid{flex:1;background:#fff;color:var(--s2d);box-shadow:0 4px 0 rgba(0,0,0,.12)}
+.btn.ghost{background:rgba(255,255,255,.2);color:#fff;border:2px solid rgba(255,255,255,.6)}
+
+/* DAILY */
+.daily{background:#fff;border:2px solid var(--line);border-radius:18px;padding:12px;margin-top:12px}
+.streak{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.streak b{font-size:15px}
+.stamps{display:flex;gap:5px}
+.stamp{width:30px;height:30px;border-radius:50%;background:var(--soft);display:flex;
+  align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#bbb}
+.stamp.on{background:var(--gold);color:#7a5a00;box-shadow:0 2px 0 var(--goldD)}
+.mission{display:flex;align-items:center;gap:10px;margin-top:10px;padding-top:10px;border-top:2px solid var(--line)}
+.mission .dots{display:flex;gap:4px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.dot.on{background:var(--s2)}
+.chestico{margin-left:auto;font-size:26px}
+.checkbtn{background:var(--gold);color:#7a5a00;box-shadow:0 4px 0 var(--goldD);
+  border-radius:14px;padding:8px 12px;font-weight:900;font-size:13px;border:none}
+
+/* BOOKSHELF */
+.steptabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.steptab{flex:none;border:none;border-radius:14px;padding:8px 11px;font-weight:900;font-size:12px;
+  background:#fff;border:2px solid var(--line);color:var(--sub);cursor:pointer;font-family:inherit;white-space:nowrap}
+.steptab.sel{color:#fff}
+.books{display:flex;gap:10px;overflow-x:auto;padding:10px 2px 4px}
+.book{flex:none;width:128px;border-radius:18px;padding:12px;background:#fff;border:2px solid var(--line);
+  cursor:pointer;position:relative}
+.book.mine{border-color:var(--s2);box-shadow:0 4px 0 var(--s2)}
+.book .bnum{font-size:11px;font-weight:900;color:var(--sub)}
+.book .btit{font-size:15px;font-weight:900;margin:2px 0 8px;line-height:1.15}
+.book .chars{display:flex;gap:4px;flex-wrap:wrap}
+.book .ch{width:30px;height:30px;border-radius:9px;background:var(--soft);display:flex;
+  align-items:center;justify-content:center;font-size:17px}
+.mybadge{position:absolute;top:-8px;right:-6px;background:var(--s2);color:#fff;font-size:10px;
+  font-weight:900;border-radius:999px;padding:3px 8px;box-shadow:0 2px 0 var(--s2d)}
+.book .prog{margin-top:8px;height:7px;border-radius:99px;background:var(--line);overflow:hidden}
+.book .prog>i{display:block;height:100%;background:var(--s2)}
+
+/* MASTER */
+.master{background:#2b2b3a;border-radius:20px;padding:14px;color:#fff;margin-top:6px}
+.master .mt{display:flex;align-items:center;gap:8px;font-weight:900;font-size:15px}
+.master .crown{font-size:20px}
+.master .gauge{height:12px;border-radius:99px;background:rgba(255,255,255,.2);margin:10px 0 6px;overflow:hidden}
+.master .gauge>i{display:block;height:100%;width:17%;background:var(--gold)}
+.master .gsub{font-size:12px;font-weight:800;opacity:.85;display:flex;justify-content:space-between}
+.dex{display:flex;gap:6px;margin-top:11px}
+.dexi{width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,.12);display:flex;
+  align-items:center;justify-content:center;font-size:20px}
+.dexi.lock{filter:grayscale(1);opacity:.4}
+
+/* BOTTOM NAV */
+.nav{position:absolute;left:0;right:0;bottom:0;background:#fff;border-top:2px solid var(--line);
+  display:flex;justify-content:space-around;padding:8px 0 12px}
+.navi{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;font-weight:900;color:var(--sub)}
+.navi .ico{font-size:23px}
+.navi.act{color:var(--s1)}
+.note{font-size:10.5px;color:#9ab;text-align:center;margin-top:10px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="scroll">
+
+    <!-- 1. TOP BAR -->
+    <div class="topbar">
+      <div class="pill">🦪 <span>128</span></div>
+      <div class="logo">소리팡 🌊</div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <div class="pill">🔥 <span>5</span></div>
+        <div class="avatar">🦭</div>
+      </div>
+    </div>
+
+    <!-- 2. HERO: 이어서 복습 -->
+    <div class="hero">
+      <span class="tag">📚 내가 공부하는 책</span>
+      <div class="row">
+        <div class="ring"><i>🅰️</i></div>
+        <div>
+          <div class="bk">5권 · Step 2 단모음</div>
+          <div class="nm">단모음 A 복습</div>
+          <div class="meta">지난번에 −at · −an 까지 했어요</div>
+        </div>
+      </div>
+      <div class="cta">
+        <button class="btn solid">▶ 복습 시작</button>
+        <button class="btn ghost">음가 고르기</button>
+      </div>
+    </div>
+
+    <!-- 3. DAILY CHECK-IN + MISSION -->
+    <div class="daily">
+      <div class="streak">
+        <b>🔥 5일 연속 출석!</b>
+        <button class="checkbtn">오늘 출석 +5🦪</button>
+      </div>
+      <div class="stamps">
+        <div class="stamp on">월</div><div class="stamp on">화</div><div class="stamp on">수</div>
+        <div class="stamp on">목</div><div class="stamp on">금</div><div class="stamp">토</div><div class="stamp">일</div>
+      </div>
+      <div class="mission">
+        <span style="font-weight:900;font-size:13px">⭐ 오늘의 미션</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+        <span style="font-size:12px;color:var(--sub);font-weight:800">2/3</span>
+        <span class="chestico">🎁</span>
+      </div>
+    </div>
+
+    <!-- 4. BOOKSHELF -->
+    <div class="section-t"><span>📖 책장에서 골라 놀기</span><span class="more">전체 18권 ▸</span></div>
+    <div class="steptabs" id="steptabs">
+      <button class="steptab sel" data-s="2" style="background:var(--s2);border-color:var(--s2)">Step2 단모음</button>
+      <button class="steptab" data-s="1">Step1 자음</button>
+      <button class="steptab" data-s="3">Step3 장모음</button>
+      <button class="steptab" data-s="4">Step4 연속자음</button>
+      <button class="steptab" data-s="5">Step5 기타모음</button>
+    </div>
+    <div class="books" id="books"></div>
+
+    <!-- 5. PHONICS MASTER -->
+    <div class="section-t"><span>👑 파닉스 마스터로 가는 길</span></div>
+    <div class="master">
+      <div class="mt"><span class="crown">👑</span> 음가 마스터 Lv.3 · 견습 파닉서</div>
+      <div class="gauge"><i></i></div>
+      <div class="gsub"><span>수집한 음가 12 / 72</span><span>다음 캐릭터까지 3개</span></div>
+      <div class="dex">
+        <div class="dexi">🦭</div><div class="dexi">🐯</div><div class="dexi">🐻</div>
+        <div class="dexi">🐷</div><div class="dexi">🐭</div><div class="dexi lock">🔒</div>
+        <div class="dexi lock">🔒</div><div class="dexi lock">🔒</div>
+      </div>
+    </div>
+
+    <div class="note">최초 1회만 부모가 "지금 보는 책"을 골라주면<br>이후엔 위 ‘이어서 복습’ 1탭으로 바로 시작돼요.</div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="nav">
+    <div class="navi act"><span class="ico">🏠</span>홈</div>
+    <div class="navi"><span class="ico">🎮</span>자유놀기</div>
+    <div class="navi"><span class="ico">📖</span>컬렉션</div>
+    <div class="navi"><span class="ico">✨</span>꾸미기</div>
+  </div>
+</div>
+
+<script>
+const C={1:['#1cb0f6','#1899d6'],2:['#58cc02','#46a302'],3:['#ce82ff','#a568cc'],4:['#ff9600','#e08400'],5:['#ff4b4b','#e63946']};
+const DATA={
+ 1:[{n:1,t:'자음 S·T·B·H·M',c:['🦭','🐯','🐻','🐷','🐭'],p:100},{n:2,t:'자음 K·J·F·G·L',c:['🔑','🧃','🦊','🐐','🦁'],p:60},
+    {n:3,t:'자음 D·N·W·C·R',c:['🐶','👃','🐺','🐱','🐰'],p:0},{n:4,t:'자음 P·Q·V·Y·Z',c:['🐧','👑','🎻','🪀','🦓'],p:0}],
+ 2:[{n:5,t:'단모음 A · I',c:['🅰️','🅸'],p:45,mine:true},{n:6,t:'단모음 U · O',c:['🆄','🅾️'],p:0},{n:7,t:'단모음 E + 복습',c:['🅴','⭐'],p:0}],
+ 3:[{n:8,t:'장모음 A·I·U',c:['🐍','🚲','🦄'],p:0},{n:9,t:'장모음 O·E',c:['🦔','🐝'],p:0},
+    {n:10,t:'장모음 ai·igh',c:['📬','💡'],p:0},{n:11,t:'장모음 oa·ea',c:['⛵','🍃'],p:0}],
+ 4:[{n:12,t:'R·L 연속자음',c:['🐸','🍇'],p:0},{n:13,t:'S 연속자음',c:['😀','⭐'],p:0},
+    {n:14,t:'자음이중자 ch·sh·th',c:['🪑','🚢'],p:0},{n:15,t:'wh·ng·wr·kn',c:['🐋','💍'],p:0}],
+ 5:[{n:16,t:'oi·ou·au·oo',c:['🪙','🐭'],p:0},{n:17,t:'oo·ue·y',c:['🏊','🪁'],p:0},{n:18,t:'ar·or·ir',c:['🚗','🐦'],p:0}]
+};
+function render(step){
+  const [c,cd]=C[step], box=document.getElementById('books');
+  box.innerHTML=DATA[step].map(b=>`
+    <div class="book ${b.mine?'mine':''}" style="${b.mine?'':''}">
+      ${b.mine?'<span class="mybadge" style="background:'+c+'">내 책</span>':''}
+      <div class="bnum">${b.n}권</div>
+      <div class="btit">${b.t}</div>
+      <div class="chars">${b.c.map(e=>`<div class="ch">${e}</div>`).join('')}</div>
+      <div class="prog"><i style="width:${b.p}%;background:${c}"></i></div>
+    </div>`).join('');
+}
+document.querySelectorAll('.steptab').forEach(t=>{
+  t.onclick=()=>{
+    const s=t.dataset.s, [c,cd]=C[s];
+    document.querySelectorAll('.steptab').forEach(x=>{x.classList.remove('sel');x.style.background='#fff';x.style.borderColor='var(--line)';x.style.color='var(--sub)';});
+    t.classList.add('sel');t.style.background=c;t.style.borderColor=c;t.style.color='#fff';
+    render(s);
+  };
+});
+render(2);
+</script>
+</body>
+</html>

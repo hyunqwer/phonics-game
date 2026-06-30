@@ -1,0 +1,95 @@
+{
+  "book": 10,
+  "step": 3,
+  "stepTitle": "Step 3 장모음 (Long Vowels)",
+  "title": "장모음 A·I (ai/ay, igh/ie)",
+  "category": "long_vowel",
+  "soundFocus": [
+    "ai",
+    "ay",
+    "igh",
+    "ie"
+  ],
+  "needsSourceVerify": false,
+  "wordCount": 34,
+  "units": [
+    {
+      "lesson": "1A",
+      "pages": "4-11",
+      "focus": "Long Vowel A [ay/ai]",
+      "groups": [
+        {
+          "key": "-ay",
+          "words": [
+            "day",
+            "hay",
+            "gray",
+            "lay",
+            "pay",
+            "play",
+            "say",
+            "tray"
+          ]
+        },
+        {
+          "key": "-ai",
+          "words": [
+            "mail",
+            "nail",
+            "sail",
+            "tail",
+            "pail",
+            "pain",
+            "rain",
+            "train",
+            "paint",
+            "wait"
+          ]
+        },
+        {
+          "key": "open_a",
+          "words": [
+            "apron",
+            "bacon",
+            "table"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2B",
+      "pages": "26-31",
+      "focus": "Long Vowel I [igh/ie]",
+      "groups": [
+        {
+          "key": "-igh",
+          "words": [
+            "fight",
+            "high",
+            "light",
+            "night",
+            "right",
+            "tight"
+          ]
+        },
+        {
+          "key": "-ie",
+          "words": [
+            "die",
+            "lie",
+            "pie",
+            "tie"
+          ]
+        },
+        {
+          "key": "open_i",
+          "words": [
+            "idea",
+            "idol",
+            "pilot"
+          ]
+        }
+      ]
+    }
+  ]
+}

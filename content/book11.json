@@ -1,0 +1,101 @@
+{
+  "book": 11,
+  "step": 3,
+  "stepTitle": "Step 3 장모음 (Long Vowels)",
+  "title": "장모음 O·E (oa/ow, ea)",
+  "category": "long_vowel",
+  "soundFocus": [
+    "oa",
+    "ow",
+    "ea"
+  ],
+  "needsSourceVerify": false,
+  "wordCount": 34,
+  "units": [
+    {
+      "lesson": "1A",
+      "pages": "4-11",
+      "focus": "Long Vowel O [oa]",
+      "groups": [
+        {
+          "key": "-oa",
+          "words": [
+            "boat",
+            "coat",
+            "float",
+            "goat",
+            "throat",
+            "load",
+            "road",
+            "toad"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "1B",
+      "pages": "12-17",
+      "focus": "Long Vowel O [ow/oe]",
+      "groups": [
+        {
+          "key": "-ow",
+          "words": [
+            "bow",
+            "grow",
+            "low",
+            "row",
+            "slow",
+            "snow"
+          ]
+        },
+        {
+          "key": "-oe",
+          "words": [
+            "doe",
+            "hoe",
+            "foe",
+            "toe"
+          ]
+        },
+        {
+          "key": "open_o",
+          "words": [
+            "oval",
+            "open",
+            "yo-yo"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2A",
+      "pages": "18-25",
+      "focus": "Long Vowel E [ea]",
+      "groups": [
+        {
+          "key": "-ea",
+          "words": [
+            "beak",
+            "dream",
+            "eat",
+            "leaf",
+            "meat",
+            "neat",
+            "pea",
+            "sea",
+            "seal",
+            "tea"
+          ]
+        },
+        {
+          "key": "open_e",
+          "words": [
+            "erase",
+            "evening",
+            "me"
+          ]
+        }
+      ]
+    }
+  ]
+}

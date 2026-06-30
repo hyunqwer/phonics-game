@@ -1,0 +1,106 @@
+{
+  "book": 16,
+  "step": 5,
+  "stepTitle": "Step 5 기타모음 (Other Vowels)",
+  "title": "기타모음 oi/oy·ou/ow·au/aw·oo",
+  "category": "other_vowel",
+  "soundFocus": [
+    "oi",
+    "oy",
+    "ou",
+    "ow",
+    "au",
+    "aw",
+    "oo"
+  ],
+  "needsSourceVerify": false,
+  "wordCount": 38,
+  "units": [
+    {
+      "lesson": "1A",
+      "pages": "4-11",
+      "focus": "oi / oy",
+      "groups": [
+        {
+          "key": "oi_oy",
+          "words": [
+            "coin",
+            "boil",
+            "foil",
+            "noise",
+            "oil",
+            "soil",
+            "voice",
+            "boy",
+            "joy",
+            "toy"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "1B",
+      "pages": "13-18",
+      "focus": "ou / ow",
+      "groups": [
+        {
+          "key": "ou_ow",
+          "words": [
+            "mouse",
+            "cloud",
+            "house",
+            "round",
+            "shout",
+            "brown",
+            "clown",
+            "cow",
+            "down",
+            "owl"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2B",
+      "pages": "29-34",
+      "focus": "au / aw",
+      "groups": [
+        {
+          "key": "au_aw",
+          "words": [
+            "laundry",
+            "faucet",
+            "pause",
+            "sauce",
+            "sausage",
+            "claw",
+            "draw",
+            "hawk",
+            "straw",
+            "yawn"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "3A",
+      "pages": "35-40",
+      "focus": "oo (book)",
+      "groups": [
+        {
+          "key": "oo_short",
+          "words": [
+            "book",
+            "cook",
+            "cookie",
+            "foot",
+            "hoof",
+            "hook",
+            "look",
+            "wood"
+          ]
+        }
+      ]
+    }
+  ]
+}

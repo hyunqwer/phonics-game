@@ -1,0 +1,118 @@
+{
+  "book": 9,
+  "step": 3,
+  "stepTitle": "Step 3 장모음 (Long Vowels)",
+  "title": "장모음 O·E (o_e/ee)",
+  "category": "long_vowel",
+  "soundFocus": [
+    "o_e",
+    "ee"
+  ],
+  "needsSourceVerify": false,
+  "wordCount": 35,
+  "units": [
+    {
+      "lesson": "1A",
+      "pages": "4-11",
+      "focus": "Long Vowel O [o_e]",
+      "groups": [
+        {
+          "key": "-ole",
+          "words": [
+            "hole",
+            "mole",
+            "pole"
+          ]
+        },
+        {
+          "key": "-ose",
+          "words": [
+            "close",
+            "hose",
+            "nose",
+            "pose",
+            "rose"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "1B",
+      "pages": "12-18",
+      "focus": "Long Vowel O [o_e]",
+      "groups": [
+        {
+          "key": "-ope",
+          "words": [
+            "hope",
+            "rope",
+            "slope"
+          ]
+        },
+        {
+          "key": "-one",
+          "words": [
+            "bone",
+            "cone",
+            "phone",
+            "stone",
+            "zone"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2A",
+      "pages": "19-24",
+      "focus": "Long Vowel E [ee]",
+      "groups": [
+        {
+          "key": "-ee",
+          "words": [
+            "bee",
+            "knee",
+            "see",
+            "three",
+            "tree"
+          ]
+        },
+        {
+          "key": "-eep",
+          "words": [
+            "jeep",
+            "sheep",
+            "sleep",
+            "sweep"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2B",
+      "pages": "25-31",
+      "focus": "Long Vowel E [ee]",
+      "groups": [
+        {
+          "key": "-eed",
+          "words": [
+            "feed",
+            "need",
+            "seed",
+            "speed",
+            "weed"
+          ]
+        },
+        {
+          "key": "-eel",
+          "words": [
+            "eel",
+            "feel",
+            "heel",
+            "peel",
+            "wheel"
+          ]
+        }
+      ]
+    }
+  ]
+}

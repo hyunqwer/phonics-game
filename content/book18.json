@@ -1,0 +1,84 @@
+{
+  "book": 18,
+  "step": 5,
+  "stepTitle": "Step 5 기타모음 (Other Vowels)",
+  "title": "기타모음 ar·or·ir/er/ur",
+  "category": "other_vowel",
+  "soundFocus": [
+    "ar",
+    "or",
+    "ir",
+    "er",
+    "ur"
+  ],
+  "needsSourceVerify": false,
+  "wordCount": 30,
+  "units": [
+    {
+      "lesson": "1A",
+      "pages": "4-11",
+      "focus": "r-controlled ar",
+      "groups": [
+        {
+          "key": "ar",
+          "words": [
+            "car",
+            "arm",
+            "bark",
+            "card",
+            "dark",
+            "far",
+            "farm",
+            "jar",
+            "park",
+            "star"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "1B",
+      "pages": "13-18",
+      "focus": "r-controlled or",
+      "groups": [
+        {
+          "key": "or",
+          "words": [
+            "horse",
+            "cork",
+            "corn",
+            "fork",
+            "horn",
+            "short",
+            "sport",
+            "storm",
+            "thorn",
+            "torn"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2B",
+      "pages": "29-34",
+      "focus": "r-controlled ir/er/ur",
+      "groups": [
+        {
+          "key": "ir_er_ur",
+          "words": [
+            "bird",
+            "dirt",
+            "shirt",
+            "skirt",
+            "brother",
+            "sister",
+            "weather",
+            "fur",
+            "nurse",
+            "purse"
+          ]
+        }
+      ]
+    }
+  ]
+}

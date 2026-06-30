@@ -1,0 +1,134 @@
+{
+  "book": 3,
+  "step": 1,
+  "stepTitle": "Step 1 자음 (Consonants)",
+  "title": "자음 D·N·W·C·R",
+  "category": "consonant",
+  "soundFocus": [
+    "d",
+    "n",
+    "w",
+    "c",
+    "r"
+  ],
+  "needsSourceVerify": false,
+  "wordCount": 50,
+  "units": [
+    {
+      "lesson": "1A",
+      "pages": "4-10",
+      "focus": "Consonant D",
+      "groups": [
+        {
+          "key": "d",
+          "words": [
+            "dark",
+            "deer",
+            "desk",
+            "dish",
+            "doctor",
+            "dog",
+            "doll",
+            "dolphin",
+            "door",
+            "duck"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "1B",
+      "pages": "11-17",
+      "focus": "Consonant N",
+      "groups": [
+        {
+          "key": "n",
+          "words": [
+            "name",
+            "neck",
+            "net",
+            "new",
+            "night",
+            "nine",
+            "nose",
+            "number",
+            "nurse",
+            "nut"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2A",
+      "pages": "18-24",
+      "focus": "Consonant W",
+      "groups": [
+        {
+          "key": "w",
+          "words": [
+            "wagon",
+            "wall",
+            "watch",
+            "water",
+            "wind",
+            "window",
+            "wing",
+            "winter",
+            "wolf",
+            "woman"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2B",
+      "pages": "25-31",
+      "focus": "Consonant C",
+      "groups": [
+        {
+          "key": "c",
+          "words": [
+            "cake",
+            "call",
+            "can",
+            "candy",
+            "car",
+            "cat",
+            "cold",
+            "cow",
+            "cup",
+            "cut"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "3A",
+      "pages": "32-38",
+      "focus": "Consonant R",
+      "groups": [
+        {
+          "key": "r",
+          "words": [
+            "rabbit",
+            "rat",
+            "read",
+            "red",
+            "ring",
+            "river",
+            "rock",
+            "rope",
+            "rose",
+            "run"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "3B",
+      "pages": "39-56",
+      "focus": "Review DNWCR + Story + Bingo Game",
+      "groups": []
+    }
+  ]
+}

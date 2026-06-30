@@ -1,0 +1,148 @@
+{
+  "book": 4,
+  "step": 1,
+  "stepTitle": "Step 1 자음 (Consonants)",
+  "title": "자음 P·Q·V·Y·Z + 끝소리",
+  "category": "consonant",
+  "soundFocus": [
+    "p",
+    "q",
+    "v",
+    "y",
+    "z"
+  ],
+  "needsSourceVerify": false,
+  "wordCount": 54,
+  "units": [
+    {
+      "lesson": "1A",
+      "pages": "4-11",
+      "focus": "Consonant P / Q",
+      "groups": [
+        {
+          "key": "p",
+          "words": [
+            "paper",
+            "pencil",
+            "pie",
+            "pig",
+            "pot",
+            "puppy"
+          ]
+        },
+        {
+          "key": "q",
+          "words": [
+            "quail",
+            "quarter",
+            "queen",
+            "question",
+            "quiet",
+            "quiz"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "1B",
+      "pages": "12-19",
+      "focus": "Consonant V / Y",
+      "groups": [
+        {
+          "key": "v",
+          "words": [
+            "valley",
+            "van",
+            "vase",
+            "vest",
+            "vine",
+            "violin"
+          ]
+        },
+        {
+          "key": "y",
+          "words": [
+            "yarn",
+            "yawn",
+            "yellow",
+            "yes",
+            "young",
+            "yo-yo"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2A",
+      "pages": "20-32",
+      "focus": "Consonant Z + Review PQVYZ + Story",
+      "groups": [
+        {
+          "key": "z",
+          "words": [
+            "zebra",
+            "zero",
+            "zipper",
+            "zone",
+            "zoo",
+            "zoom"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2B",
+      "pages": "33-39",
+      "focus": "Beginning Consonant Review",
+      "groups": []
+    },
+    {
+      "lesson": "3A",
+      "pages": "40-49",
+      "focus": "Ending Consonants (STBM / KFLD)",
+      "groups": [
+        {
+          "key": "_end1",
+          "words": [
+            "bus",
+            "glass",
+            "bat",
+            "root",
+            "crab",
+            "web",
+            "drum",
+            "gum",
+            "beak",
+            "book",
+            "cliff",
+            "leaf",
+            "pull",
+            "school"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "3B",
+      "pages": "50-56",
+      "focus": "Ending Consonants (GNPX) + Review",
+      "groups": [
+        {
+          "key": "_end2",
+          "words": [
+            "bread",
+            "road",
+            "bag",
+            "log",
+            "coin",
+            "down",
+            "cup",
+            "soap",
+            "ax",
+            "box"
+          ]
+        }
+      ]
+    }
+  ]
+}

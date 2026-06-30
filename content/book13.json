@@ -1,0 +1,129 @@
+{
+  "book": 13,
+  "step": 4,
+  "stepTitle": "Step 4 연속자음·자음이중자 (Blends & Digraphs)",
+  "title": "S 연속자음 + Soft c/g",
+  "category": "blend",
+  "soundFocus": [
+    "sm",
+    "st",
+    "sw",
+    "sn",
+    "sl",
+    "sp",
+    "soft_c",
+    "soft_g"
+  ],
+  "needsSourceVerify": false,
+  "wordCount": 40,
+  "units": [
+    {
+      "lesson": "1A",
+      "pages": "4-11",
+      "focus": "S Blends (sm/st)",
+      "groups": [
+        {
+          "key": "sm",
+          "words": [
+            "smoke",
+            "small",
+            "smart",
+            "smell",
+            "smile"
+          ]
+        },
+        {
+          "key": "st",
+          "words": [
+            "stand",
+            "star",
+            "stop",
+            "store",
+            "study"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "1B",
+      "pages": "12-17",
+      "focus": "S Blends (sw/sn)",
+      "groups": [
+        {
+          "key": "sw",
+          "words": [
+            "swing",
+            "sweater",
+            "sweet",
+            "swim",
+            "switch"
+          ]
+        },
+        {
+          "key": "sn",
+          "words": [
+            "snack",
+            "snail",
+            "snake",
+            "sneeze",
+            "snow"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2A",
+      "pages": "18-23",
+      "focus": "S Blends (sl/sp)",
+      "groups": [
+        {
+          "key": "sl",
+          "words": [
+            "sleep",
+            "sled",
+            "slide",
+            "slip",
+            "slow"
+          ]
+        },
+        {
+          "key": "sp",
+          "words": [
+            "speak",
+            "space",
+            "spill",
+            "spoon",
+            "sport"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2B",
+      "pages": "32-37",
+      "focus": "Soft c / Soft g",
+      "groups": [
+        {
+          "key": "soft_c",
+          "words": [
+            "cereal",
+            "ceiling",
+            "celery",
+            "circle",
+            "city"
+          ]
+        },
+        {
+          "key": "soft_g",
+          "words": [
+            "gem",
+            "giant",
+            "ginger",
+            "giraffe",
+            "gym"
+          ]
+        }
+      ]
+    }
+  ]
+}

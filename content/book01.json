@@ -1,0 +1,134 @@
+{
+  "book": 1,
+  "step": 1,
+  "stepTitle": "Step 1 자음 (Consonants)",
+  "title": "자음 S·T·B·H·M",
+  "category": "consonant",
+  "soundFocus": [
+    "s",
+    "t",
+    "b",
+    "h",
+    "m"
+  ],
+  "needsSourceVerify": false,
+  "wordCount": 50,
+  "units": [
+    {
+      "lesson": "1A",
+      "pages": "4-10",
+      "focus": "Consonant S",
+      "groups": [
+        {
+          "key": "s",
+          "words": [
+            "sad",
+            "sand",
+            "salt",
+            "same",
+            "seal",
+            "sink",
+            "six",
+            "soap",
+            "sock",
+            "sun"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "1B",
+      "pages": "11-17",
+      "focus": "Consonant T",
+      "groups": [
+        {
+          "key": "t",
+          "words": [
+            "table",
+            "tail",
+            "talk",
+            "tape",
+            "ten",
+            "tent",
+            "tie",
+            "tiger",
+            "toe",
+            "toy"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2A",
+      "pages": "18-24",
+      "focus": "Consonant B",
+      "groups": [
+        {
+          "key": "b",
+          "words": [
+            "bag",
+            "ball",
+            "bat",
+            "bear",
+            "bed",
+            "bell",
+            "big",
+            "book",
+            "box",
+            "boy"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2B",
+      "pages": "25-31",
+      "focus": "Consonant H",
+      "groups": [
+        {
+          "key": "h",
+          "words": [
+            "hair",
+            "hand",
+            "happy",
+            "hat",
+            "head",
+            "hen",
+            "hill",
+            "hop",
+            "horse",
+            "house"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "3A",
+      "pages": "32-38",
+      "focus": "Consonant M",
+      "groups": [
+        {
+          "key": "m",
+          "words": [
+            "man",
+            "many",
+            "map",
+            "mat",
+            "milk",
+            "money",
+            "monkey",
+            "moon",
+            "mop",
+            "mouse"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "3B",
+      "pages": "39-56",
+      "focus": "Review STBHM + Story + Board Game",
+      "groups": []
+    }
+  ]
+}

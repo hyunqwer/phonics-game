@@ -1,0 +1,77 @@
+{
+  "book": 7,
+  "step": 2,
+  "stepTitle": "Step 2 단모음 (Short Vowels)",
+  "title": "단모음 E + 복습",
+  "category": "short_vowel",
+  "soundFocus": [
+    "e"
+  ],
+  "needsSourceVerify": false,
+  "wordCount": 17,
+  "units": [
+    {
+      "lesson": "1A",
+      "pages": "4-9",
+      "focus": "Short Vowel E [-et/-en]",
+      "groups": [
+        {
+          "key": "-et",
+          "words": [
+            "jet",
+            "get",
+            "net",
+            "pet",
+            "wet"
+          ]
+        },
+        {
+          "key": "-en",
+          "words": [
+            "hen",
+            "men",
+            "pen",
+            "ten"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "1B",
+      "pages": "10-15",
+      "focus": "Short Vowel E [-ell/-ed]",
+      "groups": [
+        {
+          "key": "-ell",
+          "words": [
+            "bell",
+            "sell",
+            "smell",
+            "tell",
+            "well"
+          ]
+        },
+        {
+          "key": "-ed",
+          "words": [
+            "bed",
+            "red",
+            "sled"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2B",
+      "pages": "26-30",
+      "focus": "Review Short Vowels AIU",
+      "groups": []
+    },
+    {
+      "lesson": "3A",
+      "pages": "31-35",
+      "focus": "Review Short Vowels OE",
+      "groups": []
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "book": 17,
+  "step": 5,
+  "stepTitle": "Step 5 기타모음 (Other Vowels)",
+  "title": "기타모음 oo/ew·ue·y",
+  "category": "other_vowel",
+  "soundFocus": [
+    "oo",
+    "ew",
+    "ue",
+    "u_e",
+    "ui",
+    "y"
+  ],
+  "needsSourceVerify": false,
+  "wordCount": 36,
+  "units": [
+    {
+      "lesson": "1A",
+      "pages": "4-11",
+      "focus": "oo / ew",
+      "groups": [
+        {
+          "key": "oo_ew",
+          "words": [
+            "pool",
+            "broom",
+            "room",
+            "school",
+            "spoon",
+            "tool",
+            "chew",
+            "new",
+            "screw",
+            "stew"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "1B",
+      "pages": "12-17",
+      "focus": "ue / u_e / ui",
+      "groups": [
+        {
+          "key": "ue_ui",
+          "words": [
+            "glue",
+            "blue",
+            "clue",
+            "true",
+            "flute",
+            "rude",
+            "rule",
+            "bruise",
+            "fruit",
+            "suit"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2B",
+      "pages": "28-33",
+      "focus": "y (sky)",
+      "groups": [
+        {
+          "key": "y_long_i",
+          "words": [
+            "sky",
+            "cry",
+            "dry",
+            "fly",
+            "fry",
+            "shy",
+            "spy",
+            "try"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "3A",
+      "pages": "34-39",
+      "focus": "y (baby)",
+      "groups": [
+        {
+          "key": "y_long_e",
+          "words": [
+            "baby",
+            "bunny",
+            "candy",
+            "dirty",
+            "empty",
+            "funny",
+            "happy",
+            "penny"
+          ]
+        }
+      ]
+    }
+  ]
+}

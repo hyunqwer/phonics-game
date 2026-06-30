@@ -1,0 +1,123 @@
+{
+  "book": 5,
+  "step": 2,
+  "stepTitle": "Step 2 단모음 (Short Vowels)",
+  "title": "단모음 A · I",
+  "category": "short_vowel",
+  "soundFocus": [
+    "a",
+    "i"
+  ],
+  "needsSourceVerify": false,
+  "wordCount": 40,
+  "units": [
+    {
+      "lesson": "1A",
+      "pages": "4-9",
+      "focus": "Short Vowel A [-at/-an]",
+      "groups": [
+        {
+          "key": "-at",
+          "words": [
+            "bat",
+            "cat",
+            "fat",
+            "hat",
+            "mat"
+          ]
+        },
+        {
+          "key": "-an",
+          "words": [
+            "can",
+            "fan",
+            "man",
+            "pan",
+            "van"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "1B",
+      "pages": "10-15",
+      "focus": "Short Vowel A [-ad/-ap]",
+      "groups": [
+        {
+          "key": "-ad",
+          "words": [
+            "dad",
+            "bad",
+            "glad",
+            "mad",
+            "sad"
+          ]
+        },
+        {
+          "key": "-ap",
+          "words": [
+            "cap",
+            "clap",
+            "map",
+            "nap",
+            "trap"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2B",
+      "pages": "26-31",
+      "focus": "Short Vowel I [-ig/-it]",
+      "groups": [
+        {
+          "key": "-ig",
+          "words": [
+            "pig",
+            "big",
+            "dig",
+            "twig",
+            "wig"
+          ]
+        },
+        {
+          "key": "-it",
+          "words": [
+            "fit",
+            "hit",
+            "kit",
+            "sit",
+            "split"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "3A",
+      "pages": "32-37",
+      "focus": "Short Vowel I [-ill/-in]",
+      "groups": [
+        {
+          "key": "-ill",
+          "words": [
+            "bill",
+            "fill",
+            "gill",
+            "hill",
+            "pill"
+          ]
+        },
+        {
+          "key": "-in",
+          "words": [
+            "bin",
+            "fin",
+            "pin",
+            "thin",
+            "win"
+          ]
+        }
+      ]
+    }
+  ]
+}

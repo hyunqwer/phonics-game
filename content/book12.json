@@ -1,0 +1,129 @@
+{
+  "book": 12,
+  "step": 4,
+  "stepTitle": "Step 4 연속자음·자음이중자 (Blends & Digraphs)",
+  "title": "R/L 연속자음 (Blends)",
+  "category": "blend",
+  "soundFocus": [
+    "fr",
+    "gr",
+    "br",
+    "pr",
+    "fl",
+    "gl",
+    "bl",
+    "pl"
+  ],
+  "needsSourceVerify": false,
+  "wordCount": 40,
+  "units": [
+    {
+      "lesson": "1A",
+      "pages": "4-11",
+      "focus": "R Blends (fr/gr)",
+      "groups": [
+        {
+          "key": "fr",
+          "words": [
+            "frog",
+            "frame",
+            "friend",
+            "front",
+            "fruit"
+          ]
+        },
+        {
+          "key": "gr",
+          "words": [
+            "grape",
+            "grass",
+            "gray",
+            "green",
+            "ground"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "1B",
+      "pages": "12-17",
+      "focus": "R Blends (br/pr)",
+      "groups": [
+        {
+          "key": "br",
+          "words": [
+            "bride",
+            "bread",
+            "break",
+            "broom",
+            "brown"
+          ]
+        },
+        {
+          "key": "pr",
+          "words": [
+            "pretty",
+            "price",
+            "prince",
+            "prize",
+            "present"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2A",
+      "pages": "18-23",
+      "focus": "L Blends (fl/gl)",
+      "groups": [
+        {
+          "key": "fl",
+          "words": [
+            "fly",
+            "flag",
+            "float",
+            "floor",
+            "flower"
+          ]
+        },
+        {
+          "key": "gl",
+          "words": [
+            "glass",
+            "globe",
+            "glove",
+            "glow",
+            "glue"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2B",
+      "pages": "24-29",
+      "focus": "L Blends (bl/pl)",
+      "groups": [
+        {
+          "key": "bl",
+          "words": [
+            "blue",
+            "black",
+            "blanket",
+            "block",
+            "blow"
+          ]
+        },
+        {
+          "key": "pl",
+          "words": [
+            "plane",
+            "plant",
+            "plate",
+            "play",
+            "plum"
+          ]
+        }
+      ]
+    }
+  ]
+}

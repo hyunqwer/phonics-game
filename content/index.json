@@ -1,0 +1,285 @@
+{
+  "series": "Yoon's Phonics World - New Edition (NYPW)",
+  "totalBooks": 18,
+  "source": "TG Scope & Sequence + 교재개발2팀 스콥 엑셀 (확정본)",
+  "books": [
+    {
+      "book": 1,
+      "step": 1,
+      "title": "자음 S·T·B·H·M",
+      "category": "consonant",
+      "soundFocus": [
+        "s",
+        "t",
+        "b",
+        "h",
+        "m"
+      ],
+      "wordCount": 50,
+      "needsSourceVerify": false,
+      "file": "book01.json"
+    },
+    {
+      "book": 2,
+      "step": 1,
+      "title": "자음 K·J·F·G·L",
+      "category": "consonant",
+      "soundFocus": [
+        "k",
+        "j",
+        "f",
+        "g",
+        "l"
+      ],
+      "wordCount": 50,
+      "needsSourceVerify": false,
+      "file": "book02.json"
+    },
+    {
+      "book": 3,
+      "step": 1,
+      "title": "자음 D·N·W·C·R",
+      "category": "consonant",
+      "soundFocus": [
+        "d",
+        "n",
+        "w",
+        "c",
+        "r"
+      ],
+      "wordCount": 50,
+      "needsSourceVerify": false,
+      "file": "book03.json"
+    },
+    {
+      "book": 4,
+      "step": 1,
+      "title": "자음 P·Q·V·Y·Z + 끝소리",
+      "category": "consonant",
+      "soundFocus": [
+        "p",
+        "q",
+        "v",
+        "y",
+        "z"
+      ],
+      "wordCount": 54,
+      "needsSourceVerify": false,
+      "file": "book04.json"
+    },
+    {
+      "book": 5,
+      "step": 2,
+      "title": "단모음 A · I",
+      "category": "short_vowel",
+      "soundFocus": [
+        "a",
+        "i"
+      ],
+      "wordCount": 40,
+      "needsSourceVerify": false,
+      "file": "book05.json"
+    },
+    {
+      "book": 6,
+      "step": 2,
+      "title": "단모음 U · O",
+      "category": "short_vowel",
+      "soundFocus": [
+        "u",
+        "o"
+      ],
+      "wordCount": 37,
+      "needsSourceVerify": false,
+      "file": "book06.json"
+    },
+    {
+      "book": 7,
+      "step": 2,
+      "title": "단모음 E + 복습",
+      "category": "short_vowel",
+      "soundFocus": [
+        "e"
+      ],
+      "wordCount": 17,
+      "needsSourceVerify": false,
+      "file": "book07.json"
+    },
+    {
+      "book": 8,
+      "step": 3,
+      "title": "장모음 A·I·U (a_e/i_e/u_e)",
+      "category": "long_vowel",
+      "soundFocus": [
+        "a_e",
+        "i_e",
+        "u_e"
+      ],
+      "wordCount": 45,
+      "needsSourceVerify": false,
+      "file": "book08.json"
+    },
+    {
+      "book": 9,
+      "step": 3,
+      "title": "장모음 O·E (o_e/ee)",
+      "category": "long_vowel",
+      "soundFocus": [
+        "o_e",
+        "ee"
+      ],
+      "wordCount": 35,
+      "needsSourceVerify": false,
+      "file": "book09.json"
+    },
+    {
+      "book": 10,
+      "step": 3,
+      "title": "장모음 A·I (ai/ay, igh/ie)",
+      "category": "long_vowel",
+      "soundFocus": [
+        "ai",
+        "ay",
+        "igh",
+        "ie"
+      ],
+      "wordCount": 34,
+      "needsSourceVerify": false,
+      "file": "book10.json"
+    },
+    {
+      "book": 11,
+      "step": 3,
+      "title": "장모음 O·E (oa/ow, ea)",
+      "category": "long_vowel",
+      "soundFocus": [
+        "oa",
+        "ow",
+        "ea"
+      ],
+      "wordCount": 34,
+      "needsSourceVerify": false,
+      "file": "book11.json"
+    },
+    {
+      "book": 12,
+      "step": 4,
+      "title": "R/L 연속자음 (Blends)",
+      "category": "blend",
+      "soundFocus": [
+        "fr",
+        "gr",
+        "br",
+        "pr",
+        "fl",
+        "gl",
+        "bl",
+        "pl"
+      ],
+      "wordCount": 40,
+      "needsSourceVerify": false,
+      "file": "book12.json"
+    },
+    {
+      "book": 13,
+      "step": 4,
+      "title": "S 연속자음 + Soft c/g",
+      "category": "blend",
+      "soundFocus": [
+        "sm",
+        "st",
+        "sw",
+        "sn",
+        "sl",
+        "sp",
+        "soft_c",
+        "soft_g"
+      ],
+      "wordCount": 40,
+      "needsSourceVerify": false,
+      "file": "book13.json"
+    },
+    {
+      "book": 14,
+      "step": 4,
+      "title": "자음이중자 ch·sh·th",
+      "category": "digraph",
+      "soundFocus": [
+        "ch",
+        "sh",
+        "th"
+      ],
+      "wordCount": 48,
+      "needsSourceVerify": false,
+      "file": "book14.json"
+    },
+    {
+      "book": 15,
+      "step": 4,
+      "title": "자음이중자 wh·ph·ng·ck·wr·kn",
+      "category": "digraph",
+      "soundFocus": [
+        "wh",
+        "ph",
+        "ng",
+        "ck",
+        "wr",
+        "kn"
+      ],
+      "wordCount": 45,
+      "needsSourceVerify": false,
+      "file": "book15.json"
+    },
+    {
+      "book": 16,
+      "step": 5,
+      "title": "기타모음 oi/oy·ou/ow·au/aw·oo",
+      "category": "other_vowel",
+      "soundFocus": [
+        "oi",
+        "oy",
+        "ou",
+        "ow",
+        "au",
+        "aw",
+        "oo"
+      ],
+      "wordCount": 38,
+      "needsSourceVerify": false,
+      "file": "book16.json"
+    },
+    {
+      "book": 17,
+      "step": 5,
+      "title": "기타모음 oo/ew·ue·y",
+      "category": "other_vowel",
+      "soundFocus": [
+        "oo",
+        "ew",
+        "ue",
+        "u_e",
+        "ui",
+        "y"
+      ],
+      "wordCount": 36,
+      "needsSourceVerify": false,
+      "file": "book17.json"
+    },
+    {
+      "book": 18,
+      "step": 5,
+      "title": "기타모음 ar·or·ir/er/ur",
+      "category": "other_vowel",
+      "soundFocus": [
+        "ar",
+        "or",
+        "ir",
+        "er",
+        "ur"
+      ],
+      "wordCount": 30,
+      "needsSourceVerify": false,
+      "file": "book18.json"
+    }
+  ]
+}

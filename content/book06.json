@@ -1,0 +1,120 @@
+{
+  "book": 6,
+  "step": 2,
+  "stepTitle": "Step 2 단모음 (Short Vowels)",
+  "title": "단모음 U · O",
+  "category": "short_vowel",
+  "soundFocus": [
+    "u",
+    "o"
+  ],
+  "needsSourceVerify": false,
+  "wordCount": 37,
+  "units": [
+    {
+      "lesson": "1A",
+      "pages": "4-9",
+      "focus": "Short Vowel U [-un/-ug]",
+      "groups": [
+        {
+          "key": "-un",
+          "words": [
+            "sun",
+            "bun",
+            "fun",
+            "run"
+          ]
+        },
+        {
+          "key": "-ug",
+          "words": [
+            "bug",
+            "hug",
+            "jug",
+            "mug",
+            "plug",
+            "rug"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "1B",
+      "pages": "10-15",
+      "focus": "Short Vowel U [-ut/-ub]",
+      "groups": [
+        {
+          "key": "-ut",
+          "words": [
+            "nut",
+            "cut",
+            "hut",
+            "shut"
+          ]
+        },
+        {
+          "key": "-ub",
+          "words": [
+            "cub",
+            "club",
+            "rub",
+            "sub",
+            "tub"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2B",
+      "pages": "26-31",
+      "focus": "Short Vowel O [-og/-ox]",
+      "groups": [
+        {
+          "key": "-og",
+          "words": [
+            "dog",
+            "clog",
+            "fog",
+            "frog",
+            "log"
+          ]
+        },
+        {
+          "key": "-ox",
+          "words": [
+            "box",
+            "fox",
+            "ox"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "3A",
+      "pages": "32-37",
+      "focus": "Short Vowel O [-ot/-op]",
+      "groups": [
+        {
+          "key": "-ot",
+          "words": [
+            "pot",
+            "dot",
+            "hot",
+            "knot",
+            "spot"
+          ]
+        },
+        {
+          "key": "-op",
+          "words": [
+            "hop",
+            "mop",
+            "pop",
+            "stop",
+            "top"
+          ]
+        }
+      ]
+    }
+  ]
+}

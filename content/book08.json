@@ -1,0 +1,161 @@
+{
+  "book": 8,
+  "step": 3,
+  "stepTitle": "Step 3 장모음 (Long Vowels)",
+  "title": "장모음 A·I·U (a_e/i_e/u_e)",
+  "category": "long_vowel",
+  "soundFocus": [
+    "a_e",
+    "i_e",
+    "u_e"
+  ],
+  "needsSourceVerify": false,
+  "wordCount": 45,
+  "units": [
+    {
+      "lesson": "1A",
+      "pages": "4-11",
+      "focus": "Long Vowel A [a_e]",
+      "groups": [
+        {
+          "key": "-ake",
+          "words": [
+            "bake",
+            "cake",
+            "lake",
+            "rake",
+            "snake"
+          ]
+        },
+        {
+          "key": "-ate",
+          "words": [
+            "date",
+            "gate",
+            "hate",
+            "late",
+            "plate"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "1B",
+      "pages": "12-18",
+      "focus": "Long Vowel A [a_e]",
+      "groups": [
+        {
+          "key": "-ame",
+          "words": [
+            "flame",
+            "game",
+            "name",
+            "same"
+          ]
+        },
+        {
+          "key": "-ace",
+          "words": [
+            "face",
+            "place",
+            "race",
+            "space",
+            "trace"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2A",
+      "pages": "19-24",
+      "focus": "Long Vowel I [i_e]",
+      "groups": [
+        {
+          "key": "-ike",
+          "words": [
+            "bike",
+            "hike",
+            "like"
+          ]
+        },
+        {
+          "key": "-ide",
+          "words": [
+            "hide",
+            "ride",
+            "side",
+            "slide",
+            "wide"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2B",
+      "pages": "25-31",
+      "focus": "Long Vowel I [i_e]",
+      "groups": [
+        {
+          "key": "-ime",
+          "words": [
+            "crime",
+            "dime",
+            "lime",
+            "slime",
+            "time"
+          ]
+        },
+        {
+          "key": "-ive",
+          "words": [
+            "dive",
+            "drive",
+            "five",
+            "hive"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "3A",
+      "pages": "32-38",
+      "focus": "Long Vowel U [u_e]",
+      "groups": [
+        {
+          "key": "-ule",
+          "words": [
+            "mule"
+          ]
+        },
+        {
+          "key": "-ube",
+          "words": [
+            "cube",
+            "tube"
+          ]
+        },
+        {
+          "key": "-une",
+          "words": [
+            "tune"
+          ]
+        },
+        {
+          "key": "-ure",
+          "words": [
+            "cure",
+            "pure",
+            "sure"
+          ]
+        },
+        {
+          "key": "-ute",
+          "words": [
+            "cute",
+            "mute"
+          ]
+        }
+      ]
+    }
+  ]
+}

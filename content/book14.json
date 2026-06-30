@@ -1,0 +1,124 @@
+{
+  "book": 14,
+  "step": 4,
+  "stepTitle": "Step 4 연속자음·자음이중자 (Blends & Digraphs)",
+  "title": "자음이중자 ch·sh·th",
+  "category": "digraph",
+  "soundFocus": [
+    "ch",
+    "sh",
+    "th"
+  ],
+  "needsSourceVerify": false,
+  "wordCount": 48,
+  "units": [
+    {
+      "lesson": "1A",
+      "pages": "4-11",
+      "focus": "Digraph ch_",
+      "groups": [
+        {
+          "key": "ch_",
+          "words": [
+            "chicken",
+            "chain",
+            "chair",
+            "chase",
+            "cheap",
+            "cheese",
+            "chess",
+            "child",
+            "chin",
+            "chop"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "1B",
+      "pages": "12-17",
+      "focus": "Digraph _ch",
+      "groups": [
+        {
+          "key": "_ch",
+          "words": [
+            "beach",
+            "coach",
+            "couch",
+            "peach",
+            "reach",
+            "rich",
+            "speech",
+            "teach"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2A",
+      "pages": "19-24",
+      "focus": "Digraph sh_",
+      "groups": [
+        {
+          "key": "sh_",
+          "words": [
+            "sheep",
+            "shade",
+            "shake",
+            "shark",
+            "sharp",
+            "shell",
+            "ship",
+            "shirt",
+            "shoe",
+            "short"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2B",
+      "pages": "25-30",
+      "focus": "Digraph _sh",
+      "groups": [
+        {
+          "key": "_sh",
+          "words": [
+            "fish",
+            "ash",
+            "brush",
+            "cash",
+            "dish",
+            "fresh",
+            "rash",
+            "trash",
+            "wash",
+            "wish"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "3A",
+      "pages": "32-37",
+      "focus": "Digraph th",
+      "groups": [
+        {
+          "key": "th",
+          "words": [
+            "thumb",
+            "thick",
+            "thin",
+            "think",
+            "thorn",
+            "bath",
+            "cloth",
+            "math",
+            "moth",
+            "tooth"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "book": 2,
+  "step": 1,
+  "stepTitle": "Step 1 자음 (Consonants)",
+  "title": "자음 K·J·F·G·L",
+  "category": "consonant",
+  "soundFocus": [
+    "k",
+    "j",
+    "f",
+    "g",
+    "l"
+  ],
+  "needsSourceVerify": false,
+  "wordCount": 50,
+  "units": [
+    {
+      "lesson": "1A",
+      "pages": "4-10",
+      "focus": "Consonant K",
+      "groups": [
+        {
+          "key": "k",
+          "words": [
+            "ketchup",
+            "key",
+            "kick",
+            "kid",
+            "kind",
+            "king",
+            "kiss",
+            "kitchen",
+            "kite",
+            "kitten"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "1B",
+      "pages": "11-17",
+      "focus": "Consonant J",
+      "groups": [
+        {
+          "key": "j",
+          "words": [
+            "jacket",
+            "jail",
+            "jam",
+            "jar",
+            "jeans",
+            "jeep",
+            "jet",
+            "juice",
+            "jump",
+            "jungle"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2A",
+      "pages": "18-24",
+      "focus": "Consonant F",
+      "groups": [
+        {
+          "key": "f",
+          "words": [
+            "family",
+            "fan",
+            "farm",
+            "fat",
+            "father",
+            "finger",
+            "fire",
+            "fish",
+            "five",
+            "fox"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "2B",
+      "pages": "25-31",
+      "focus": "Consonant G",
+      "groups": [
+        {
+          "key": "g",
+          "words": [
+            "game",
+            "gap",
+            "garden",
+            "gate",
+            "girl",
+            "give",
+            "go",
+            "goat",
+            "gold",
+            "gum"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "3A",
+      "pages": "32-38",
+      "focus": "Consonant L",
+      "groups": [
+        {
+          "key": "l",
+          "words": [
+            "lake",
+            "lamp",
+            "laugh",
+            "leaf",
+            "letter",
+            "lion",
+            "little",
+            "lock",
+            "log",
+            "lunch"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "3B",
+      "pages": "39-56",
+      "focus": "Review KJFGL + Story + Memory Game",
+      "groups": []
+    }
+  ]
+}
