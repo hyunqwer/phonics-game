@@ -1,4 +1,4 @@
-# 소리팡 콘텐츠 DB (`content/`)
+# Yoon's Phonics Quest 콘텐츠 DB (`content/`)
 
 YPW New Edition(NYPW) **전 18권**의 게임용 단어 데이터. 업로드된 Teacher's Guide Scope & Sequence(190226 Step1 / NYPW Step2~5 TG)에서 추출했습니다.
 

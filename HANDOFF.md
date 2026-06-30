@@ -1,8 +1,8 @@
-# 소리팡 (YPW Phonics Game) — 개발 핸드오프 문서
+# Yoon's Phonics Quest — 개발 핸드오프 문서
 
 > 작성 목적: 본 프로토타입을 **Claude Code**로 이어받아 개발하기 위한 인수인계 문서
 > 현재 산출물: `index.html` (단일 파일, 데이터-구동 웹앱 프로토타입)
-> 최종 업데이트: 2026-06-30 (사운드/이펙트·보물상자·월드별 미션·라바점프 개선 반영)
+> 최종 업데이트: 2026-06-30 (게임명 변경·`content/book01.json` 런타임 연결 반영)
 
 ---
 
@@ -39,7 +39,7 @@
 - **UI 영어화** + 게임 중 지시문 한국어
 - localStorage 영속(전 진행 데이터)
 
-콘텐츠는 **Step 1 / 1권 5개 월드(S·T·B·H·M)** 활성, 홈 월드 칩으로 전환. Step 2~4는 데이터만 채우면 됨.
+콘텐츠는 **Step 1 / 1권 5개 월드(S·T·B·H·M)** 활성, 홈 월드 칩으로 전환. 현재 `content/book01.json`을 런타임에 읽어 `WORLDS`를 생성하며, 파일 직접 실행 등 fetch가 실패하는 환경에서는 내장 폴백 월드로 동작한다.
 
 ---
 
@@ -64,6 +64,8 @@ WORLDS.s = { phoneme:"/s/", letter:"S s", character:"Sammy the Seal", kr:"새미
 // t,b,h,m 동일 구조 활성
 let CUR="s"; const POOL=()=>WORLDS[CUR];   // SAVE.curWorld로 복원, selectWorld()로 변경
 ```
+
+`loadContentDb()`가 `content/book01.json`을 로드해 1권의 10개 단어/음가 그룹을 앱 월드 구조로 변환한다. `WORLD_META`는 캐릭터/음가 표시 정보를, `WORD_EMOJI`는 현재 1권 단어의 임시 이모지 에셋을 담당한다.
 
 ### 4.2 `GAMES` — 미니게임 레지스트리(10종)
 `{key, name(영문), emoji, desc(한글), run:()=>start<Game>()}` — 배열에 1줄 추가 시 미션·자유놀기 자동 노출.

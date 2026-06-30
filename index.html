@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>소리팡 — YPW Phonics Game</title>
+<title>Yoon's Phonics Quest</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
@@ -262,7 +262,7 @@
   <section class="screen active" id="home">
     <div class="hwrap">
       <div class="pill">🦪 <span id="pearls">0</span></div>
-      <div class="logo">소리팡 🌊</div>
+      <div class="logo">Yoon's Phonics Quest</div>
       <div style="display:flex;gap:6px"><button class="iconbtn" id="muteBtn" onclick="toggleMute()">🔊</button><button class="iconbtn" onclick="openDex()">📖</button></div>
     </div>
     <div class="card" id="attCard">
@@ -430,7 +430,7 @@
 /* =====================================================================
    CONTENT DATA (엔진과 분리 — 다른 권/음가는 이 객체만 채우면 됨)
    ===================================================================== */
-const WORLDS = {
+let WORLDS = {
   s:{phoneme:"/s/",letter:"S s",character:"Sammy the Seal",kr:"새미 물개",emoji:"🦭",locked:false,
      words:[{w:"sun",emo:"☀️"},{w:"soap",emo:"🧼"},{w:"seal",emo:"🦭"},{w:"sand",emo:"🏖️"},{w:"six",emo:"6️⃣"},{w:"sock",emo:"🧦"}],
      distractors:[{w:"tiger",emo:"🐯"},{w:"toy",emo:"🧸"},{w:"bear",emo:"🐻"},{w:"ball",emo:"⚽"},{w:"hat",emo:"🎩"},{w:"moon",emo:"🌙"},{w:"map",emo:"🗺️"},{w:"monkey",emo:"🐵"}]},
@@ -449,6 +449,56 @@ const WORLDS = {
 };
 let CUR="s"; // set from SAVE after load()
 const POOL=()=>WORLDS[CUR];
+
+const CONTENT_BOOKS_TO_LOAD=[1];
+const WORLD_META={
+  s:{phoneme:"/s/",letter:"S s",character:"Sammy the Seal",kr:"새미 물개",emoji:"🦭"},
+  t:{phoneme:"/t/",letter:"T t",character:"Timmy the Tiger",kr:"티미 호랑이",emoji:"🐯"},
+  b:{phoneme:"/b/",letter:"B b",character:"Bobby the Bear",kr:"바비 곰",emoji:"🐻"},
+  h:{phoneme:"/h/",letter:"H h",character:"Henry the Hog",kr:"헨리 돼지",emoji:"🐷"},
+  m:{phoneme:"/m/",letter:"M m",character:"Mindy the Mouse",kr:"민디 쥐",emoji:"🐭"}
+};
+const WORD_EMOJI={
+  sad:"😢",sand:"🏖️",salt:"🧂",same:"👯",seal:"🦭",sink:"🚰",six:"6️⃣",soap:"🧼",sock:"🧦",sun:"☀️",
+  table:"🪑",tail:"🐕",talk:"🗣️",tape:"📼",ten:"🔟",tent:"⛺",tie:"👔",tiger:"🐯",toe:"🦶",toy:"🧸",
+  bag:"👜",ball:"⚽",bat:"🦇",bear:"🐻",bed:"🛏️",bell:"🔔",big:"🔠",book:"📖",box:"📦",boy:"👦",
+  hair:"💇",hand:"✋",happy:"😊",hat:"🎩",head:"🙂",hen:"🐔",hill:"⛰️",hop:"🦘",horse:"🐴",house:"🏠",
+  man:"👨",many:"👥",map:"🗺️",mat:"🧘",milk:"🥛",money:"💰",monkey:"🐵",moon:"🌙",mop:"🧹",mouse:"🐭"
+};
+function contentWordItem(word){return {w:word,emo:WORD_EMOJI[word]||"🔤"};}
+function groupsFromBook(book){return (book.units||[]).flatMap(u=>(u.groups||[]).map(g=>Object.assign({book:book.book,step:book.step},g)));}
+function buildWorldsFromBooks(books){
+  const groups=books.flatMap(groupsFromBook).filter(g=>g.key&&g.words&&g.words.length);
+  if(!groups.length)return null;
+  const allWords=groups.flatMap(g=>g.words);
+  const next={};
+  groups.forEach(g=>{
+    const meta=WORLD_META[g.key]||{phoneme:"/"+g.key.replaceAll("_","/")+"/",letter:g.key.toUpperCase(),character:"Phonics "+g.key.toUpperCase(),kr:"",emoji:"🔤"};
+    const other=allWords.filter(w=>!g.words.includes(w));
+    next[g.key]=Object.assign({},meta,{
+      locked:false,
+      words:g.words.map(contentWordItem),
+      distractors:shuffle(other).slice(0,12).map(contentWordItem),
+      source:{book:g.book,step:g.step,key:g.key}
+    });
+  });
+  return next;
+}
+function normalizeCurrentWorld(){
+  if(!WORLDS[CUR]||WORLDS[CUR].locked)CUR=Object.keys(WORLDS).find(k=>!WORLDS[k].locked)||"s";
+  if(!SAVE.curWorld||!WORLDS[SAVE.curWorld]||WORLDS[SAVE.curWorld].locked)SAVE.curWorld=CUR;
+  if(WORLDS[SAVE.curWorld]&&!WORLDS[SAVE.curWorld].locked)CUR=SAVE.curWorld;
+}
+async function loadContentDb(){
+  if(!window.fetch)return false;
+  try{
+    const books=await Promise.all(CONTENT_BOOKS_TO_LOAD.map(n=>window.fetch("content/book"+String(n).padStart(2,"0")+".json").then(r=>{if(!r.ok)throw new Error("content fetch failed");return r.json();})));
+    const next=buildWorldsFromBooks(books);
+    if(next){WORLDS=next;normalizeCurrentWorld();return true;}
+  }catch(e){console.warn("Using built-in fallback worlds.",e);}
+  normalizeCurrentWorld();
+  return false;
+}
 
 const GAMES=[
   {key:"bubble", name:"Bubble Pop",  emoji:"🫧",desc:"떠오르는 /s/ 친구를 팡!",run:()=>startBubble()},
@@ -955,7 +1005,7 @@ function renderDex(){const c=$('dexChars');c.innerHTML='';
   const allWords=[...POOL().words,...POOL().distractors];$('dexWordCount').textContent='('+SAVE.words.length+'/'+allWords.length+')';
   const wg=$('dexWords');wg.innerHTML='';allWords.forEach(it=>{const got=SAVE.words.includes(it.w);const d=document.createElement('div');d.className='dexItem'+(got?'':' lock');d.innerHTML=`<div class="e">${got?it.emo:'❓'}</div><div class="l">${got?it.w:'???'}</div>`;if(got)d.onclick=()=>say(it.w);wg.appendChild(d);});}
 
-window.addEventListener('load',()=>{try{speechSynthesis.getVoices();}catch(e){}renderHome();
+window.addEventListener('load',async()=>{try{speechSynthesis.getVoices();}catch(e){}await loadContentDb();renderHome();
   document.addEventListener('click',e=>{const t=e.target&&e.target.closest&&e.target.closest('.btn,.iconbtn');if(t)uiClick();},true);});
 </script>
 </body>
