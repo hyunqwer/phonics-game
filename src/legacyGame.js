@@ -125,10 +125,12 @@ function today(){return new Date().toISOString().slice(0,10);}
    HELPERS
    ===================================================================== */
 function $(id){return document.getElementById(id);}
-function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');stopGame();
+function emitNavigate(id){try{window.dispatchEvent(new CustomEvent('ypq:navigate',{detail:{screen:id}}));}catch(e){}}
+function emitCastleState(){try{window.dispatchEvent(new CustomEvent('ypq:state',{detail:getCastleHomeState()}));}catch(e){}}
+function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');stopGame();emitNavigate(id);
   if(id==='home')renderHome();if(id==='shop')renderShop();if(id==='dex')renderDex();if(id==='freeplay')renderFree();
   if(id==='chest'){chestTaps=0;$('chestBig').style.display='block';$('chestBig').classList.remove('shaking');$('chestBig').style.filter='';$('chestHint').style.display='block';$('chestHint').textContent='Tap to open!';$('chestReward').style.display='none';$('chestRewardMsg').style.display='none';$('chestDone').style.display='none';}}
-function go2(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');}
+function go2(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');emitNavigate(id);}
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function lvl(){return Math.floor(SAVE.xp/50)+1;}
 
@@ -215,6 +217,7 @@ function renderHome(){
   $('chestHome').classList.toggle('ready',allDone&&!chestOpened);
   $('chestMsg').textContent=allDone?(chestOpened?'Done for today — see you tomorrow!':'Chest ready! Tap it!'):'Clear 3 missions for the chest!';
   $('chestIco').onclick=(allDone&&!chestOpened)?(()=>go('chest')):null;
+  emitCastleState();
 }
 function doStamp(){if(SAVE.lastStamp===today())return;const y=new Date(Date.now()-86400000).toISOString().slice(0,10);SAVE.streak=(SAVE.lastStamp===y)?SAVE.streak+1:1;SAVE.lastStamp=today();addPearls(5);sfxGood();banner('🔥 '+SAVE.streak+' day streak!');save();renderHome();}
 function renderWorlds(){const wp=$('worldPick');if(!wp)return;wp.innerHTML='';
@@ -222,10 +225,22 @@ function renderWorlds(){const wp=$('worldPick');if(!wp)return;wp.innerHTML='';
     b.className='wchip'+(k===CUR?' sel':'')+(w.locked?' lock':'');
     b.innerHTML=`${w.locked?'🔒':w.emoji}<span class="wp">${w.phoneme}</span>`;
     b.onclick=()=>selectWorld(k);wp.appendChild(b);});}
+function setWorldKey(k,withBanner){const w=WORLDS[k];if(!w||w.locked)return false;CUR=k;SAVE.curWorld=k;if(!SAVE.chars.includes(k))SAVE.chars.push(k);save();if(withBanner)banner(w.emoji+' '+w.character+'!');return true;}
 function selectWorld(k){const w=WORLDS[k];if(!w||w.locked){sfxBad();banner('Coming soon');return;}if(k===CUR)return;
-  CUR=k;SAVE.curWorld=k;if(!SAVE.chars.includes(k))SAVE.chars.push(k);save();sfxPop();banner(w.emoji+' '+w.character+'!');renderHome();}
+  setWorldKey(k,true);sfxPop();renderHome();}
 function renderAvatar(boxId){const box=$(boxId);box.innerHTML='';const base=document.createElement('div');base.className='avatarBase';base.textContent=WORLDS[CUR].emoji;box.appendChild(base);Object.keys(SAVE.equipped).forEach(slot=>{const it=ITEMS.find(i=>i.id===SAVE.equipped[slot]);if(!it)return;const a=document.createElement('div');a.className='acc '+slot;a.textContent=it.e;box.appendChild(a);});}
 function addPearls(n){SAVE.pearls+=n;save();const e=$('pearls');if(e)e.textContent=SAVE.pearls;}
+function getCastleHomeState(){
+  ensureMission();
+  const worlds=Object.keys(WORLDS).map(k=>{
+    const w=WORLDS[k], done=((SAVE.missionDone||{})[k]||[]), mission=((SAVE.missions||{})[k]||[]);
+    const complete=done.length>=3, chestDone=!!((SAVE.chestDone||{})[k]);
+    return {key:k,phoneme:w.phoneme,letter:w.letter,character:w.character,emoji:w.emoji,book:w.source&&w.source.book,step:w.source&&w.source.step,locked:!!w.locked,mission,doneCount:done.length,complete,chestReady:complete&&!chestDone,chestDone,bestWords:w.words.length};
+  });
+  return {curWorld:CUR,pearls:SAVE.pearls,streak:SAVE.streak,level:lvl(),muted:SAVE.muted,worlds};
+}
+function openCastleFromMap(k){if(setWorldKey(k,false)){renderHome();emitCastleState();}}
+function startCastleQuest(k){if(!setWorldKey(k,false)){sfxBad();return;}ensureMission();if(!SAVE.missions[CUR])SAVE.missions[CUR]=shuffle(GAMES.map(g=>g.key)).slice(0,3);if(!SAVE.missionDone[CUR])SAVE.missionDone[CUR]=[];const mission=SAVE.missions[CUR];const done=SAVE.missionDone[CUR];const next=mission.find(key=>!done.includes(key))||mission[0]||GAMES[0].key;playGame(next,true);}
 
 /* =====================================================================
    GAME RUNTIME (공통)
@@ -606,3 +621,4 @@ export async function bootstrapGame(){
   }
 }
 Object.assign(window,{toggleMute,openDex,doStamp,openFreePlay,openShop,go,quitGame,quizRepeat,chestTap});
+window.__YPQ={getCastleHomeState,openCastleFromMap,startCastleQuest,openFreePlay,openShop,openDex,toggleMute,doStamp,go};
