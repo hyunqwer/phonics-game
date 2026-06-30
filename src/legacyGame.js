@@ -648,15 +648,15 @@ function pickHunt(d,it){if(!G||G.ended)return;const r=d.getBoundingClientRect(),
 /* =====================================================================
    GAME 9 — Bug Spray (불규칙 비행 + AoE 스프레이)
    ===================================================================== */
-const SPRAY_TIME=35;const BUG_SIZE=72;let bugs=[];
+const SPRAY_TIME=35;const BUG_SIZE=72,SPRAY_BUG_COUNT=9;let bugs=[];
 function startSpray(){$('spray_score').textContent='0';$('spray_prompt').innerHTML=POOL().phoneme+' 모기만 잡아!';
   const area=$('sprayArea');area.innerHTML='';bugs=[];go2('g_spray');startTimer(SPRAY_TIME,'spray_timer');
-  for(let i=0;i<6;i++)addBug(area);
+  for(let i=0;i<SPRAY_BUG_COUNT;i++)addBug(area,i===0);
   area.onclick=(e)=>sprayAt(area,e);
   let el=0;const mv=setInterval(()=>{el++;moveBugs(el);},40);gAddTimer(mv);}
 function bugBounds(area){const pad=BUG_SIZE/2+4;const w=Math.max(BUG_SIZE+8,area.clientWidth||BUG_SIZE+8),h=Math.max(BUG_SIZE+8,area.clientHeight||BUG_SIZE+8);
   return {minX:pad/w*100,maxX:100-pad/w*100,minY:pad/h*100,maxY:100-pad/h*100};}
-function addBug(area){const p=POOL();const good=Math.random()<0.6;const item=good?shuffle(p.words)[0]:shuffle(p.distractors)[0];
+function addBug(area,forceGood=false){const p=POOL();const good=forceGood||Math.random()<0.62;const item=good?shuffle(p.words)[0]:shuffle(p.distractors)[0];
   const bd=bugBounds(area);
   const b={x:bd.minX+Math.random()*(bd.maxX-bd.minX),y:bd.minY+Math.random()*(bd.maxY-bd.minY),vx:(Math.random()-.5)*1.6,vy:(Math.random()-.5)*1.6,good,item,el:document.createElement('div')};
   b.el.className='bug';b.el.innerHTML=`<div class="be">🦟</div><div class="bl">${item.w}</div>`;b.el.style.left=b.x+'%';b.el.style.top=b.y+'%';area.appendChild(b.el);bugs.push(b);}
@@ -666,7 +666,7 @@ function moveBugs(el){const sp=1+el*0.004;bugs.forEach(b=>{if(Math.random()<0.03
 function sprayAt(area,e){if(!G||G.ended)return;const px=e.clientX,py=e.clientY;
   const s=document.createElement('div');s.className='spray';s.style.left=px+'px';s.style.top=py+'px';document.body.appendChild(s);setTimeout(()=>s.remove(),400);tone(300,0.08,'sawtooth',0.12);
   for(let i=bugs.length-1;i>=0;i--){const b=bugs[i];const br=b.el.getBoundingClientRect();const cx=br.left+br.width/2,cy=br.top+br.height/2;
-    if(Math.hypot(cx-px,cy-py)<56){if(b.good){hit(b.item,cx,cy);}else{miss();fxPop(cx,cy,'Miss!');}b.el.remove();bugs.splice(i,1);addBug(area);}}
+    if(Math.hypot(cx-px,cy-py)<56){if(b.good){hit(b.item,cx,cy);}else{miss();fxPop(cx,cy,'Miss!');}b.el.remove();bugs.splice(i,1);addBug(area,!bugs.some(x=>x.good));}}
   setScoreLabel('spray');}
 
 /* =====================================================================
