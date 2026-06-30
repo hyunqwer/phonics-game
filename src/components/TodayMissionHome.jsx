@@ -29,7 +29,8 @@ export default function TodayMissionHome() {
   const mission = state.mission || [];
   if (!theme || !friend) return null;
 
-  const sound = (friend.letter || '').trim().charAt(0).toLowerCase();
+  const lt = (friend.letter || '').trim();
+  const sound = /^[A-Za-z]\s[A-Za-z]$/.test(lt) ? lt.charAt(0).toLowerCase() : lt; // 단일 글자는 첫소리, 패턴(-at·ch)은 그대로
   const firstName = (friend.enName || '').split(' ')[0];
   const nextGame = mission.find((m) => !m.done) || mission[0];
 
