@@ -1,8 +1,8 @@
 # Yoon's Phonics Quest — 개발 핸드오프 문서
 
 > 작성 목적: 본 프로토타입을 **Claude Code**로 이어받아 개발하기 위한 인수인계 문서
-> 현재 산출물: `index.html` (단일 파일, 데이터-구동 웹앱 프로토타입)
-> 최종 업데이트: 2026-06-30 (게임명 변경·`content/book01.json` 런타임 연결 반영)
+> 현재 산출물: React/Vite 앱 (`src/` + `public/content/`)
+> 최종 업데이트: 2026-06-30 (게임명 변경·React/Vite 앱 셸·`public/content/book01.json` 런타임 연결 반영)
 
 ---
 
@@ -25,7 +25,7 @@
 
 ## 2. 현재 상태 (구현 완료)
 
-단일 HTML(`index.html`)로 동작. 브라우저에서 바로 실행.
+React/Vite 앱으로 동작. `npm run dev`로 로컬 실행, `npm run build`로 Firebase Hosting 배포 산출물(`dist/`) 생성.
 
 - 홈 허브, **미니게임 10종**, 결과/보상, 보물상자, 꾸미기(샵), 도감
 - **월드(음가)별 데일리 미션** — 매일 S·T·B·H·M 각각 다른 랜덤 3종 + 월드별 진행도·보물상자
@@ -39,7 +39,7 @@
 - **UI 영어화** + 게임 중 지시문 한국어
 - localStorage 영속(전 진행 데이터)
 
-콘텐츠는 **Step 1 / 1권 5개 월드(S·T·B·H·M)** 활성, 홈 월드 칩으로 전환. 현재 `content/book01.json`을 런타임에 읽어 `WORLDS`를 생성하며, 파일 직접 실행 등 fetch가 실패하는 환경에서는 내장 폴백 월드로 동작한다.
+콘텐츠는 **Step 1 / 1권 5개 월드(S·T·B·H·M)** 활성, 홈 월드 칩으로 전환. 현재 `public/content/book01.json`을 런타임에 읽어 `WORLDS`를 생성하며, fetch가 실패하는 환경에서는 내장 폴백 월드로 동작한다.
 
 ---
 
@@ -47,10 +47,17 @@
 
 ```
 phonics-game/
-├─ index.html              ← 게임 본체 (단일 파일)
+├─ index.html              ← Vite 진입점
+├─ package.json            ← React/Vite 스크립트
+├─ src/
+│  ├─ App.jsx              ← React 앱 셸(기존 화면 마크업 마운트)
+│  ├─ legacyGame.js        ← 게임 런타임/오디오/보상/월드 로더
+│  ├─ main.jsx             ← React 엔트리
+│  └─ styles.css           ← 기존 스타일 분리
+├─ public/content/         ← 전 18권 콘텐츠 DB + 검증표
 ├─ HANDOFF.md              ← (본 문서)
 ├─ CHANGE_REQUEST.md       ← 기획 변경 요청(Cowork→Code 전달 채널)
-└─ Phonics World-New Edition (NYPW)/  ← 교재 PDF 18권 세트 + Scope&Sequence(53118)
+└─ mockups/                ← 차기 홈 화면 기획 목업
 ```
 
 ---
@@ -65,7 +72,7 @@ WORLDS.s = { phoneme:"/s/", letter:"S s", character:"Sammy the Seal", kr:"새미
 let CUR="s"; const POOL=()=>WORLDS[CUR];   // SAVE.curWorld로 복원, selectWorld()로 변경
 ```
 
-`loadContentDb()`가 `content/book01.json`을 로드해 1권의 10개 단어/음가 그룹을 앱 월드 구조로 변환한다. `WORLD_META`는 캐릭터/음가 표시 정보를, `WORD_EMOJI`는 현재 1권 단어의 임시 이모지 에셋을 담당한다.
+`loadContentDb()`가 `public/content/book01.json`을 로드해 1권의 10개 단어/음가 그룹을 앱 월드 구조로 변환한다. `WORLD_META`는 캐릭터/음가 표시 정보를, `WORD_EMOJI`는 현재 1권 단어의 임시 이모지 에셋을 담당한다.
 
 ### 4.2 `GAMES` — 미니게임 레지스트리(10종)
 `{key, name(영문), emoji, desc(한글), run:()=>start<Game>()}` — 배열에 1줄 추가 시 미션·자유놀기 자동 노출.
@@ -164,7 +171,8 @@ vibe(pattern)  // navigator.vibrate (음소거 시 정지)
 - [x] 단어 mp3 연결 + TTS 폴백 / [x] 월드별 데일리 미션 / [x] 자유놀기 완료표시 / [x] P1 사운드·이펙트·햅틱 / [x] 보물상자 탭 빌드업 / [x] Duolingo 디자인 / [x] UI 영어화 / [x] 단어 폰트 확대 / [x] 도감 세로 스크롤
 - [ ] 단어/캐릭터 **AI 이미지**로 이모지 교체, 캐릭터 모션
 - [ ] 캐릭터 음성·챈트 오디오 연결(경로 확인)
-- [ ] **React/Vite 모듈화** (데이터/엔진 분리)
+- [x] **React/Vite 모듈화 1차** (앱 셸·스타일·레거시 런타임 분리)
+- [ ] `legacyGame.js` 추가 세분화(데이터/엔진/게임별 모듈)
 - [ ] **Firebase** 로그인·저장·기록
 - [ ] P2 사운드(시간 위기 틱·덕킹), 접근성/모바일 반응형, 밸런싱 상수화
 - [ ] STT(따라 말하기) 재도입 검토
@@ -173,14 +181,14 @@ vibe(pattern)  // navigator.vibrate (음소거 시 정지)
 ---
 
 ## 11. 실행 / 테스트
-- `index.html` 더블클릭(Chrome 권장). 단어 mp3·Nunito는 인터넷 연결 시 로드(미연결 시 폴백).
+- `npm install` 후 `npm run dev` 실행(Chrome 권장). 단어 mp3·Nunito는 인터넷 연결 시 로드(미연결 시 폴백).
 - 초기화: 콘솔 `localStorage.removeItem('soripang')` 후 새로고침.
 - ⚠️ Cowork 샌드박스 마운트가 동일 파일 덮어쓰기를 캐싱하는 이슈 → 개발 중 Read 기반 구간 검증 + 신규 함수 격리 node 검증 병행. Claude Code(실제 환경)는 브라우저로 바로 확인 권장.
 
 ---
 
 ## 12. 다음 단계 권장 순서
-1. React+Vite 모듈화(데이터/엔진 분리) → 2. 에셋 파이프라인(AI 이미지·캐릭터 음성) → 3. Firebase 백엔드 → 4. 밸런싱·접근성·모바일 → 내부 시연/파일럿
+1. `legacyGame.js` 추가 세분화(데이터/엔진/게임별 모듈) → 2. 에셋 파이프라인(AI 이미지·캐릭터 음성) → 3. Firebase 백엔드 → 4. 밸런싱·접근성·모바일 → 내부 시연/파일럿
 
 ---
 

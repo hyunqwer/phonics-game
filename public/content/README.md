@@ -1,14 +1,14 @@
-# Yoon's Phonics Quest 콘텐츠 DB (`content/`)
+# Yoon's Phonics Quest 콘텐츠 DB (`public/content/`)
 
 YPW New Edition(NYPW) **전 18권**의 게임용 단어 데이터. 업로드된 Teacher's Guide Scope & Sequence(190226 Step1 / NYPW Step2~5 TG)에서 추출했습니다.
 
 ## 폴더 구성
 
 ```
-content/
+public/content/
 ├─ index.json          ← 18권 메타(스텝·제목·소리·단어수·잠금/검증 플래그)
 ├─ book01.json … book18.json   ← 권별 단어 데이터
-├─ all_words.json      ← 중복 제거 단어 563개 + 등장 권 (오디오/이미지 에셋 파이프라인용)
+├─ all_words.json      ← 중복 제거 단어 593개 + 등장 권 (오디오/이미지 에셋 파이프라인용)
 └─ README.md
 ```
 
@@ -71,7 +71,7 @@ content/
 
 ## 현재 게임(`index.html`)과의 관계
 
-현재 `WORLDS` 객체는 **1권의 S·T·B·H·M만, 음가 1개=월드 1개** 구조입니다. 이 콘텐츠 DB는 그 상위 구조로, 게임 엔진 변경 없이 단계적으로 연결할 수 있습니다.
+현재 런타임 `WORLDS`는 **1권의 S·T·B·H·M만, 음가 1개=월드 1개** 구조입니다. 이 콘텐츠 DB는 그 상위 구조로, 게임 엔진 변경 없이 단계적으로 연결할 수 있습니다.
 
 ### 연결 방법 A — 기존 WORLDS로 평탄화(최소 변경)
 권 파일을 읽어 `focus` 그룹 단어=정답, 다른 권 단어=distractor로 매핑:
