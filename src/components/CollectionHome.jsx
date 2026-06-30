@@ -19,6 +19,31 @@ function labelFromCharacter(name, fallback) {
   return name.split(' the ').pop() || name;
 }
 
+const REALMS = [
+  { name: 'Sunny Coast Keep', icon: '🏖️' },
+  { name: 'Keywood Tower', icon: '🌲' },
+  { name: 'Moon River Fort', icon: '🌙' },
+  { name: 'Starfall Gate', icon: '⭐' },
+  { name: 'Apple Rune Hall', icon: '🍎' },
+  { name: 'Lava Lantern Keep', icon: '🌋' },
+  { name: 'Emerald Echo Den', icon: '💎' },
+  { name: 'Dragon Kite Spire', icon: '🐉' },
+  { name: 'Silver Seed Castle', icon: '🌱' },
+  { name: 'Sky Sail Citadel', icon: '⛵' },
+  { name: 'Ocean Owl Harbor', icon: '🦉' },
+  { name: 'Ruby Bridge Bastion', icon: '🌉' },
+  { name: 'Shadow Sprint Yard', icon: '🏃' },
+  { name: 'Crystal Whisper Court', icon: '🔮' },
+  { name: 'Thunder Key Keep', icon: '⚡' },
+  { name: 'Rainbow Reef Vault', icon: '🌈' },
+  { name: 'Blue Flame Library', icon: '🔥' },
+  { name: 'Crown River Ruins', icon: '👑' },
+];
+
+function realmCopy(bookNumber) {
+  return REALMS[(bookNumber || 1) - 1] || { name: `Realm ${bookNumber}`, icon: '🏰' };
+}
+
 export default function CollectionHome() {
   const [visible, setVisible] = useState(false);
   const [collection, setCollection] = useState(null);
@@ -55,6 +80,7 @@ export default function CollectionHome() {
   const bookSounds = useMemo(() => sounds.filter((sound) => sound.book === book?.book), [sounds, book]);
   const bookWords = useMemo(() => words.filter((word) => word.book === book?.book), [words, book]);
   const claimedBooks = books.filter((item) => item.claimed >= item.totalGates && item.totalGates > 0).length;
+  const currentRealm = realmCopy(book?.book);
 
   const chooseBook = (bookNumber, nextTab = tab) => {
     setSelectedBook(bookNumber);
@@ -64,36 +90,36 @@ export default function CollectionHome() {
   if (!visible) return null;
 
   return (
-    <section className="collection-home" aria-label="Collection">
+    <section className="collection-home" aria-label="Treasure vault">
       <div className="collection-appbar">
         <button className="collection-back" type="button" onClick={() => getApi()?.go?.('home')}>◀ 홈</button>
-        <div className="collection-title">Collection</div>
+        <div className="collection-title">Treasure Vault</div>
         <div className="collection-count">{collection?.foundWords || 0}/{collection?.totalWords || 0}</div>
       </div>
 
       <div className="collection-summary">
         <div>
           <strong>{claimedBooks}/{collection?.totalBooks || 0}</strong>
-          <span>Castles</span>
+          <span>Flags</span>
         </div>
         <div>
           <strong>{sounds.filter((sound) => sound.owned).length}/{collection?.totalSounds || 0}</strong>
-          <span>Friends</span>
+          <span>Allies</span>
         </div>
         <div>
           <strong>{collection?.foundWords || 0}/{collection?.totalWords || 0}</strong>
-          <span>Cards</span>
+          <span>Loot</span>
         </div>
       </div>
 
-      <div className="collection-tabs" role="tablist" aria-label="Collection tabs">
-        <button className={tab === 'castles' ? 'active' : ''} type="button" onClick={() => setTab('castles')}>🏰<span>Castles</span></button>
-        <button className={tab === 'friends' ? 'active' : ''} type="button" onClick={() => setTab('friends')}>✨<span>Friends</span></button>
-        <button className={tab === 'cards' ? 'active' : ''} type="button" onClick={() => setTab('cards')}>🃏<span>Cards</span></button>
+      <div className="collection-tabs" role="tablist" aria-label="Treasure vault tabs">
+        <button className={tab === 'castles' ? 'active' : ''} type="button" onClick={() => setTab('castles')}>🗺️<span>Map</span></button>
+        <button className={tab === 'friends' ? 'active' : ''} type="button" onClick={() => setTab('friends')}>🛡️<span>Guard</span></button>
+        <button className={tab === 'cards' ? 'active' : ''} type="button" onClick={() => setTab('cards')}>💎<span>Loot</span></button>
       </div>
 
       {tab !== 'castles' && (
-        <div className="book-strip" aria-label="Castle filter">
+        <div className="book-strip" aria-label="Realm filter">
           {books.map((item) => (
             <button
               className={item.book === book?.book ? 'active' : ''}
@@ -101,7 +127,7 @@ export default function CollectionHome() {
               key={item.book}
               onClick={() => chooseBook(item.book)}
             >
-              {item.book}
+              {realmCopy(item.book).icon}
             </button>
           ))}
         </div>
@@ -112,13 +138,15 @@ export default function CollectionHome() {
           <div className="castle-collection-grid">
             {books.map((item) => {
               const progress = pct(item.claimed, item.totalGates);
+              const realm = realmCopy(item.book);
               return (
                 <button className={`collection-castle ${item.active ? '' : 'future'}`} type="button" key={item.book} onClick={() => chooseBook(item.book, 'friends')}>
-                  <div className="castle-book-no">Book {item.book}</div>
-                  <strong>{item.title}</strong>
-                  <span>{item.totalGates} gates · {item.totalWords} cards</span>
+                  <div className="realm-art"><span>{realm.icon}</span><i>{item.book}</i></div>
+                  <div className="castle-book-no">Realm {item.book}</div>
+                  <strong>{realm.name}</strong>
+                  <span>{item.totalGates} gates · {item.totalWords} treasures</span>
                   <div className="collection-meter"><i style={{ width: `${progress}%` }} /></div>
-                  <small>{item.active ? `${item.claimed}/${item.totalGates} gates claimed` : 'Coming later'}</small>
+                  <small>{item.active ? `${item.claimed}/${item.totalGates} flags raised` : 'Mist locked'}</small>
                 </button>
               );
             })}
@@ -128,8 +156,8 @@ export default function CollectionHome() {
         {tab === 'friends' && book && (
           <section className="collection-panel">
             <div className="collection-panel-head">
-              <strong>Book {book.book}</strong>
-              <span>{book.claimed}/{book.totalGates} gates</span>
+              <strong>{currentRealm.icon} {currentRealm.name}</strong>
+              <span>{book.claimed}/{book.totalGates} flags</span>
             </div>
             <div className="friend-grid">
               {bookSounds.map((sound) => {
@@ -139,9 +167,9 @@ export default function CollectionHome() {
                     <div className="friend-emoji">{status === 'locked' ? '❓' : sound.emoji}</div>
                     <div>
                       <strong>{status === 'locked' ? 'Mystery Friend' : labelFromCharacter(sound.character, sound.key)}</strong>
-                      <span>{sound.phoneme} · {sound.wordCount} cards</span>
+                      <span>{sound.phoneme} · {sound.wordCount} treasures</span>
                     </div>
-                    <small>{sound.claimed ? 'Claimed' : sound.owned ? `${sound.doneCount}/3 rooms` : sound.active ? 'Waiting' : 'Locked'}</small>
+                    <small>{sound.claimed ? 'Flag up' : sound.owned ? `${sound.doneCount}/3 rooms` : sound.active ? 'Hidden' : 'Mist'}</small>
                   </article>
                 );
               })}
@@ -152,8 +180,8 @@ export default function CollectionHome() {
         {tab === 'cards' && book && (
           <section className="collection-panel">
             <div className="collection-panel-head">
-              <strong>Book {book.book}</strong>
-              <span>{book.foundWords}/{book.totalWords} cards</span>
+              <strong>{currentRealm.icon} Loot Chest</strong>
+              <span>{book.foundWords}/{book.totalWords} treasures</span>
             </div>
             <div className="word-card-grid">
               {bookWords.map((word, index) => (
