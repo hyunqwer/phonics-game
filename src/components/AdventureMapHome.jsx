@@ -33,7 +33,7 @@ export default function AdventureMapHome() {
   const mascot = (featured.friends.find((f) => !f.collected) || featured.friends[0] || {}).emoji || '🦭';
 
   return (
-    <section className="am-root" aria-label="Adventure map">
+    <section className="am-root" aria-label="Adventure map" style={{ '--world': featured.theme.color || '#1cb0f6' }}>
       <div className="am-hud">
         <div className="am-pill">🦪 {state.pearls ?? 0}</div>
         <div className="am-pill">🔥 {state.streak ?? 0}</div>

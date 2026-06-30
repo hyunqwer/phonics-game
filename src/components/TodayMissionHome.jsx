@@ -34,7 +34,7 @@ export default function TodayMissionHome() {
   const nextGame = mission.find((m) => !m.done) || mission[0];
 
   return (
-    <section className="tm-root" aria-label="Today's mission">
+    <section className="tm-root" aria-label="Today's mission" style={{ '--world': theme.color || '#1cb0f6' }}>
       <div className="tm-top">
         <div className="tm-pill">🦪 {state.pearls ?? 0}</div>
         <div className="tm-town"><div className="tm-tn">{theme.emoji} {theme.en}</div><div className="tm-gloss">{theme.ko}</div></div>

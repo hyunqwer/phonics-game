@@ -5,16 +5,16 @@
    ===================================================================== */
 
 export const VILLAGE_THEME = {
-  1: { en: 'Sea Town',   ko: '바다 마을',   emoji: '🏖️' },
-  2: { en: 'Forest',     ko: '숲 마을',     emoji: '🌲' },
-  3: { en: 'Night Sky',  ko: '밤하늘 마을', emoji: '🌙' },
-  4: { en: 'Star Field', ko: '별숲 마을',   emoji: '⭐' },
-  5: { en: 'Apple Hill', ko: '사과 언덕',   emoji: '🍎' },
-  6: { en: 'Lava Land',  ko: '용암 마을',   emoji: '🌋' }
+  1: { en: 'Sea Town',   ko: '바다 마을',   emoji: '🏖️', color: '#1cb0f6' },
+  2: { en: 'Forest',     ko: '숲 마을',     emoji: '🌲', color: '#58cc02' },
+  3: { en: 'Night Sky',  ko: '밤하늘 마을', emoji: '🌙', color: '#7a5bd6' },
+  4: { en: 'Star Field', ko: '별숲 마을',   emoji: '⭐', color: '#ffb01f' },
+  5: { en: 'Apple Hill', ko: '사과 언덕',   emoji: '🍎', color: '#ff7a59' },
+  6: { en: 'Lava Land',  ko: '용암 마을',   emoji: '🌋', color: '#e8632e' }
 };
 
 export function villageTheme(book) {
-  return VILLAGE_THEME[book] || { en: `Land ${book}`, ko: `${book}번 마을`, emoji: '🏰' };
+  return VILLAGE_THEME[book] || { en: `Land ${book}`, ko: `${book}번 마을`, emoji: '🏰', color: '#1cb0f6' };
 }
 
 export const GAME_COPY = {

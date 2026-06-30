@@ -294,8 +294,13 @@
     --duo-ink:#3c3c3c; --duo-sub:#777; --duo-line:#e5e5e5; --duo-soft:#f7f7f7;
     --clay-ink:#3c3c3c; /* 기존 인라인 텍스트 호환용 */
     --r:16px;
+    /* Clean World 통일 토큰 */
+    --cw-bg:#eef3fa; --cw-surface:#fff; --cw-ink:#26405c; --cw-sub:#5a7e92; --cw-line:#e4ebf2;
+    --cw-card:0 4px 0 rgba(18,38,66,.05),0 12px 22px -12px rgba(18,38,66,.28);
+    --cw-soft:0 3px 8px -3px rgba(18,38,66,.25);
+    --world:#1cb0f6; /* 현재 마을 테마색(런타임에 갱신) */
   }
-  body{background:#fff!important;color:var(--duo-ink);font-family:"Nunito","Baloo 2","Trebuchet MS","Segoe UI",system-ui,sans-serif;}
+  body{background:var(--cw-bg)!important;color:var(--cw-ink);font-family:"Nunito","Baloo 2","Trebuchet MS","Segoe UI",system-ui,sans-serif;}
   .logo{color:var(--duo-green)!important;text-shadow:none!important;font-weight:900;letter-spacing:-.5px;}
   .big{color:var(--duo-ink)!important;text-shadow:none!important;font-weight:900;}
   /* 듀오 시그니처 푸시 버튼 */
@@ -305,11 +310,11 @@
   .btn.gold{background:var(--duo-yellow);color:#3c2c00;box-shadow:0 4px 0 var(--duo-yellowD);}
   .btn.small{box-shadow:0 3px 0 var(--duo-blueD);}
   .btn:disabled{background:#e5e5e5;color:#afafaf;box-shadow:0 4px 0 #cfcfcf;}
-  .pill{background:#fff;color:var(--duo-ink);border:2px solid var(--duo-line);box-shadow:none;border-radius:999px;font-weight:800;}
-  .iconbtn{background:#fff;color:var(--duo-ink);border:2px solid var(--duo-line);box-shadow:none;border-radius:14px;}
+  .pill{background:#fff;color:var(--cw-ink);border:1px solid var(--cw-line);box-shadow:var(--cw-soft);border-radius:999px;font-weight:800;}
+  .iconbtn{background:#fff;color:var(--cw-ink);border:1px solid var(--cw-line);box-shadow:var(--cw-soft);border-radius:14px;}
   .iconbtn:active{transform:translateY(2px);}
-  .card{background:#fff;border:2px solid var(--duo-line);box-shadow:none;border-radius:var(--r);}
-  .mrow{background:#fff;border:2px solid var(--duo-line);box-shadow:none;border-radius:var(--r);} .mrow.done{background:#d7ffb8;border-color:#a6e768;}
+  .card{background:#fff;border:1px solid var(--cw-line);box-shadow:var(--cw-card);border-radius:var(--r);}
+  .mrow{background:#fff;border:1px solid var(--cw-line);box-shadow:var(--cw-soft);border-radius:var(--r);} .mrow.done{background:#d7ffb8;border-color:#a6e768;}
   .wchip{background:#fff;border:2px solid var(--duo-line);box-shadow:none;border-radius:14px;color:var(--duo-ink);}
   .wchip.sel{border-color:var(--duo-green);background:#e8ffd6;box-shadow:none;}
   .stamp{background:var(--duo-soft);color:#bbb;box-shadow:none;} .stamp.on{background:var(--duo-yellow);color:#7a5a00;box-shadow:none;}
@@ -317,8 +322,8 @@
   .qcard{background:#fff;border:2px solid var(--duo-line);box-shadow:0 4px 0 var(--duo-line);border-radius:var(--r);}
   .qcard:active{transform:translateY(4px);box-shadow:0 0 0;}
   .qcard.correct{background:#d7ffb8!important;border-color:var(--duo-green);} .qcard.wrong{background:#ffdfe0!important;border-color:var(--duo-red);} .qcard.hint{border-color:var(--duo-green);box-shadow:0 4px 0 var(--duo-green);}
-  .statline{background:#fff;color:var(--duo-ink);border:2px solid var(--duo-line);box-shadow:none;border-radius:var(--r);}
-  .shopItem,.dexItem{background:#fff;border:2px solid var(--duo-line);box-shadow:none;border-radius:var(--r);}
+  .statline{background:#fff;color:var(--cw-ink);border:1px solid var(--cw-line);box-shadow:var(--cw-card);border-radius:var(--r);}
+  .shopItem,.dexItem{background:#fff;border:1px solid var(--cw-line);box-shadow:var(--cw-card);border-radius:var(--r);}
   .shopItem.owned{border-color:var(--duo-green);} .shopItem.eq{border-color:var(--duo-yellow);background:#fffbe6;}
   .timerbar{background:var(--duo-line);box-shadow:none;} .timerbar>div{background:var(--duo-green);}
   .combo{color:var(--duo-green)!important;text-shadow:none!important;background:#fff;border:2px solid var(--duo-green);padding:3px 12px;border-radius:999px;box-shadow:none;font-weight:900;}
@@ -333,4 +338,11 @@
   #runDist{color:var(--duo-ink)!important;text-shadow:none!important;}
   #runArea{background:#f0fbff!important;}
   #bubbleArea{background:#f0fbff!important;}
+  /* Clean World — 보물(컬렉션) / 결과 / 보상 */
+  .collection-screen{background:var(--cw-bg)!important;}
+  .collection-section{border:1px solid var(--cw-line)!important;box-shadow:var(--cw-card)!important;}
+  .collection-head strong{color:var(--cw-ink)!important;}
+  #result,#chest{gap:10px;}
+  .res-char{font-size:92px;line-height:1;animation:bob 2s ease-in-out infinite;filter:drop-shadow(0 8px 6px rgba(0,0,0,.2));}
+  .res-won{font-size:14px;font-weight:800;color:#0f6fb0;background:#eaf6ff;border:2px solid #bfe3fb;border-radius:999px;padding:5px 14px;}
   #home{display:none!important;}

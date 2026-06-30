@@ -372,6 +372,7 @@ function finishGame(){
   if(G.isMission){if(!SAVE.missionDone[CUR])SAVE.missionDone[CUR]=[];const dw=SAVE.missionDone[CUR];if(!dw.includes(G.key))dw.push(G.key);if(dw.length>=3&&!(SAVE.chestDone&&SAVE.chestDone[CUR]))chestPending=true;}
   save();
   $('res_title').textContent=isRec?'🏆 New Record!':(G.bestCombo>=8?'Awesome! 🌟':'Great job!');
+  {const rc=$('res_char');if(rc)rc.textContent=(WORLDS[CUR]&&WORLDS[CUR].emoji)||'🌟';}
   $('res_pearls').textContent=earned;$('res_combo').textContent=G.bestCombo;
   $('res_best').textContent='Best 🏆 '+Math.max(prevBest,G.score);
   $('res_words').textContent='Words: '+[...G.words].join(', ');
