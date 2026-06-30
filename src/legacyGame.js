@@ -1,3 +1,5 @@
+import { villageTheme, gameCopy } from './copy.js';
+
 /* =====================================================================
    CONTENT DATA (엔진과 분리 — 다른 권/음가는 이 객체만 채우면 됨)
    ===================================================================== */
@@ -20,6 +22,7 @@ let WORLDS = {
 };
 let CUR="s"; // set from SAVE after load()
 const POOL=()=>WORLDS[CUR];
+let homeView="map"; // 'map' = 모험 지도, 'mission' = 오늘의 미션 랜딩
 
 const CONTENT_BOOKS_TO_LOAD=[1,2,3];
 let CONTENT_INDEX=null;
@@ -164,7 +167,7 @@ function currentCardId(word){const w=WORLDS[CUR]||{};return cardId(w.source&&w.s
 function hasCard(book,key,word){return (SAVE.cards||[]).includes(cardId(book,key,word));}
 function emitNavigate(id){try{window.dispatchEvent(new CustomEvent('ypq:navigate',{detail:{screen:id}}));}catch(e){}}
 function emitCastleState(){try{window.dispatchEvent(new CustomEvent('ypq:state',{detail:getCastleHomeState()}));}catch(e){}}
-function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');stopGame();emitNavigate(id);
+function go(id){if(id==='home')homeView=getLaunchRoute();document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');stopGame();emitNavigate(id);
   if(id==='home')renderHome();if(id==='shop')renderShop();if(id==='dex')renderDex();if(id==='freeplay')renderFree();
   if(id==='chest'){chestTaps=0;$('chestBig').style.display='block';$('chestBig').classList.remove('shaking');$('chestBig').style.filter='';$('chestHint').style.display='block';$('chestHint').textContent='Tap to open!';$('chestReward').style.display='none';$('chestRewardMsg').style.display='none';$('chestDone').style.display='none';}}
 function go2(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');emitNavigate(id);}
@@ -301,6 +304,33 @@ function getCastleHomeState(){
 }
 function openCastleFromMap(k){if(setWorldKey(k,false)){renderHome();emitCastleState();}}
 function startCastleQuest(k){if(!setWorldKey(k,false)){sfxBad();return;}const b=WORLDS[CUR].source&&WORLDS[CUR].source.book;if(b)SAVE.currentBook=b;save();ensureMission();if(!SAVE.missions[CUR])SAVE.missions[CUR]=shuffle(GAMES.map(g=>g.key)).slice(0,3);if(!SAVE.missionDone[CUR])SAVE.missionDone[CUR]=[];const mission=SAVE.missions[CUR];const done=SAVE.missionDone[CUR];const next=mission.find(key=>!done.includes(key))||mission[0]||GAMES[0].key;playGame(next,true);}
+
+/* ---- 마을(Village) 모델 + 접속 라우팅 (모험 지도 ↔ 오늘의 미션) ---- */
+function loadedBooks(){return [...new Set(Object.keys(WORLDS).map(k=>WORLDS[k].source&&WORLDS[k].source.book).filter(Boolean))].sort((a,b)=>a-b);}
+function villageDone(book){const f=worldsForBook(book);return f.length>0&&f.every(w=>!!(SAVE.chestDone||{})[w.key]);}
+function getLaunchRoute(){const b=SAVE.currentBook;if(!b)return 'map';return villageDone(b)?'map':'mission';}
+function friendOf(w){return {key:w.key,emoji:w.emoji,enName:w.character,ko:w.kr,letter:w.letter,word:(w.words&&w.words[0]&&w.words[0].w)||'',collected:!!(SAVE.chestDone||{})[w.key]};}
+function getVillageState(){
+  ensureMission();
+  const books=loadedBooks();const active=SAVE.currentBook||null;
+  const villages=books.map(b=>{
+    const friends=worldsForBook(b).map(friendOf);
+    const collected=friends.filter(f=>f.collected).length;
+    let status='future';if(collected>=friends.length&&friends.length)status='done';else if(b===active)status='current';
+    return {book:b,theme:villageTheme(b),friends,collected,total:friends.length,status};
+  });
+  let curFriend=null,mission=[],doneCount=0;
+  if(active){const k=recommendedWorldForBook(active);const w=WORLDS[k];if(w){curFriend=friendOf(w);
+    const m=(SAVE.missions||{})[k]||[],d=(SAVE.missionDone||{})[k]||[];doneCount=d.length;
+    mission=m.map(gk=>Object.assign({key:gk,emoji:(GAMES.find(g=>g.key===gk)||{}).emoji,done:d.includes(gk)},gameCopy(gk)));}}
+  return {homeView,route:getLaunchRoute(),pearls:SAVE.pearls,streak:SAVE.streak,muted:SAVE.muted,
+    villages,activeBook:active,activeTheme:active?villageTheme(active):null,curFriend,mission,doneCount};
+}
+function showHomeSurface(){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$('home').classList.add('active');stopGame();renderHome();emitNavigate('home');}
+function enterVillage(book){const target=recommendedWorldForBook(book);if(setWorldKey(target,false)){SAVE.currentBook=book;save();}homeView='mission';showHomeSurface();}
+function goMap(){homeView='map';showHomeSurface();}
+function playMission(gameKey){const k=recommendedWorldForBook(SAVE.currentBook||loadedBooks()[0]);if(!setWorldKey(k,false)){sfxBad();return;}ensureMission();if(!SAVE.missions[k])SAVE.missions[k]=shuffle(GAMES.map(g=>g.key)).slice(0,3);if(!SAVE.missionDone[k])SAVE.missionDone[k]=[];const key=gameKey||SAVE.missions[k].find(x=>!SAVE.missionDone[k].includes(x))||SAVE.missions[k][0];playGame(key,true);}
+function startTodayMission(){playMission(null);}
 
 /* =====================================================================
    GAME RUNTIME (공통)
@@ -679,6 +709,7 @@ function renderDex(){const c=$('dexChars');c.innerHTML='';
 export async function bootstrapGame(){
   try{speechSynthesis.getVoices();}catch(e){}
   await loadContentDb();
+  homeView=getLaunchRoute();
   renderHome();
   if(!window.__ypqClickBound){
     document.addEventListener('click',e=>{const t=e.target&&e.target.closest&&e.target.closest('.btn,.iconbtn');if(t)uiClick();},true);
@@ -686,4 +717,4 @@ export async function bootstrapGame(){
   }
 }
 Object.assign(window,{toggleMute,openDex,doStamp,openFreePlay,openShop,go,quitGame,quizRepeat,chestTap});
-window.__YPQ={getCastleHomeState,getCollectionState,chooseStartBook,openBookCastle,openCastleFromMap,startCastleQuest,openFreePlay,openShop,openDex,toggleMute,doStamp,go,sayWord:say};
+window.__YPQ={getCastleHomeState,getCollectionState,getVillageState,getLaunchRoute,enterVillage,goMap,startTodayMission,playMission,chooseStartBook,openBookCastle,openCastleFromMap,startCastleQuest,openFreePlay,openShop,openDex,toggleMute,doStamp,go,sayWord:say};
