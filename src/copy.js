@@ -10,7 +10,19 @@ export const VILLAGE_THEME = {
   3: { en: 'Night Sky',  ko: '밤하늘 마을', emoji: '🌙', color: '#7a5bd6' },
   4: { en: 'Star Field', ko: '별숲 마을',   emoji: '⭐', color: '#ffb01f' },
   5: { en: 'Apple Hill', ko: '사과 언덕',   emoji: '🍎', color: '#ff7a59' },
-  6: { en: 'Lava Land',  ko: '용암 마을',   emoji: '🌋', color: '#e8632e' }
+  6: { en: 'Lava Land',  ko: '용암 마을',   emoji: '🌋', color: '#e8632e' },
+  7:  { en: 'Desert Dunes',  ko: '사막 마을',   emoji: '🏜️', color: '#e0a23b' },
+  8:  { en: 'Snow Peak',     ko: '눈꽃 마을',   emoji: '⛄', color: '#5bc0eb' },
+  9:  { en: 'Candy Town',    ko: '사탕 마을',   emoji: '🍭', color: '#ff6fb5' },
+  10: { en: 'Coral Reef',    ko: '산호 바다',   emoji: '🐠', color: '#1fb6a6' },
+  11: { en: 'Cloud Top',     ko: '구름 마을',   emoji: '☁️', color: '#8aa8ff' },
+  12: { en: 'Jungle',        ko: '정글 마을',   emoji: '🌴', color: '#2aa84a' },
+  13: { en: 'Crystal Cave',  ko: '수정 동굴',   emoji: '💎', color: '#7c5cff' },
+  14: { en: 'Rainbow Hill',  ko: '무지개 언덕', emoji: '🌈', color: '#f06aa0' },
+  15: { en: 'Dragon Castle', ko: '드래곤 성',   emoji: '🐲', color: '#9b4dff' },
+  16: { en: 'Moon Base',     ko: '달 마을',     emoji: '🌕', color: '#9aa7bd' },
+  17: { en: 'Treasure Isle', ko: '보물섬',      emoji: '💰', color: '#d9a521' },
+  18: { en: 'Crown Peak',    ko: '왕관 봉우리', emoji: '👑', color: '#ffce3a' }
 };
 
 export function villageTheme(book) {
