@@ -22,6 +22,8 @@ let CUR="s"; // set from SAVE after load()
 const POOL=()=>WORLDS[CUR];
 
 const CONTENT_BOOKS_TO_LOAD=[1,2,3];
+let CONTENT_INDEX=null;
+let COLLECTION_BOOKS=[];
 const WORLD_META={
   s:{phoneme:"/s/",letter:"S s",character:"Sammy the Seal",kr:"새미 물개",emoji:"🦭"},
   t:{phoneme:"/t/",letter:"T t",character:"Timmy the Tiger",kr:"티미 호랑이",emoji:"🐯"},
@@ -57,7 +59,7 @@ const WORD_EMOJI={
   rabbit:"🐰",rat:"🐀",read:"📖",red:"🔴",ring:"💍",river:"🏞️",rock:"🪨",rope:"🪢",rose:"🌹",run:"🏃"
 };
 function contentWordItem(word){return {w:word,emo:WORD_EMOJI[word]||"🔤"};}
-function groupsFromBook(book){return (book.units||[]).flatMap(u=>(u.groups||[]).map(g=>Object.assign({book:book.book,step:book.step},g)));}
+function groupsFromBook(book){return (book.units||[]).flatMap(u=>(u.groups||[]).map(g=>Object.assign({book:book.book,step:book.step,bookTitle:book.title,category:book.category,focus:u.focus,lesson:u.lesson,pages:u.pages},g)));}
 function buildWorldsFromBooks(books){
   const groups=books.flatMap(groupsFromBook).filter(g=>g.key&&g.words&&g.words.length);
   if(!groups.length)return null;
@@ -75,6 +77,36 @@ function buildWorldsFromBooks(books){
   });
   return next;
 }
+function groupMeta(key){
+  return WORLD_META[key]||{phoneme:"/"+key.replaceAll("_","/").replaceAll("-","")+"/",letter:key.toUpperCase(),character:"Phonics "+key.toUpperCase(),kr:"",emoji:"🔤"};
+}
+function collectionGroups(){
+  if(COLLECTION_BOOKS.length)return COLLECTION_BOOKS.flatMap(groupsFromBook).filter(g=>g.key&&g.words&&g.words.length);
+  return Object.keys(WORLDS).map(k=>Object.assign({},WORLDS[k],{key:k,words:WORLDS[k].words.map(w=>w.w),book:WORLDS[k].source&&WORLDS[k].source.book,step:WORLDS[k].source&&WORLDS[k].source.step,bookTitle:""}));
+}
+function getCollectionState(){
+  if(!SAVE.cards)SAVE.cards=[];
+  const groups=collectionGroups();
+  const activeBooks=new Set(CONTENT_BOOKS_TO_LOAD);
+  let migrated=false;
+  groups.forEach(g=>{if(activeBooks.has(g.book))g.words.forEach(w=>{if(SAVE.words.includes(w)){const id=cardId(g.book,g.key,w);if(!SAVE.cards.includes(id)){SAVE.cards.push(id);migrated=true;}}});});
+  if(migrated)save();
+  const bookSource=(CONTENT_INDEX&&CONTENT_INDEX.books)||[...new Map(groups.map(g=>[g.book,{book:g.book,step:g.step,title:g.bookTitle,wordCount:0,category:""}])).values()];
+  const books=bookSource.map(book=>{
+    const bookGroups=groups.filter(g=>g.book===book.book);
+    const totalWords=bookGroups.reduce((sum,g)=>sum+g.words.length,0)||book.wordCount||0;
+    const foundWords=bookGroups.reduce((sum,g)=>sum+g.words.filter(w=>hasCard(g.book,g.key,w)).length,0);
+    const claimed=bookGroups.filter(g=>(SAVE.chestDone||{})[g.key]).length;
+    const started=bookGroups.filter(g=>SAVE.chars.includes(g.key)||((SAVE.missionDone||{})[g.key]||[]).length>0).length;
+    return {book:book.book,step:book.step,title:book.title,category:book.category,active:activeBooks.has(book.book),totalGates:bookGroups.length,totalWords,foundWords,claimed,started,soundFocus:book.soundFocus||bookGroups.map(g=>g.key)};
+  });
+  const sounds=groups.map(g=>{
+    const meta=groupMeta(g.key), done=((SAVE.missionDone||{})[g.key]||[]), claimed=!!((SAVE.chestDone||{})[g.key]);
+    return {key:g.key,book:g.book,step:g.step,lesson:g.lesson,pages:g.pages,focus:g.focus,phoneme:meta.phoneme,letter:meta.letter,character:meta.character,kr:meta.kr,emoji:meta.emoji,active:activeBooks.has(g.book),owned:SAVE.chars.includes(g.key),doneCount:done.length,claimed,wordCount:g.words.length};
+  });
+  const words=groups.flatMap(g=>g.words.map(word=>({w:word,emoji:(WORD_EMOJI[word]||"🔤"),book:g.book,step:g.step,key:g.key,cardId:cardId(g.book,g.key,word),got:hasCard(g.book,g.key,word)})));
+  return {currentBook:SAVE.currentBook||SAVE.castleStartBook||1,books,sounds,words,totalBooks:bookSource.length,totalSounds:sounds.length,totalWords:words.length,foundWords:words.filter(w=>w.got).length};
+}
 function normalizeCurrentWorld(){
   if(!WORLDS[CUR]||WORLDS[CUR].locked)CUR=Object.keys(WORLDS).find(k=>!WORLDS[k].locked)||"s";
   if(!SAVE.curWorld||!WORLDS[SAVE.curWorld]||WORLDS[SAVE.curWorld].locked)SAVE.curWorld=CUR;
@@ -83,8 +115,10 @@ function normalizeCurrentWorld(){
 async function loadContentDb(){
   if(!window.fetch)return false;
   try{
-    const books=await Promise.all(CONTENT_BOOKS_TO_LOAD.map(n=>window.fetch("content/book"+String(n).padStart(2,"0")+".json").then(r=>{if(!r.ok)throw new Error("content fetch failed");return r.json();})));
-    const next=buildWorldsFromBooks(books);
+    CONTENT_INDEX=await window.fetch("content/index.json").then(r=>{if(!r.ok)throw new Error("content index fetch failed");return r.json();});
+    COLLECTION_BOOKS=await Promise.all((CONTENT_INDEX.books||[]).map(b=>window.fetch("content/"+b.file).then(r=>{if(!r.ok)throw new Error("content fetch failed");return r.json();})));
+    const gameBooks=COLLECTION_BOOKS.filter(b=>CONTENT_BOOKS_TO_LOAD.includes(b.book));
+    const next=buildWorldsFromBooks(gameBooks);
     if(next){WORLDS=next;normalizeCurrentWorld();return true;}
   }catch(e){console.warn("Using built-in fallback worlds.",e);}
   normalizeCurrentWorld();
@@ -113,7 +147,7 @@ const ITEMS=[
 /* =====================================================================
    SAVE
    ===================================================================== */
-const DEFAULT={pearls:0,streak:0,lastStamp:null,owned:[],equipped:{},words:[],chars:["s"],
+const DEFAULT={pearls:0,streak:0,lastStamp:null,owned:[],equipped:{},words:[],cards:[],chars:["s"],
   missionDate:null,missions:{},missionDone:{},chestDone:{},playedToday:[],xp:0,best:{},curWorld:"s",muted:false,castleStartBook:null,currentBook:null};
 let SAVE=load();
 if(SAVE.curWorld&&WORLDS[SAVE.curWorld]&&!WORLDS[SAVE.curWorld].locked)CUR=SAVE.curWorld;
@@ -125,6 +159,9 @@ function today(){return new Date().toISOString().slice(0,10);}
    HELPERS
    ===================================================================== */
 function $(id){return document.getElementById(id);}
+function cardId(book,key,word){return [book||"x",key||"x",word].join(":");}
+function currentCardId(word){const w=WORLDS[CUR]||{};return cardId(w.source&&w.source.book,CUR,word);}
+function hasCard(book,key,word){return (SAVE.cards||[]).includes(cardId(book,key,word));}
 function emitNavigate(id){try{window.dispatchEvent(new CustomEvent('ypq:navigate',{detail:{screen:id}}));}catch(e){}}
 function emitCastleState(){try{window.dispatchEvent(new CustomEvent('ypq:state',{detail:getCastleHomeState()}));}catch(e){}}
 function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');stopGame();emitNavigate(id);
@@ -293,7 +330,12 @@ function timePenalty(sec){if(G&&G.maxTime){G.time=Math.max(0,G.time-sec);updateT
 function finishGame(){
   if(!G||G._done)return;G._done=true;stopGame();
   const earned=G.score;addPearls(earned);SAVE.xp+=earned;
-  G.words.forEach(w=>{if(!SAVE.words.includes(w))SAVE.words.push(w);});
+  if(!SAVE.cards)SAVE.cards=[];
+  G.words.forEach(w=>{
+    if(!SAVE.words.includes(w))SAVE.words.push(w);
+    const id=currentCardId(w);
+    if(!SAVE.cards.includes(id))SAVE.cards.push(id);
+  });
   const prevBest=SAVE.best[G.key]||0;const isRec=G.score>prevBest;if(isRec)SAVE.best[G.key]=G.score;
   if(!SAVE.playedToday)SAVE.playedToday=[];if(!SAVE.playedToday.includes(G.key))SAVE.playedToday.push(G.key);
   let chestPending=false;
@@ -644,4 +686,4 @@ export async function bootstrapGame(){
   }
 }
 Object.assign(window,{toggleMute,openDex,doStamp,openFreePlay,openShop,go,quitGame,quizRepeat,chestTap});
-window.__YPQ={getCastleHomeState,chooseStartBook,openBookCastle,openCastleFromMap,startCastleQuest,openFreePlay,openShop,openDex,toggleMute,doStamp,go};
+window.__YPQ={getCastleHomeState,getCollectionState,chooseStartBook,openBookCastle,openCastleFromMap,startCastleQuest,openFreePlay,openShop,openDex,toggleMute,doStamp,go,sayWord:say};
