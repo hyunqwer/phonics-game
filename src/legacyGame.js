@@ -384,14 +384,24 @@ function finishGame(){
 /* =====================================================================
    GAME 1 — Bubble Pop (버블)  모드교차 + 황금 + 놓침
    ===================================================================== */
-const BUBBLE_TIME=35,BUBBLE_SIZE=84;let bubMode,bubTarget;
+const BUBBLE_TIME=35,BUBBLE_SIZE=84,BUBBLE_TARGET_NEED=3;let bubMode,bubTarget,bubHits=0;
 function startBubble(){
   bubMode=Math.random()<0.5?'target':'all';
-  if(bubMode==='target'){bubTarget=shuffle(POOL().words)[0];$('bub_prompt').innerHTML='듣고 같은 단어를 찾아요! 🔊';$('bub_prompt').onclick=()=>say(bubTarget.w);say(bubTarget.w);}
+  if(bubMode==='target'){setBubbleTarget(null,true);}
   else{$('bub_prompt').innerHTML=POOL().phoneme+' 소리 친구를 모아!';$('bub_prompt').onclick=null;}
   $('bubble_score').textContent='0';$('bubbleArea').innerHTML='';go2('g_bubble');
   startTimer(BUBBLE_TIME,'bub_timer');
   const spawn=setInterval(()=>spawnBubble($('bubbleArea')),760);gAddTimer(spawn);
+}
+function setBubbleTarget(prevWord,playSound){
+  const words=POOL().words,choices=words.filter(w=>w.w!==prevWord);
+  bubTarget=shuffle(choices.length?choices:words)[0];bubHits=0;
+  $('bub_prompt').innerHTML='듣고 같은 단어 3개를 찾아요! 🔊 <span style="font-size:14px;opacity:.7">0/'+BUBBLE_TARGET_NEED+'</span>';
+  $('bub_prompt').onclick=()=>say(bubTarget.w);if(playSound)setTimeout(()=>say(bubTarget.w),160);
+}
+function updateBubbleTargetProgress(area){
+  bubHits++;$('bub_prompt').innerHTML='듣고 같은 단어 3개를 찾아요! 🔊 <span style="font-size:14px;opacity:.7">'+bubHits+'/'+BUBBLE_TARGET_NEED+'</span>';
+  if(bubHits>=BUBBLE_TARGET_NEED){const prev=bubTarget.w;banner('Next sound! 🔊');area.querySelectorAll('.bubble').forEach(x=>{if(!x._x)x.remove();});setTimeout(()=>{if(G&&!G.ended)setBubbleTarget(prev,true);},520);}
 }
 function spawnBubble(area){
   if(!G||G.ended)return;const p=POOL();let item,good;
@@ -403,7 +413,7 @@ function spawnBubble(area){
   b.style.animation='rise '+(4.0+Math.random()*1.6)+'s linear forwards';
   b.innerHTML=`<div class="be">${item.emo}</div><div class="bl">${item.w}</div>`;
   b.onclick=()=>{if(b._x)return;b._x=1;const r=b.getBoundingClientRect();
-    if(good){b.classList.add('pop');hit(item,r.left+r.width/2,r.top,{bonus:golden?3:0});if(golden)banner('✨ Gold Bonus!');setScoreLabel('bubble');}
+    if(good){b.classList.add('pop');hit(item,r.left+r.width/2,r.top,{bonus:golden?3:0});if(golden)banner('✨ Gold Bonus!');setScoreLabel('bubble');if(bubMode==='target')updateBubbleTargetProgress(area);}
     else{miss();b.classList.add('sink');fxPop(r.left+r.width/2,r.top,'❌');}
     setTimeout(()=>b.remove(),300);};
   b.addEventListener('animationend',()=>{if(!b._x&&good){const r=b.getBoundingClientRect();escaped(r.left+r.width/2,Math.max(60,r.top));}b.remove();});
