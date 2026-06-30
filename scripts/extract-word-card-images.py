@@ -90,7 +90,9 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--force", action="store_true", help="overwrite existing webp files")
     parser.add_argument("--quality", type=int, default=82, help="webp quality, default 82")
+    parser.add_argument("--words", default="", help="comma-separated words to extract")
     args = parser.parse_args()
+    target_words = {w.strip().lower() for w in args.words.split(",") if w.strip()}
 
     data = json.loads(MAP_FILE.read_text(encoding="utf-8"))
     OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -109,6 +111,8 @@ def main() -> int:
             if not word:
                 continue
             word = str(word).strip().lower()
+            if target_words and word not in target_words:
+                continue
             if word in seen:
                 continue
             seen.add(word)

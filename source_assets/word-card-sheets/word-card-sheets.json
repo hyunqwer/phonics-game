@@ -68,6 +68,24 @@
         "red", "ring", "river",
         "rock", "rope", "rose"
       ]
+    },
+    {
+      "file": "book04_self_test1.png",
+      "grid": { "cols": 5, "rows": 3, "left": 27, "top": 34, "cardWidth": 50, "cardHeight": 46, "colGap": 6, "rowGap": 63, "inset": 0 },
+      "words": [
+        "jump", "moon", "sun", "rock", "pig",
+        "lion", "ten", "fox", "van", "net",
+        "hen", "wall", "kite", "duck", "zoo"
+      ]
+    },
+    {
+      "file": "book04_self_test2.png",
+      "grid": { "cols": 5, "rows": 3, "left": 26, "top": 36, "cardWidth": 52, "cardHeight": 46, "colGap": 6, "rowGap": 63, "inset": 0 },
+      "words": [
+        "soap", "book", "log", "cup", "ax",
+        "gum", "school", "coin", "leaf", "web",
+        "crab", "bat", "box", "beak", "bread"
+      ]
     }
   ]
 }
