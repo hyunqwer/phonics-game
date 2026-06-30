@@ -50,8 +50,8 @@ export default function TodayMissionHome() {
           </div>
           <div className="tm-who">
             <div className="tm-nm">{friend.enName}<div className="tm-gloss">{friend.ko}</div></div>
-            <div className="tm-letter">{friend.letter}</div>
-            <button className="tm-hear" type="button" aria-label="listen" onClick={() => friend.word && api()?.sayWord?.(friend.word)}>🔊</button>
+            <button className="tm-letter" type="button" aria-label="letter sound" onClick={() => api()?.sayLetter?.(friend.key)}>{friend.letter}</button>
+            <button className="tm-hear" type="button" aria-label="letter sound" onClick={() => api()?.sayLetter?.(friend.key)}>🔊</button>
           </div>
           <div className="tm-card">
             <div className="tm-mh"><div className="tm-mt">⭐ Today's Mission<div className="tm-gloss">오늘의 미션</div></div><div className="tm-mc">{state.doneCount} / {mission.length || 3}</div></div>

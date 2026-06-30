@@ -21,7 +21,8 @@
 .tm-bubble b{color:#0f6fb0;}
 .tm-who{display:flex;align-items:center;justify-content:center;gap:10px;margin:6px 0 12px;}
 .tm-nm{font-size:19px;font-weight:800;color:var(--cw-ink);line-height:1.1;text-align:center;}
-.tm-letter{background:var(--world);color:#fff;border-radius:12px;padding:3px 11px;font-size:18px;font-weight:800;box-shadow:0 4px 9px -3px rgba(18,38,66,.4);}
+.tm-letter{background:var(--world);color:#fff;border:none;cursor:pointer;border-radius:12px;padding:5px 12px;font-size:18px;font-weight:800;box-shadow:0 4px 9px -3px rgba(18,38,66,.4);}
+.tm-letter:active{transform:translateY(1px);}
 .tm-hear{background:#fff;border:none;border-radius:12px;width:38px;height:38px;font-size:18px;box-shadow:var(--cw-soft);cursor:pointer;}
 .tm-card{background:#fff;border:1px solid var(--cw-line);border-radius:20px;padding:12px 14px;box-shadow:var(--cw-card);}
 .tm-mh{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}

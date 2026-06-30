@@ -195,6 +195,14 @@ function sayThen(t,cb){if(SAVE.muted){if(cb)cb();return;}
     setTimeout(go,1500); // 안전장치(onended 미발생 대비)
   }catch(e){ttsSay(t);setTimeout(go,650);}}
 let _lw='',_lt=0;function sayHit(w){const n=Date.now();if(w===_lw&&n-_lt<300)return;_lw=w;_lt=n;say(w);}/* 1탭=1단어, 겹침/연속 방지 */
+/* 글자 음가 재생: 미리 생성한 content/sound/<key>.mp3 → 없으면 예시 단어로 폴백 */
+const SOUND_BASE="content/sound/";
+function sayLetter(key){if(SAVE.muted)return;const w=WORLDS[key]||{};const fw=(w.words&&w.words[0]&&w.words[0].w)||'';
+  try{ if(_wa){_wa.pause();_wa.currentTime=0;}
+    _wa=new Audio(SOUND_BASE+encodeURIComponent(key)+".mp3");
+    const p=_wa.play();
+    if(p&&p.catch)p.catch(()=>{if(fw)say(fw);}); // 음가 파일 없거나 차단 시 단어로
+  }catch(e){if(fw)say(fw);}}
 function toggleMute(){SAVE.muted=!SAVE.muted;save();const b=$('muteBtn');if(b)b.textContent=SAVE.muted?'🔇':'🔊';if(SAVE.muted){try{speechSynthesis.cancel();}catch(e){}try{if(_wa)_wa.pause();}catch(e){}}}
 let AC;
 function actx(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}return AC;}
@@ -746,4 +754,4 @@ export async function bootstrapGame(){
   }
 }
 Object.assign(window,{toggleMute,openDex,doStamp,openFreePlay,openShop,go,quitGame,quizRepeat,chestTap});
-window.__YPQ={getCastleHomeState,getCollectionState,getVillageState,getLaunchRoute,enterVillage,goMap,startTodayMission,playMission,chooseStartBook,openBookCastle,openCastleFromMap,startCastleQuest,openFreePlay,openShop,openDex,toggleMute,doStamp,go,sayWord:say};
+window.__YPQ={getCastleHomeState,getCollectionState,getVillageState,getLaunchRoute,enterVillage,goMap,startTodayMission,playMission,chooseStartBook,openBookCastle,openCastleFromMap,startCastleQuest,openFreePlay,openShop,openDex,toggleMute,doStamp,go,sayWord:say,sayLetter};
