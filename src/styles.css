@@ -281,6 +281,15 @@
   .banner.show{animation:bn 1.2s ease;}
   @keyframes bn{0%{transform:translate(-50%,-50%) scale(0)}25%{transform:translate(-50%,-50%) scale(1.25)}70%{transform:translate(-50%,-50%) scale(1)}100%{transform:translate(-50%,-50%) scale(0);opacity:0}}
 
+  .wimg{display:block;object-fit:contain;}
+  img.be.wimg,img.emo.wimg,img.e.wimg{width:100%;height:100%;max-width:64px;max-height:64px;margin:0 auto;}
+  .qcard img.emo.wimg{max-width:74px;max-height:74px;}
+  .mole img.emo.wimg{max-width:62px;max-height:62px;}
+  .pad img.be.wimg{max-width:80px;max-height:80px;}
+  .bubble img.be.wimg,.coin img.be.wimg,.ufo img.be.wimg,.hitem img.be.wimg,.bug img.be.wimg,.drop img.be.wimg{max-width:42px;max-height:42px;}
+  .dexItem img.e.wimg{width:42px;height:42px;}
+  .mface-img.wimg{width:100%;height:100%;max-width:88px;max-height:88px;margin:0 auto;}
+
   /* ============================================================
      Duolingo-style Design System (override layer)
      흰 배경 · 굵은 라운드 폰트 · 컬러 3D 푸시버튼 · 2px 보더 카드

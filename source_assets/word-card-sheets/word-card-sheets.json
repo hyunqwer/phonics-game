@@ -1,0 +1,73 @@
+{
+  "notes": [
+    "User-provided Yoon's Phonics World word-card sheets for books 1-3.",
+    "Only confidently identified words are mapped. Unmapped words keep the app's emoji fallback."
+  ],
+  "sheets": [
+    {
+      "file": "book01_mixed_grid.png",
+      "grid": { "cols": 9, "rows": 5, "left": 0, "top": 0, "cardWidth": 180.4, "cardHeight": 183.8, "colGap": 0, "rowGap": 0, "inset": 24 },
+      "words": [
+        "map", "house", "sad", "rock", "hat", "book", null, "hop", "sun",
+        "box", "car", "ball", "bear", "sock", "milk", "hair", "dog", "tent",
+        "salt", "boy", "hill", null, "same", "tie", "sand", "money", "hand",
+        "soap", "six", null, "man", "moon", "monkey", "table", "bell", "tape",
+        null, "mop", "ten", "horse", "toe", "bed", "sink", "head", "bag"
+      ]
+    },
+    {
+      "file": "book02_set1.png",
+      "grid": { "cols": 3, "rows": 3, "left": 54, "top": 54, "cardWidth": 279, "cardHeight": 194, "colGap": 40, "rowGap": 54, "inset": 10 },
+      "words": [
+        "kick", "kid", "king",
+        "jam", "jet", "jump",
+        "fan", "fire", null
+      ]
+    },
+    {
+      "file": "book02_set2.png",
+      "grid": { "cols": 3, "rows": 3, "left": 52, "top": 53, "cardWidth": 267, "cardHeight": 186, "colGap": 38, "rowGap": 52, "inset": 10 },
+      "words": [
+        "fish", "fox", "goat",
+        "gold", "gum", "lamp",
+        "leaf", "lion", null
+      ]
+    },
+    {
+      "file": "book03_d.png",
+      "grid": { "cols": 3, "rows": 3, "left": 52, "top": 54, "cardWidth": 267, "cardHeight": 184, "colGap": 38, "rowGap": 52, "inset": 10 },
+      "words": [
+        "dark", "deer", "desk",
+        "dish", "doctor", "dog",
+        "doll", "dolphin", "door"
+      ]
+    },
+    {
+      "file": "book03_c.png",
+      "grid": { "cols": 3, "rows": 3, "left": 52, "top": 54, "cardWidth": 264, "cardHeight": 184, "colGap": 37, "rowGap": 52, "inset": 10 },
+      "words": [
+        "cake", "call", "can",
+        "candy", "car", "cat",
+        "cold", "cow", "cup"
+      ]
+    },
+    {
+      "file": "book03_w.png",
+      "grid": { "cols": 3, "rows": 3, "left": 55, "top": 55, "cardWidth": 278, "cardHeight": 190, "colGap": 41, "rowGap": 55, "inset": 10 },
+      "words": [
+        "wagon", "wall", "watch",
+        "water", "wind", "window",
+        "wing", "winter", "wolf"
+      ]
+    },
+    {
+      "file": "book03_r.png",
+      "grid": { "cols": 3, "rows": 3, "left": 55, "top": 55, "cardWidth": 271, "cardHeight": 188, "colGap": 40, "rowGap": 52, "inset": 10 },
+      "words": [
+        "rabbit", "rat", "read",
+        "red", "ring", "river",
+        "rock", "rope", "rose"
+      ]
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 import { villageTheme, gameCopy } from './copy.js';
 import { suggestNickname, cleanNickname, isValidNickname } from './nickname.js';
+import { wordVisual } from './wordImage.js';
 /* firebase는 무거우니 초기 번들에서 분리 — 첫 렌더 후 동적 로드(코드 스플릿) */
 let CLOUD=null,_cloudP=null;
 function ensureCloud(){if(CLOUD)return Promise.resolve(CLOUD);if(!_cloudP)_cloudP=import('./cloud.js').then(m=>{CLOUD=m;return m;}).catch(()=>null);return _cloudP;}
@@ -425,7 +426,7 @@ function spawnBubble(area){
   const pad=6,maxLeft=Math.max(pad,(area.clientWidth||BUBBLE_SIZE)-BUBBLE_SIZE-pad);
   const b=document.createElement('div');b.className='bubble'+(golden?' gold':'');b.style.left=(pad+Math.random()*(maxLeft-pad))+'px';
   b.style.animation='rise '+(4.0+Math.random()*1.6)+'s linear forwards';
-  b.innerHTML=`<div class="be">${item.emo}</div><div class="bl">${item.w}</div>`;
+  b.innerHTML=`${wordVisual(item,'be')}<div class="bl">${item.w}</div>`;
   b.onclick=()=>{if(b._x)return;b._x=1;const r=b.getBoundingClientRect();
     if(good){b.classList.add('pop');hit(item,r.left+r.width/2,r.top,{bonus:golden?3:0});if(golden)banner('✨ Gold Bonus!');setScoreLabel('bubble');if(bubMode==='target')updateBubbleTargetProgress(area);}
     else{miss();b.classList.add('sink');fxPop(r.left+r.width/2,r.top,'❌');}
@@ -446,7 +447,7 @@ function nextQuiz(){
   const opts=shuffle([quizCur,...shuffle(pool).slice(0,2)]);
   const grid=$('quizGrid');grid.innerHTML='';
   opts.forEach(o=>{const c=document.createElement('div');c.className='qcard';c.dataset.w=o.w;
-    c.innerHTML=`<div class="emo">${o.emo}</div><div class="lab">${o.w}</div>`;
+    c.innerHTML=`${wordVisual(o,'emo')}<div class="lab">${o.w}</div>`;
     c.onclick=()=>{const r=c.getBoundingClientRect();
       if(o.w===quizCur.w){clearInterval(quizTimer);c.classList.add('correct');const fast=(Date.now()-quizStart)<2500;hit(quizCur,r.left+r.width/2,r.top,{bonus:fast?2:0});if(fast)fxPop(r.left+r.width/2,r.top-30,'⚡빠름!');setScoreLabel('quiz');quizRound++;setTimeout(nextQuiz,650);}
       else{c.classList.add('wrong');miss();quizLeft=Math.max(8,quizLeft-15);$('quiz_timer').style.width=(quizLeft/(Q_TIME*10)*100)+'%';quizWrong++;if(quizWrong>=2){const t=grid.querySelector('[data-w="'+quizCur.w+'"]');if(t)t.classList.add('hint');}setTimeout(()=>c.classList.remove('wrong'),350);}};
@@ -478,7 +479,7 @@ function popMole(holes){
   if(good){golden=Math.random()<0.12;item=shuffle(p.words)[0];}
   else{bomb=Math.random()<0.22;item=bomb?{w:"bomb",emo:"💣"}:shuffle(p.distractors)[0];}
   const m=document.createElement('div');m.className='mole'+(golden?' gold':'')+(bomb?' bomb':'');
-  m.innerHTML=`<div class="emo">${item.emo}</div>`+(bomb?'':`<div class="lab">${item.w}</div>`);
+  m.innerHTML=(bomb?`<div class="emo">${item.emo}</div>`:wordVisual(item,'emo'))+(bomb?'':`<div class="lab">${item.w}</div>`);
   h.appendChild(m);requestAnimationFrame(()=>m.classList.add('up'));
   const life=Math.max(1150,1850-moleElapsed*18);
   const lifeT=setTimeout(()=>{if(!m._x&&good){const r=m.getBoundingClientRect();escaped(r.left+r.width/2,r.top);}m.classList.remove('up');setTimeout(()=>{m.remove();h._busy=0;},220);},life);
@@ -511,7 +512,7 @@ function spawnRunItem(area,speed){
   const item=good?shuffle(p.words)[0]:shuffle(p.distractors)[0];const lane=Math.floor(Math.random()*3);
   const c=document.createElement('div');c.className='coin'+(good?'':' obst');c.style.top=LANES[lane]+'%';c.dataset.lane=lane;c.dataset.good=good?1:0;
   c.style.animation='slideL '+speed+'s linear forwards';
-  c.innerHTML=`<div class="be">${item.emo}</div><div class="bl">${item.w}</div>`;c._item=item;
+  c.innerHTML=`${wordVisual(item,'be')}<div class="bl">${item.w}</div>`;c._item=item;
   c.addEventListener('animationend',()=>{if(!c._res&&good){const r=c.getBoundingClientRect();escaped(r.left+r.width/2,Math.max(60,r.top));}c.remove();});
   area.appendChild(c);
 }
@@ -544,7 +545,7 @@ function spawnEnemy(area,speed,boss){
   else{good=Math.random()<0.55;golden=good&&Math.random()<0.1;item=good?shuffle(p.words)[0]:shuffle(p.distractors)[0];}
   const u=document.createElement('div');u.className='ufo'+(boss?' boss':'')+(golden?' gold':'');u.style.left=(6+Math.random()*74)+'%';u.dataset.good=good?1:0;
   u.style.animation='descend '+speed+'s linear forwards';
-  u.innerHTML=`<div class="be">${item.emo}</div><div class="bl">${boss?'BOSS '+item.w:item.w}</div>`;
+  u.innerHTML=`${wordVisual(item,'be')}<div class="bl">${boss?'BOSS '+item.w:item.w}</div>`;
   u.addEventListener('animationend',()=>{if(!u._x&&good){shootHearts--;setHearts();escaped(innerWidth/2,innerHeight-90,'Miss!');screenShake();if(shootHearts<=0)finishGame();}u.remove();});
   u.onclick=()=>{if(u._x)return;u._x=1;const r=u.getBoundingClientRect();const can=$('cannon').getBoundingClientRect();
     laser(can.left+can.width/2,can.top,r.left+r.width/2,r.top+r.height/2);tone(900,0.06,'square',0.15);
@@ -583,7 +584,7 @@ function jumpRound(){
   const pads=shuffle([{it:correct,good:true},{it:wrong,good:false}]);
   const box=$('jumpPads');box.innerHTML='';
   pads.forEach(o=>{const d=document.createElement('div');d.className='pad';
-    d.innerHTML=`<div class="be">${o.it.emo}</div><div class="bl">${o.it.w}</div>`;
+    d.innerHTML=`${wordVisual(o.it,'be')}<div class="bl">${o.it.w}</div>`;
     d.onclick=()=>{const r=d.getBoundingClientRect();
       if(o.good){d.classList.add('correct');const j=$('jumper');j.classList.add('hop');setTimeout(()=>j.classList.remove('hop'),400);
         jLava=Math.max(0,jLava-7);renderLava();
@@ -615,7 +616,7 @@ function nextMemRound(){
 }
 function flipCard(d,c){
   if(memLock||d._f||d._done)return;
-  d._f=1;d.classList.add('flip');d.querySelector('.mface').textContent=c.kind==='pic'?c.it.emo:c.it.w;sayHit(c.it.w);
+  d._f=1;d.classList.add('flip');const face=d.querySelector('.mface');if(face){if(c.kind==='pic')face.innerHTML=wordVisual(c.it,'mface-img');else face.textContent=c.it.w;}sayHit(c.it.w);
   if(!memFirst){memFirst={d,c};return;}
   if(memFirst.d===d)return;
   const a=memFirst;memFirst=null;
@@ -645,7 +646,7 @@ function scatterHunt(){
   const all=shuffle([...tgts,...decoys]);const area=$('huntArea');const bd=huntBounds(area);area.innerHTML='<div id="scope"><div class="scope-ring"></div></div>';huntCards=[];
   all.forEach(it=>{const d=document.createElement('div');d.className='hitem';d.dataset.w=it.w;
     const card={it,el:d,x:bd.minX+Math.random()*(bd.maxX-bd.minX),y:bd.minY+Math.random()*(bd.maxY-bd.minY),vx:(Math.random()-.5)*0.45,vy:(Math.random()-.5)*0.45};
-    d.innerHTML=`<div class="be">${it.emo}</div><div class="bl">${it.w}</div>`;d.onclick=(e)=>{e.stopPropagation();const ar=area.getBoundingClientRect();aimHunt(area,e.clientX-ar.left,e.clientY-ar.top);pickHunt(d,it);};area.appendChild(d);huntCards.push(card);placeHuntCard(card);});
+    d.innerHTML=`${wordVisual(it,'be')}<div class="bl">${it.w}</div>`;d.onclick=(e)=>{e.stopPropagation();const ar=area.getBoundingClientRect();aimHunt(area,e.clientX-ar.left,e.clientY-ar.top);pickHunt(d,it);};area.appendChild(d);huntCards.push(card);placeHuntCard(card);});
   huntPresent=tgts;newHuntTarget();}
 function placeHuntCard(card){card.el.style.left=card.x+'%';card.el.style.top=card.y+'%';}
 function aimHunt(area,x,y){area.style.setProperty('--sx',x+'px');area.style.setProperty('--sy',y+'px');
@@ -696,7 +697,7 @@ function startCatch(){$('catch_score').textContent='0';$('catch_prompt').innerHT
 function spawnDrop(area,speed){if(!G||G.ended)return;const p=POOL();const good=Math.random()<0.55;const it=good?shuffle(p.words)[0]:shuffle(p.distractors)[0];
   const pad=6,maxLeft=Math.max(pad,(area.clientWidth||DROP_SIZE)-DROP_SIZE-pad);
   const d=document.createElement('div');d.className='drop'+(good?'':' obst');d.style.left=(pad+Math.random()*(maxLeft-pad))+'px';d.dataset.good=good?1:0;d._it=it;
-  d.style.animation='fall '+speed+'s linear forwards';d.innerHTML=`<div class="be">${it.emo}</div><div class="bl">${it.w}</div>`;
+  d.style.animation='fall '+speed+'s linear forwards';d.innerHTML=`${wordVisual(it,'be')}<div class="bl">${it.w}</div>`;
   d.addEventListener('animationend',()=>{if(!d._res&&good){const r=d.getBoundingClientRect();escaped(r.left+r.width/2,Math.max(60,r.top));}d.remove();});area.appendChild(d);}
 function checkCatch(area){if(!G||G.ended)return;const bk=$('basket');if(!bk)return;const bR=bk.getBoundingClientRect();
   area.querySelectorAll('.drop').forEach(d=>{if(d._res)return;const r=d.getBoundingClientRect();
@@ -746,7 +747,7 @@ function openDex(){go('dex');}
 function renderDex(){const c=$('dexChars');c.innerHTML='';
   Object.keys(WORLDS).forEach(k=>{const w=WORLDS[k];const owned=SAVE.chars.includes(k), label=(w.character||'').split(' the ').pop()||w.letter||k.toUpperCase();const d=document.createElement('div');d.className='dexItem'+(owned?'':' lock');d.innerHTML=`<div class="e">${owned?w.emoji:'❓'}</div><div class="l">${owned?label:'Coming soon'}<br>${w.phoneme}</div>`;c.appendChild(d);});
   const allWords=[...POOL().words,...POOL().distractors];$('dexWordCount').textContent='('+SAVE.words.length+'/'+allWords.length+')';
-  const wg=$('dexWords');wg.innerHTML='';allWords.forEach(it=>{const got=SAVE.words.includes(it.w);const d=document.createElement('div');d.className='dexItem'+(got?'':' lock');d.innerHTML=`<div class="e">${got?it.emo:'❓'}</div><div class="l">${got?it.w:'???'}</div>`;if(got)d.onclick=()=>say(it.w);wg.appendChild(d);});}
+  const wg=$('dexWords');wg.innerHTML='';allWords.forEach(it=>{const got=SAVE.words.includes(it.w);const d=document.createElement('div');d.className='dexItem'+(got?'':' lock');d.innerHTML=`${got?wordVisual(it,'e'):'<div class="e">❓</div>'}<div class="l">${got?it.w:'???'}</div>`;if(got)d.onclick=()=>say(it.w);wg.appendChild(d);});}
 
 /* ---- 클라우드(익명 로그인) 동기화 + 닉네임 ---- */
 async function syncCloud(){

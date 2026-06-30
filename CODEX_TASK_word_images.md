@@ -1,17 +1,54 @@
-# Codex 작업 지시 — #4 단어 일러스트 (이모지 → 실제 그림)
+# Codex 작업 지시 — #4 단어 일러스트 (이모지 → 교재 그림)
 
 > 작성: 2026-07-01 / 대상 브랜치: `feature/data-vite-refactor`
-> 목표: 게임·도감에서 단어를 나타내는 **이모지**를 **일관된 실제 일러스트**로 교체.
+> 목표: 게임·도감에서 단어를 나타내는 **이모지**를 **교재 기반 단어 일러스트**로 교체.
 
 ## 0. 핵심 원칙 (음가 오디오 파이프라인과 동일 패턴)
-1. **빌드타임 생성 → 정적 파일**: 런타임에 이미지 API를 호출하지 않는다. 미리 생성해 `public/content/img/<word>.webp`로 저장하고 앱은 파일만 참조. (키 노출/지연/비용 0, 정적 호스팅에 적합)
+1. **빌드타임 추출 → 정적 파일**: 런타임에 이미지 API를 호출하지 않는다. 교재 이미지 시트를 미리 잘라 `public/content/img/words/<word>.webp`로 저장하고 앱은 파일만 참조. (키 노출/지연/비용 0, 정적 호스팅에 적합)
 2. **graceful 폴백**: 이미지가 없으면 **기존 이모지로 표시**. 점진 적용 가능, 절대 안 깨짐.
 3. **아트 디렉션 고정**: 모든 단어가 같은 스타일·구도·배경이 되도록 프롬프트 템플릿 고정 → 전체 톤 통일(현재 "Clean World" 디자인과 어울리게).
-4. **범위**: 우선 **활성 권(books 1~3)** 단어만. 이후 권 확장 시 같은 스크립트 재실행.
+4. **범위**: 우선 **활성 권(books 1~3)** 단어만. 교재 시트가 확인된 단어부터 적용하고, 누락 단어는 이모지 폴백 유지.
+
+## 0-1. 방향 변경 기록
+
+2026-07-01 기준, 사용자가 1~3권 교재 이미지 시트를 제공했다. 따라서 1순위는 OpenAI 이미지 생성이 아니라 **교재 이미지 재활용**이다.
+
+- 1순위: `source_assets/word-card-sheets/*.png` 교재 시트에서 단어별 webp 추출
+- 2순위: 교재 이미지가 없는 단어만 OpenAI Images API로 보완
+- 3순위: 의미가 애매하거나 이미지가 없는 단어는 기존 이모지 유지
+
+현재 구현:
+
+- 원본 시트: `source_assets/word-card-sheets/`
+- 매핑 파일: `source_assets/word-card-sheets/word-card-sheets.json`
+- 추출 스크립트: `scripts/extract-word-card-images.py`
+- 출력 폴더: `public/content/img/words/`
+- 앱 헬퍼: `src/wordImage.js`
 
 ---
 
-## 1. 생성 스크립트 `scripts/gen-images.mjs` (신규)
+## 1. 교재 이미지 추출 스크립트 `scripts/extract-word-card-images.py`
+
+- **입력 시트**: `source_assets/word-card-sheets/*.png`
+- **단어 매핑**: `source_assets/word-card-sheets/word-card-sheets.json`
+- **출력**: `public/content/img/words/<word>.webp`
+- **증분**: 이미 있으면 skip, `--force`로 재생성
+- **크롭 처리**:
+  - 시트별 격자 좌표 기반 카드 추출
+  - 카드 테두리 제거용 inset 적용
+  - 흰 여백 자동 트리밍
+  - 512×512 webp로 정규화
+- **실행법**:
+  ```bash
+  python scripts/extract-word-card-images.py
+  python scripts/extract-word-card-images.py --force
+  ```
+- **주의**: Pillow 필요
+  ```bash
+  python -m pip install pillow
+  ```
+
+## 1-1. AI 보완 생성 스크립트 `scripts/gen-images.mjs` (후순위)
 참고: 동일 패턴의 기존 스크립트 `scripts/gen-phonemes.mjs`(OpenAI TTS) 구조를 따른다.
 
 - **입력 단어 목록**: `public/content/all_words.json`(`{count, words:[{w, books:[..]}]}`)에서 `books`에 1~3이 포함된 단어만 추출. (인자로 권 범위 받게: 예 `--books 1,2,3`)
