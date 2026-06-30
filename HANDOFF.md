@@ -28,7 +28,7 @@
 React/Vite 앱으로 동작. `npm run dev`로 로컬 실행, `npm run build`로 Firebase Hosting 배포 산출물(`dist/`) 생성.
 
 - 홈 허브, **미니게임 10종**, 결과/보상, 보물상자, 꾸미기(샵), 도감
-- **월드(음가)별 데일리 미션** — 매일 S·T·B·H·M 각각 다른 랜덤 3종 + 월드별 진행도·보물상자
+- **월드(음가)별 데일리 미션** — 1~3권의 S/T/B/H/M/K/J/F/G/L/D/N/W/C/R 각각 다른 랜덤 3종 + 월드별 진행도·보물상자
 - **자유 놀기**: 오늘 플레이한 게임 카드에 초록 ✅ 완료 표시(`playedToday`, 매일 리셋)
 - 진주 경제, 출석 연속, **게임별 최고기록(신기록 팡파레)**
 - **통일된 시간 긴장감 엔진**(정답=잠깐 멈춤, 콤보=+시간, 실수=급감)
@@ -39,7 +39,7 @@ React/Vite 앱으로 동작. `npm run dev`로 로컬 실행, `npm run build`로 
 - **UI 영어화** + 게임 중 지시문 한국어
 - localStorage 영속(전 진행 데이터)
 
-콘텐츠는 **Step 1 / 1권 5개 월드(S·T·B·H·M)** 활성, 홈 월드 칩으로 전환. 현재 `public/content/book01.json`을 런타임에 읽어 `WORLDS`를 생성하며, fetch가 실패하는 환경에서는 내장 폴백 월드로 동작한다.
+콘텐츠는 **Step 1 / 1~3권 15개 월드(S·T·B·H·M·K·J·F·G·L·D·N·W·C·R)** 활성, 홈 월드 칩으로 전환. 현재 `public/content/book01.json`~`book03.json`을 런타임에 읽어 `WORLDS`를 생성하며, fetch가 실패하는 환경에서는 내장 폴백 월드로 동작한다.
 
 ---
 
@@ -72,7 +72,7 @@ WORLDS.s = { phoneme:"/s/", letter:"S s", character:"Sammy the Seal", kr:"새미
 let CUR="s"; const POOL=()=>WORLDS[CUR];   // SAVE.curWorld로 복원, selectWorld()로 변경
 ```
 
-`loadContentDb()`가 `public/content/book01.json`을 로드해 1권의 10개 단어/음가 그룹을 앱 월드 구조로 변환한다. `WORLD_META`는 캐릭터/음가 표시 정보를, `WORD_EMOJI`는 현재 1권 단어의 임시 이모지 에셋을 담당한다.
+`loadContentDb()`가 `public/content/book01.json`~`book03.json`을 로드해 1~3권의 10개 단어/음가 그룹을 앱 월드 구조로 변환한다. `WORLD_META`는 캐릭터/음가 표시 정보를, `WORD_EMOJI`는 현재 1~3권 단어의 임시 이모지 에셋을 담당한다.
 
 ### 4.2 `GAMES` — 미니게임 레지스트리(10종)
 `{key, name(영문), emoji, desc(한글), run:()=>start<Game>()}` — 배열에 1줄 추가 시 미션·자유놀기 자동 노출.
@@ -156,6 +156,8 @@ vibe(pattern)  // navigator.vibrate (음소거 시 정지)
 | /b/ | Bobby the Bear | bag,ball,bat,bear,bed,bell,big,book,box,boy | Bobby the Bear is bored. |
 | /h/ | Henry the Hog | hair,hand,happy,hat,head,hen,hill,hop,horse,house | Henry the Hog sees a horse. |
 | /m/ | Mindy the Mouse | man,many,map,mat,milk,money,monkey,moon,mop,mouse | Mindy the Mouse makes muffins! |
+
+현재 2~3권 K/J/F/G/L/D/N/W/C/R은 공식 캐릭터명 확정 전까지 `K Sound` 같은 중립 표시명과 대표 이모지로 연결되어 있다.
 
 > 단어 mp3는 `WORD_AUDIO_BASE`에 대부분 존재(소문자 파일명). 캐릭터 음성/챈트 문장 오디오 경로는 추후 확인.
 

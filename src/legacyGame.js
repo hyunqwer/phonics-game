@@ -21,20 +21,40 @@ let WORLDS = {
 let CUR="s"; // set from SAVE after load()
 const POOL=()=>WORLDS[CUR];
 
-const CONTENT_BOOKS_TO_LOAD=[1];
+const CONTENT_BOOKS_TO_LOAD=[1,2,3];
 const WORLD_META={
   s:{phoneme:"/s/",letter:"S s",character:"Sammy the Seal",kr:"새미 물개",emoji:"🦭"},
   t:{phoneme:"/t/",letter:"T t",character:"Timmy the Tiger",kr:"티미 호랑이",emoji:"🐯"},
   b:{phoneme:"/b/",letter:"B b",character:"Bobby the Bear",kr:"바비 곰",emoji:"🐻"},
   h:{phoneme:"/h/",letter:"H h",character:"Henry the Hog",kr:"헨리 돼지",emoji:"🐷"},
-  m:{phoneme:"/m/",letter:"M m",character:"Mindy the Mouse",kr:"민디 쥐",emoji:"🐭"}
+  m:{phoneme:"/m/",letter:"M m",character:"Mindy the Mouse",kr:"민디 쥐",emoji:"🐭"},
+  k:{phoneme:"/k/",letter:"K k",character:"K Sound",kr:"K 소리",emoji:"🔑"},
+  j:{phoneme:"/j/",letter:"J j",character:"J Sound",kr:"J 소리",emoji:"🧃"},
+  f:{phoneme:"/f/",letter:"F f",character:"F Sound",kr:"F 소리",emoji:"🦊"},
+  g:{phoneme:"/g/",letter:"G g",character:"G Sound",kr:"G 소리",emoji:"🐐"},
+  l:{phoneme:"/l/",letter:"L l",character:"L Sound",kr:"L 소리",emoji:"🦁"},
+  d:{phoneme:"/d/",letter:"D d",character:"D Sound",kr:"D 소리",emoji:"🐶"},
+  n:{phoneme:"/n/",letter:"N n",character:"N Sound",kr:"N 소리",emoji:"👃"},
+  w:{phoneme:"/w/",letter:"W w",character:"W Sound",kr:"W 소리",emoji:"🐺"},
+  c:{phoneme:"/c/",letter:"C c",character:"C Sound",kr:"C 소리",emoji:"🐱"},
+  r:{phoneme:"/r/",letter:"R r",character:"R Sound",kr:"R 소리",emoji:"🐰"}
 };
 const WORD_EMOJI={
   sad:"😢",sand:"🏖️",salt:"🧂",same:"👯",seal:"🦭",sink:"🚰",six:"6️⃣",soap:"🧼",sock:"🧦",sun:"☀️",
   table:"🪑",tail:"🐕",talk:"🗣️",tape:"📼",ten:"🔟",tent:"⛺",tie:"👔",tiger:"🐯",toe:"🦶",toy:"🧸",
   bag:"👜",ball:"⚽",bat:"🦇",bear:"🐻",bed:"🛏️",bell:"🔔",big:"🔠",book:"📖",box:"📦",boy:"👦",
   hair:"💇",hand:"✋",happy:"😊",hat:"🎩",head:"🙂",hen:"🐔",hill:"⛰️",hop:"🦘",horse:"🐴",house:"🏠",
-  man:"👨",many:"👥",map:"🗺️",mat:"🧘",milk:"🥛",money:"💰",monkey:"🐵",moon:"🌙",mop:"🧹",mouse:"🐭"
+  man:"👨",many:"👥",map:"🗺️",mat:"🧘",milk:"🥛",money:"💰",monkey:"🐵",moon:"🌙",mop:"🧹",mouse:"🐭",
+  ketchup:"🍅",key:"🔑",kick:"🦵",kid:"🧒",kind:"💛",king:"👑",kiss:"💋",kitchen:"🍳",kite:"🪁",kitten:"🐱",
+  jacket:"🧥",jail:"🚓",jam:"🍓",jar:"🏺",jeans:"👖",jeep:"🚙",jet:"✈️",juice:"🧃",jump:"🦘",jungle:"🌴",
+  family:"👨‍👩‍👧",fan:"🪭",farm:"🚜",fat:"🟠",father:"👨",finger:"☝️",fire:"🔥",fish:"🐟",five:"5️⃣",fox:"🦊",
+  game:"🎮",gap:"↔️",garden:"🌷",gate:"🚪",girl:"👧",give:"🎁",go:"➡️",goat:"🐐",gold:"🥇",gum:"🍬",
+  lake:"🏞️",lamp:"💡",laugh:"😆",leaf:"🍃",letter:"✉️",lion:"🦁",little:"🤏",lock:"🔒",log:"🪵",lunch:"🍱",
+  dark:"🌑",deer:"🦌",desk:"🪑",dish:"🍽️",doctor:"🧑‍⚕️",dog:"🐶",doll:"🪆",dolphin:"🐬",door:"🚪",duck:"🦆",
+  name:"🏷️",neck:"🧣",net:"🥅",new:"🆕",night:"🌙",nine:"9️⃣",nose:"👃",number:"🔢",nurse:"👩‍⚕️",nut:"🥜",
+  wagon:"🛒",wall:"🧱",watch:"⌚",water:"💧",wind:"💨",window:"🪟",wing:"🪽",winter:"❄️",wolf:"🐺",woman:"👩",
+  cake:"🍰",call:"📞",can:"🥫",candy:"🍬",car:"🚗",cat:"🐱",cold:"🥶",cow:"🐄",cup:"🥤",cut:"✂️",
+  rabbit:"🐰",rat:"🐀",read:"📖",red:"🔴",ring:"💍",river:"🏞️",rock:"🪨",rope:"🪢",rose:"🌹",run:"🏃"
 };
 function contentWordItem(word){return {w:word,emo:WORD_EMOJI[word]||"🔤"};}
 function groupsFromBook(book){return (book.units||[]).flatMap(u=>(u.groups||[]).map(g=>Object.assign({book:book.book,step:book.step},g)));}
