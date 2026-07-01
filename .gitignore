@@ -14,3 +14,6 @@ pnpm-debug.log*
 
 # Local review scratch output
 tmp_ppt_review/
+
+# Generated local audio backups
+source_assets/phoneme-sound-backups/
