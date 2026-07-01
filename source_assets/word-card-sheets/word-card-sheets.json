@@ -1,6 +1,6 @@
 {
   "notes": [
-    "User-provided Yoon's Phonics World word-card sheets for books 1-3.",
+    "User-provided Yoon's Phonics World word-card sheets for books 1-9.",
     "Only confidently identified words are mapped. Unmapped words keep the app's emoji fallback."
   ],
   "sheets": [
@@ -85,6 +85,260 @@
         "soap", "book", "log", "cup", "ax",
         "gum", "school", "coin", "leaf", "web",
         "crab", "bat", "box", "beak", "bread"
+      ]
+    },
+    {
+      "file": "book05_1.png",
+      "grid": { "cols": 3, "rows": 3, "left": 32, "top": 58, "cardWidth": 372, "cardHeight": 260, "colGap": 55, "rowGap": 74, "inset": 12 },
+      "words": [
+        "bat", "can", "cat",
+        "fat", "hat", "fan",
+        "man", "pan", "van"
+      ]
+    },
+    {
+      "file": "book05_2.png",
+      "grid": { "cols": 3, "rows": 3, "left": 28, "top": 52, "cardWidth": 372, "cardHeight": 259, "colGap": 55, "rowGap": 73, "inset": 12 },
+      "words": [
+        "dad", "cap", "jam",
+        "happy", "mad", "clap",
+        "map", "nap", "lamb"
+      ]
+    },
+    {
+      "file": "book05_3.png",
+      "grid": { "cols": 3, "rows": 3, "left": 44, "top": 60, "cardWidth": 372, "cardHeight": 259, "colGap": 54, "rowGap": 73, "inset": 12 },
+      "words": [
+        "pig", "big", "little",
+        "dig", "stick", "wig",
+        "hit", "sit", "cookie"
+      ]
+    },
+    {
+      "file": "book05_4.png",
+      "grid": { "cols": 3, "rows": 3, "left": 27, "top": 59, "cardWidth": 372, "cardHeight": 260, "colGap": 55, "rowGap": 73, "inset": 12 },
+      "words": [
+        "bill", "bin", "fill",
+        "fish", "hill", "pill",
+        "fin", "thin", "win"
+      ]
+    },
+    {
+      "file": "book06_1.png",
+      "grid": { "cols": 3, "rows": 3, "left": 21, "top": 37, "cardWidth": 240, "cardHeight": 168, "colGap": 35, "rowGap": 45, "inset": 10 },
+      "words": [
+        "bug", "hug", "jug",
+        "mug", "plug", "rug",
+        "bun", "fun", "run"
+      ]
+    },
+    {
+      "file": "book06_2.png",
+      "grid": { "cols": 3, "rows": 3, "left": 21, "top": 35, "cardWidth": 240, "cardHeight": 167, "colGap": 34, "rowGap": 45, "inset": 10 },
+      "words": [
+        "sun", "cub", "club",
+        "rub", "sub", "tub",
+        "cut", "shut", "hut"
+      ]
+    },
+    {
+      "file": "book06_3.png",
+      "grid": { "cols": 3, "rows": 3, "left": 21, "top": 42, "cardWidth": 239, "cardHeight": 167, "colGap": 35, "rowGap": 46, "inset": 10 },
+      "words": [
+        "nut", "clog", "dog",
+        "fog", "frog", "log",
+        "box", "fox", "ox"
+      ]
+    },
+    {
+      "file": "book06_4.png",
+      "grid": { "cols": 3, "rows": 3, "left": 21, "top": 41, "cardWidth": 239, "cardHeight": 167, "colGap": 35, "rowGap": 46, "inset": 10 },
+      "words": [
+        "hop", "mop", "pop",
+        "top", "stop", "dot",
+        "hot", "knot", "pot"
+      ]
+    },
+    {
+      "file": "book06_5.png",
+      "grid": { "cols": 1, "rows": 1, "left": 20, "top": 40, "cardWidth": 240, "cardHeight": 168, "colGap": 0, "rowGap": 0, "inset": 10 },
+      "words": [
+        "spot"
+      ]
+    },
+    {
+      "file": "book07_1.png",
+      "grid": { "cols": 3, "rows": 3, "left": 18, "top": 38, "cardWidth": 240, "cardHeight": 168, "colGap": 34, "rowGap": 45, "inset": 10 },
+      "words": [
+        "fat", "hat", "fan",
+        "man", "happy", "mad",
+        "clap", "map", "lamb"
+      ]
+    },
+    {
+      "file": "book07_2.png",
+      "grid": { "cols": 3, "rows": 3, "left": 9, "top": 33, "cardWidth": 240, "cardHeight": 168, "colGap": 34, "rowGap": 45, "inset": 10 },
+      "words": [
+        "dig", "wig", "hit",
+        "cookie", "fill", "pill",
+        "bin", "fin", "win"
+      ]
+    },
+    {
+      "file": "book07_3.png",
+      "grid": { "cols": 3, "rows": 3, "left": 19, "top": 40, "cardWidth": 240, "cardHeight": 168, "colGap": 34, "rowGap": 45, "inset": 10 },
+      "words": [
+        "bun", "run", "hug",
+        "mug", "plug", "cut",
+        "shut", "rub", "tub"
+      ]
+    },
+    {
+      "file": "book08_ake_ate.png",
+      "grid": { "cols": 1, "rows": 1, "left": 250, "top": 18, "cardWidth": 160, "cardHeight": 88, "colGap": 0, "rowGap": 0, "inset": 0, "removePaleGreen": true },
+      "words": [
+        "cake"
+      ]
+    },
+    {
+      "file": "book08_ake_ate.png",
+      "grid": { "cols": 3, "rows": 3, "left": 14, "top": 205, "cardWidth": 161, "cardHeight": 164, "colGap": 0, "rowGap": 0, "inset": 6, "content": { "bottom": 35 }, "erase": [[0, 0, 34, 34]] },
+      "words": [
+        "bake", "lake", "rake",
+        "snake", "date", "gate",
+        "hate", "late", "plate"
+      ]
+    },
+    {
+      "file": "book08_ame_ace.png",
+      "grid": { "cols": 1, "rows": 1, "left": 270, "top": 18, "cardWidth": 130, "cardHeight": 95, "colGap": 0, "rowGap": 0, "inset": 0, "removePaleGreen": true },
+      "words": [
+        "space"
+      ]
+    },
+    {
+      "file": "book08_ame_ace.png",
+      "grid": { "cols": 3, "rows": 2, "left": 15, "top": 205, "cardWidth": 170, "cardHeight": 166, "colGap": 0, "rowGap": 0, "inset": 6, "content": { "bottom": 35 }, "erase": [[0, 0, 34, 34]] },
+      "words": [
+        "flame", "game", "name",
+        "same", "face", "place"
+      ]
+    },
+    {
+      "file": "book08_ame_ace.png",
+      "grid": { "cols": 2, "rows": 1, "left": 15, "top": 538, "cardWidth": 255, "cardHeight": 166, "colGap": 0, "rowGap": 0, "inset": 6, "content": { "bottom": 35 }, "erase": [[0, 0, 34, 34]] },
+      "words": [
+        "race", "trace"
+      ]
+    },
+    {
+      "file": "book08_u.png",
+      "grid": { "cols": 1, "rows": 1, "left": 280, "top": 16, "cardWidth": 140, "cardHeight": 90, "colGap": 0, "rowGap": 0, "inset": 0, "removePaleGreen": true },
+      "words": [
+        "mule"
+      ]
+    },
+    {
+      "file": "book08_u.png",
+      "grid": { "cols": 3, "rows": 2, "left": 10, "top": 204, "cardWidth": 160, "cardHeight": 165, "colGap": 0, "rowGap": 0, "inset": 6, "content": { "bottom": 35 }, "erase": [[0, 0, 34, 34]] },
+      "words": [
+        "cube", "tube", "tune",
+        "cure", "pure", "sure"
+      ]
+    },
+    {
+      "file": "book08_u.png",
+      "grid": { "cols": 2, "rows": 1, "left": 10, "top": 535, "cardWidth": 242, "cardHeight": 163, "colGap": 0, "rowGap": 0, "inset": 6, "content": { "bottom": 35 }, "erase": [[0, 0, 34, 34]] },
+      "words": [
+        "cute", "mute"
+      ]
+    },
+    {
+      "file": "book08_ike_ide.png",
+      "grid": { "cols": 1, "rows": 1, "left": 280, "top": 10, "cardWidth": 140, "cardHeight": 105, "colGap": 0, "rowGap": 0, "inset": 0, "removePaleGreen": true },
+      "words": [
+        "slide"
+      ]
+    },
+    {
+      "file": "book08_ike_ide.png",
+      "grid": { "cols": 3, "rows": 1, "left": 18, "top": 206, "cardWidth": 160, "cardHeight": 164, "colGap": 0, "rowGap": 0, "inset": 6, "content": { "bottom": 35 }, "erase": [[0, 0, 34, 34]] },
+      "words": [
+        "bike", "hike", "like"
+      ]
+    },
+    {
+      "file": "book08_ike_ide.png",
+      "grid": { "cols": 2, "rows": 2, "left": 18, "top": 371, "cardWidth": 241, "cardHeight": 164, "colGap": 0, "rowGap": 0, "inset": 6, "content": { "bottom": 35 }, "erase": [[0, 0, 34, 34]] },
+      "words": [
+        "hide", "ride",
+        "side", "wide"
+      ]
+    },
+    {
+      "file": "book08_ime_ive.png",
+      "grid": { "cols": 1, "rows": 1, "left": 245, "top": 14, "cardWidth": 185, "cardHeight": 100, "colGap": 0, "rowGap": 0, "inset": 0, "removePaleGreen": true },
+      "words": [
+        "lime"
+      ]
+    },
+    {
+      "file": "book08_ime_ive.png",
+      "grid": { "cols": 3, "rows": 2, "left": 8, "top": 216, "cardWidth": 160, "cardHeight": 162, "colGap": 0, "rowGap": 0, "inset": 6, "content": { "bottom": 35 }, "erase": [[0, 0, 34, 34]] },
+      "words": [
+        "crime", "dime", "slime",
+        "time", "dive", "drive"
+      ]
+    },
+    {
+      "file": "book08_ime_ive.png",
+      "grid": { "cols": 2, "rows": 1, "left": 8, "top": 540, "cardWidth": 242, "cardHeight": 163, "colGap": 0, "rowGap": 0, "inset": 6, "content": { "bottom": 35 }, "erase": [[0, 0, 34, 34]] },
+      "words": [
+        "five", "hive"
+      ]
+    },
+    {
+      "file": "book09_1.png",
+      "grid": { "cols": 3, "rows": 3, "left": 10, "top": 26, "cardWidth": 181, "cardHeight": 126, "colGap": 24, "rowGap": 34, "inset": 8 },
+      "words": [
+        "bee", "bike", "bone",
+        "cake", "cube", "cure",
+        "cute", "dime", "dive"
+      ]
+    },
+    {
+      "file": "book09_2.png",
+      "grid": { "cols": 3, "rows": 3, "left": 11, "top": 27, "cardWidth": 181, "cardHeight": 126, "colGap": 25, "rowGap": 34, "inset": 8 },
+      "words": [
+        "eel", "face", "feed",
+        "five", "gate", "hide",
+        "hike", "hole", "hope"
+      ]
+    },
+    {
+      "file": "book09_3.png",
+      "grid": { "cols": 3, "rows": 3, "left": 16, "top": 31, "cardWidth": 181, "cardHeight": 126, "colGap": 25, "rowGap": 35, "inset": 8 },
+      "words": [
+        "jeep", "lime", "mule",
+        "mute", "name", "nose",
+        "phone", "plate", "pole"
+      ]
+    },
+    {
+      "file": "book09_4.png",
+      "grid": { "cols": 3, "rows": 3, "left": 14, "top": 34, "cardWidth": 181, "cardHeight": 126, "colGap": 25, "rowGap": 34, "inset": 8 },
+      "words": [
+        "pure", "rope", "rose",
+        "same", "seed", "sheep",
+        "slide", "snake", "space"
+      ]
+    },
+    {
+      "file": "book09_5.png",
+      "grid": { "cols": 3, "rows": 2, "left": 17, "top": 28, "cardWidth": 181, "cardHeight": 126, "colGap": 25, "rowGap": 31, "inset": 8 },
+      "words": [
+        "three", "tube", "tune",
+        "wheel", null, null
       ]
     }
   ]

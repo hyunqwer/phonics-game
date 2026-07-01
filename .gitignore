@@ -11,3 +11,6 @@ pnpm-debug.log*
 
 # Claude Code 로컬 개인 설정 (추적 안 함)
 .claude/settings.local.json
+
+# Local review scratch output
+tmp_ppt_review/

@@ -204,3 +204,51 @@ localStorage 키는 기존과 동일하게 `soripang`을 사용한다.
 ## 현재 한 줄 요약
 
 현재 앱은 **1~3권 파닉스 게임 플레이가 가능한 React/Vite 기반 프로토타입**이며, 홈은 **성 정복 모험**, Collection은 **18개 Realm의 Treasure Vault** 구조로 전환 중이다.
+
+---
+
+## 2026-07-01 업데이트: 1~18권 단어 이미지 전체 반영
+
+### 작업 범위
+
+- `source_assets/nypw-source-capture/`의 권별 캡처 이미지를 기준으로 1~18권 전체 단어 이미지를 구축했다.
+- 기존에 먼저 작업한 5~9권 개별 시트와 새 보충 캡처를 함께 반영했다.
+- `public/content/book01.json`부터 `book18.json`까지의 모든 단어가 `public/content/img/words/<word>.webp`를 갖도록 보강했다.
+
+### 산출물
+
+- 단어 이미지 총수: `595개`
+- 교재 JSON 기준 고유 단어 수: `593개`
+- 단어 이미지 누락 수: `0개`
+- 추가/보강된 추출 스크립트:
+  - `scripts/extract-word-card-images.py`
+  - `scripts/extract-nypw-source-captures.py`
+- 원본 보존 경로:
+  - `source_assets/word-card-sheets/`
+  - `source_assets/nypw-source-capture/`
+
+### 처리 방식
+
+- 권별 캡처에서 단어 그림 영역을 잘라 512x512 WebP로 정규화했다.
+- 이미 존재하는 이미지가 있는 단어는 기본적으로 건너뛰고, 품질 보정이 필요한 일부 단어만 강제 재생성했다.
+- 번호 배지, 라벨 글자, 셀 테두리가 노출되는 경우 수동 crop 좌표로 보정했다.
+- 마지막 보충 캡처 5장으로 다음 누락 단어 13개를 마저 반영했다:
+  - `bus`, `root`, `drum`
+  - `apron`, `bacon`, `idea`, `idol`, `pilot`
+  - `oval`, `open`, `erase`, `evening`, `me`
+
+### 클로드 작업 반영
+
+- 클로드가 작성한 품질 리뷰 문서 `REVIEW_quality_audit.md`를 함께 커밋 대상에 포함한다.
+- 클로드 검토 과정에서 생긴 `tmp_ppt_review/`는 임시 산출물이라 커밋하지 않고 `.gitignore`에 추가했다.
+
+### 검증
+
+- 1~18권 전체 단어 이미지 누락 검사: `0개`
+- `npm run build` 통과
+- 단어 카드 이미지가 없는 경우 발생하는 이모지 fallback 대상 단어 없음
+
+### 참고
+
+- 마을 아이콘, 게임 아이콘, Sound Friend 캐릭터 이모지는 단어 카드 이미지와 별개 UI 요소라 계속 이모지를 사용할 수 있다.
+- 이번 완료 기준은 **교재 단어 카드 이미지**에 한정한다.
