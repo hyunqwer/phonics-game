@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Word Image Lab</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <div>
+          <h1>Word Image Lab</h1>
+          <p>Crop worksheet images, erase badges, render clean word art.</p>
+        </div>
+        <div class="actions">
+          <span id="statusText" class="statusText">Ready</span>
+          <button id="saveBtn">Save</button>
+          <button id="seedSourceBtn">Seed Page</button>
+          <button id="autoRefineBtn">Auto Refine Page</button>
+          <button id="numberEraseAllBtn">Number Erase All</button>
+          <button id="resetSourceBtn">Reset Page</button>
+          <button id="renderSourceBtn">Render Page</button>
+          <button id="renderAllBtn">Render All</button>
+        </div>
+      </header>
+
+      <main class="layout">
+        <aside class="panel sources">
+          <div class="panelHead">
+            <h2>Sources</h2>
+            <span id="sourceCount"></span>
+          </div>
+          <div id="sourceList" class="list"></div>
+        </aside>
+
+        <section class="workspace">
+          <div class="stageBar">
+            <div>
+              <strong id="sourceTitle">No source selected</strong>
+              <span id="sourceMeta"></span>
+            </div>
+            <div class="segmented">
+              <button id="cropModeBtn" class="active">Crop</button>
+              <button id="eraseModeBtn">Erase</button>
+            </div>
+          </div>
+          <div class="canvasWrap">
+            <canvas id="stage" width="900" height="650"></canvas>
+          </div>
+          <div class="hint">
+            Crop mode: drag the selected word box or draw a new box. Erase mode: drag inside the crop to add a cleanup rectangle.
+          </div>
+        </section>
+
+        <aside class="panel inspector">
+          <div class="inspectorTop">
+            <section class="wordsPane">
+              <div class="panelHead">
+                <h2>Words</h2>
+                <div class="actions wordActions">
+                  <button id="addWordBtn">Add</button>
+                  <button id="deleteWordBtn">Delete</button>
+                </div>
+              </div>
+              <div id="wordList" class="list words"></div>
+            </section>
+
+            <form id="editor" class="editor">
+              <label>
+                Word
+                <input id="wordInput" autocomplete="off" />
+              </label>
+              <label>
+                Status
+                <select id="statusInput">
+                  <option value="draft">draft</option>
+                  <option value="approved">approved</option>
+                  <option value="needs_edit">needs_edit</option>
+                  <option value="fallback">fallback</option>
+                </select>
+              </label>
+              <label>
+                Erase fill
+                <select id="eraseModeInput">
+                  <option value="transparent">transparent</option>
+                  <option value="white">white</option>
+                </select>
+              </label>
+              <label>
+                Box
+                <input id="boxInput" autocomplete="off" />
+              </label>
+              <label>
+                Notes
+                <textarea id="notesInput" rows="2"></textarea>
+              </label>
+            </form>
+          </div>
+          <div id="inspectorSplit" class="splitter splitHorizontal" title="Drag to resize the editor and preview areas"></div>
+
+          <section class="preview">
+            <div class="panelHead">
+              <h2>Preview</h2>
+              <div class="actions previewActions">
+                <button id="renderWordBtn" type="button">Preview</button>
+                <button id="autoRefineWordBtn" type="button">Refine Word</button>
+                <button id="resetWordBtn" type="button">Reset Word</button>
+                <button id="addDefaultEraseBtn" type="button">Default Erase</button>
+                <button id="undoEraseBtn" type="button">Undo Erase</button>
+                <button id="contactBtn" type="button">Contact Sheet</button>
+              </div>
+            </div>
+            <div class="previewBody">
+              <img id="previewImg" alt="" />
+              <div id="previewSplit" class="splitter splitVertical" title="Drag to resize preview and contact sheet"></div>
+              <img id="contactImg" alt="" />
+            </div>
+          </section>
+        </aside>
+      </main>
+    </div>
+    <script src="/app.js"></script>
+  </body>
+</html>

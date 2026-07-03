@@ -14,6 +14,9 @@ pnpm-debug.log*
 
 # Local review scratch output
 tmp_ppt_review/
+tmp_b08_5_clean/
+tmp_word_image_contact_sheet.jpg
+tmp_word_image_lab/
 
 # Generated local audio backups
 source_assets/phoneme-sound-backups/
