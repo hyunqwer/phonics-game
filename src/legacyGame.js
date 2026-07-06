@@ -270,6 +270,11 @@ const BADGES=[
   {id:'words100', emoji:'🎓', name:'단어 100',  cond:'단어 카드 100개 수집',  test:s=>(s.words||[]).length>=100},
   {id:'sMaster',  emoji:'🅢', name:'S 마스터',  cond:'/s/ 단어 숙달도 80%↑', test:()=>WORLDS.s&&WORLDS.s.words.every(w=>mastery(w.w)>=0.8)},
   {id:'lv5',      emoji:'⭐', name:'Lv.5',      cond:'레벨 5 달성',           test:()=>lvl()>=5},
+  {id:'book1_done',emoji:'🏖️', name:'바다 마을 정복', cond:'Realm 1 완료', test:()=>villageDone(1)},
+  {id:'book2_done',emoji:'🌲', name:'숲 마을 정복',   cond:'Realm 2 완료', test:()=>villageDone(2)},
+  {id:'book3_done',emoji:'🌙', name:'밤하늘 정복',    cond:'Realm 3 완료', test:()=>villageDone(3)},
+  {id:'book4_done',emoji:'⭐', name:'별숲 정복',      cond:'Realm 4 완료', test:()=>villageDone(4)},
+  {id:'book5_done',emoji:'🍎', name:'사과언덕 정복',  cond:'Realm 5 완료', test:()=>villageDone(5)},
 ];
 function checkBadges(){
   if(!SAVE.badges)SAVE.badges=[];
@@ -897,9 +902,17 @@ function openChest(){
   else if(roll<0.8){const owns=ITEMS.filter(i=>!SAVE.owned.includes(i.id));if(owns.length){const it=shuffle(owns)[0];SAVE.owned.push(it.id);icon=it.e;msg='New item unlocked!';}else{addPearls(25);icon='🦪';msg='Bonus +25 pearls!';}}
   else{addPearls(30);icon='🎟️';msg='Lucky! +30 pearls!';}
   if(!SAVE.chestDone)SAVE.chestDone={};SAVE.chestDone[CUR]=true;save();
+  checkBadges();
   $('chestBig').style.display='none';$('chestHint').style.display='none';
   const rw=$('chestReward');rw.textContent=icon;rw.style.display='block';
-  $('chestRewardMsg').textContent=msg;$('chestRewardMsg').style.display='block';$('chestDone').style.display='inline-block';
+  $('chestRewardMsg').textContent=msg;$('chestRewardMsg').style.display='block';
+  const _cb=SAVE.currentBook||(WORLDS[CUR]&&WORLDS[CUR].source&&WORLDS[CUR].source.book);
+  const _doneBtn=$('chestDone');
+  if(_cb&&villageDone(_cb)){
+    _doneBtn.textContent='🏆 정복 결과 보기! ▶';
+    _doneBtn.onclick=()=>{try{window.dispatchEvent(new CustomEvent('ypq:village-complete',{detail:{book:_cb}}));}catch(e){}};
+  }else{_doneBtn.textContent='Nice! ▶';_doneBtn.onclick=()=>go('home');}
+  _doneBtn.style.display='inline-block';
 }
 
 /* =====================================================================
@@ -943,6 +956,23 @@ function nickSuggest(withNum){return suggestNickname(withNum);}
 async function nickCheck(name){const c=cleanNickname(name);if(!isValidNickname(c))return {ok:false,clean:c,reason:'len'};const C=await ensureCloud();const avail=C?await C.nicknameAvailable(c):true;return {ok:avail,clean:c,reason:avail?null:'taken'};}
 async function setNickname(name){const c=cleanNickname(name);if(!isValidNickname(c))return false;const C=await ensureCloud();const ok=C?await C.reserveNickname(c):true;if(!ok)return false;SAVE.nickname=c;save();renderHome();return true;}
 
+/* ---- 마을 정복 축하 모달 API ---- */
+function getVillageCompleteData(book){
+  const friends=worldsForBook(book).map(w=>({key:w.key,emoji:w.emoji,name:(w.character||'').split(' the ').pop()||w.key,kr:w.kr}));
+  const theme=villageTheme(book);
+  const allBks=loadedBooks();
+  const nextBook=allBks.find(b=>b>book)||null;
+  const nextFriends=nextBook?worldsForBook(nextBook).map(w=>({emoji:w.emoji,name:(w.character||'').split(' the ').pop()||w.key,kr:w.kr})):[];
+  const nextTheme=nextBook?villageTheme(nextBook):null;
+  return {book,theme,friends,nextBook,nextTheme,nextFriends,nickname:SAVE.nickname||null};
+}
+function openVillageChest(){
+  const pearls=50+Math.floor(Math.random()*31);
+  addPearls(pearls);save();
+  return {pearls};
+}
+function enterNextVillage(nextBook){if(!nextBook){goMap();return;}enterVillage(nextBook);}
+
 export async function bootstrapGame(){
   try{speechSynthesis.getVoices();}catch(e){}
   await loadContentDb();
@@ -959,5 +989,7 @@ window.__YPQ={getCastleHomeState,getCollectionState,getVillageState,getLaunchRou
   getNickname,nickSuggest,nickCheck,setNickname,cloudEnabled:cloudEnabledFn,
   learningStats:()=>{try{return _learningStats();}catch(e){return null;}},
   startReviewQuiz,claimWordOfDay,
-  getBadges:()=>BADGES.map(b=>({id:b.id,emoji:b.emoji,name:b.name,cond:b.cond,earned:(SAVE.badges||[]).includes(b.id)}))};
+  getBadges:()=>BADGES.map(b=>({id:b.id,emoji:b.emoji,name:b.name,cond:b.cond,earned:(SAVE.badges||[]).includes(b.id)})),
+  getVillageCompleteData,openVillageChest,enterNextVillage,
+  fx:{fanfare,winJingle,sfxChest,sfxPop,fireworks,vibe}};
 /* telemetry wiring: logAnswer in hit/miss, saveEvents adapter in syncCloud (P0-1) */
