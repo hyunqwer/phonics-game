@@ -94,6 +94,13 @@ export function learningStats() {
   };
 }
 
+/** 오늘의 복습 단어 목록(틀린 단어 + 미숙달 단어, limit개) */
+export function reviewWords(limit = 6) {
+  const wrong = [...new Set(LOG.filter(r => !r.correct && r.word).map(r => r.word))];
+  const weak  = [...new Set(LOG.filter(r => r.word && mastery(r.word) < 0.6).map(r => r.word))];
+  return [...new Set([...wrong, ...weak])].slice(0, limit);
+}
+
 // 창을 닫거나 백그라운드로 갈 때 남은 버퍼 전송(유실 방지)
 if (typeof window !== 'undefined') {
   const bye = () => flushEvents();

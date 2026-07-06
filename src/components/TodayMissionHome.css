@@ -44,3 +44,23 @@
 .tm-nav button span{font-size:11px;font-weight:800;}
 .tm-nav button.on{background:#fff6cc;color:var(--cw-ink);}
 .tm-nav button.on span{color:#e08a00;}
+
+/* CR-4-5: XP 진행바 */
+.tm-xp-bar{flex:none;height:10px;background:#e0e8f0;position:relative;overflow:hidden;}
+.tm-xp-fill{height:100%;background:linear-gradient(90deg,var(--world,#1cb0f6),#58cc02);border-radius:0 6px 6px 0;transition:width .5s ease;}
+.tm-xp-label{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:9px;font-weight:800;color:rgba(0,0,0,.38);letter-spacing:.02em;}
+
+/* CR-4-3: 오늘의 단어 */
+.tm-wod{display:flex;align-items:center;gap:10px;background:#fff;border-radius:14px;padding:10px 12px;margin-bottom:10px;box-shadow:var(--cw-soft);cursor:pointer;border:2px solid #d4ecff;}
+.tm-wod:active{transform:scale(.97);}
+.tm-wod-emo{font-size:32px;width:40px;text-align:center;}
+.tm-wod-info{flex:1;}
+.tm-wod-label{font-size:11px;font-weight:800;color:var(--cw-sub);}
+.tm-wod-w{font-size:18px;font-weight:800;color:var(--cw-ink);}
+.tm-wod-claim{font-size:14px;font-weight:800;color:#1cb0f6;min-width:38px;text-align:right;}
+
+/* CR-4-2: 복습 버튼 */
+.tm-row.tm-review{background:#fff0fb;border:2px dashed #e0aadb;}
+.tm-row.tm-review .tm-n{color:#8b00b5;}
+.tm-row.tm-review .tm-s{color:#b060d0;}
+

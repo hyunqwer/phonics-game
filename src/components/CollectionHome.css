@@ -406,3 +406,12 @@
   .collection-castle{min-height:186px;}
   .word-card-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
 }
+
+/* CR-4-4: 배지 그리드 */
+.badge-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:4px 0;}
+.badge-card{display:flex;flex-direction:column;align-items:center;gap:4px;border-radius:18px;padding:14px 8px;text-align:center;background:#f4f8fd;box-shadow:var(--cw-soft);}
+.badge-card.earned{background:#fffbe6;box-shadow:0 0 0 2px #ffd23f,0 4px 12px -4px rgba(214,160,0,.3);}
+.badge-card.locked{opacity:.55;filter:grayscale(.6);}
+.badge-emoji{font-size:32px;}
+.badge-card strong{font-size:13px;color:var(--cw-ink);}
+.badge-card small{font-size:10px;color:var(--cw-sub);line-height:1.3;}

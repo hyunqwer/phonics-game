@@ -29,6 +29,7 @@ function realmCopy(bookNumber) {
 export default function CollectionHome() {
   const [visible, setVisible] = useState(false);
   const [collection, setCollection] = useState(null);
+  const [badges, setBadges] = useState([]);
   const [tab, setTab] = useState('castles');
   const [selectedBook, setSelectedBook] = useState(1);
 
@@ -39,6 +40,8 @@ export default function CollectionHome() {
         setCollection(next);
         setSelectedBook((current) => next.books.some((book) => book.book === current) ? current : next.currentBook);
       }
+      const bs = getApi()?.getBadges?.();
+      if (bs) setBadges(bs);
     };
     const onNavigate = (event) => {
       const nextVisible = (event.detail?.screen || 'home') === 'dex';
@@ -98,6 +101,7 @@ export default function CollectionHome() {
         <button className={tab === 'castles' ? 'active' : ''} type="button" onClick={() => setTab('castles')}>🗺️<span>Map</span></button>
         <button className={tab === 'friends' ? 'active' : ''} type="button" onClick={() => setTab('friends')}>🛡️<span>Guard</span></button>
         <button className={tab === 'cards' ? 'active' : ''} type="button" onClick={() => setTab('cards')}>💎<span>Loot</span></button>
+        <button className={tab === 'badges' ? 'active' : ''} type="button" onClick={() => setTab('badges')}>🏅<span>Badges</span></button>
       </div>
 
       {tab !== 'castles' && (
@@ -177,6 +181,23 @@ export default function CollectionHome() {
                   <strong>{word.got ? word.w : '???'}</strong>
                   <small>{word.key}</small>
                 </button>
+              ))}
+            </div>
+          </section>
+        )}
+        {tab === 'badges' && (
+          <section className="collection-panel">
+            <div className="collection-panel-head">
+              <strong>🏅 Badges</strong>
+              <span>{badges.filter((b) => b.earned).length}/{badges.length}</span>
+            </div>
+            <div className="badge-grid">
+              {badges.map((b) => (
+                <div className={`badge-card ${b.earned ? 'earned' : 'locked'}`} key={b.id}>
+                  <div className="badge-emoji">{b.earned ? b.emoji : '🔒'}</div>
+                  <strong>{b.name}</strong>
+                  <small>{b.cond}</small>
+                </div>
               ))}
             </div>
           </section>

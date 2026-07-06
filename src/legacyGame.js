@@ -1,7 +1,7 @@
 import { villageTheme, gameCopy } from './copy.js';
 import { suggestNickname, cleanNickname, isValidNickname } from './nickname.js';
 import { wordVisual } from './wordImage.js';
-import { logAnswer, flushEvents, learningStats as _learningStats } from './engine/telemetry.js';
+import { logAnswer, flushEvents, learningStats as _learningStats, mastery, weakWords, reviewWords as _reviewWords } from './engine/telemetry.js';
 /* firebase는 무거우니 초기 번들에서 분리 — 첫 렌더 후 동적 로드(코드 스플릿) */
 let CLOUD=null,_cloudP=null;
 function ensureCloud(){if(CLOUD)return Promise.resolve(CLOUD);if(!_cloudP)_cloudP=import('./cloud.js').then(m=>{CLOUD=m;return m;}).catch(()=>null);return _cloudP;}
@@ -262,11 +262,33 @@ const ITEMS=[
   {id:"scarf",e:"🧣",slot:"neck",price:35},{id:"halo",e:"⭐",slot:"halo",price:80}
 ];
 
+/* ---- 배지 정의 (CR-4-4) ---- */
+const BADGES=[
+  {id:'streak7',  emoji:'🔥', name:'7일 연속',  cond:'7일 연속 출석',         test:s=>s.streak>=7},
+  {id:'streak30', emoji:'🏆', name:'30일 연속', cond:'30일 연속 출석',        test:s=>s.streak>=30},
+  {id:'words50',  emoji:'📚', name:'단어 50',   cond:'단어 카드 50개 수집',   test:s=>(s.words||[]).length>=50},
+  {id:'words100', emoji:'🎓', name:'단어 100',  cond:'단어 카드 100개 수집',  test:s=>(s.words||[]).length>=100},
+  {id:'sMaster',  emoji:'🅢', name:'S 마스터',  cond:'/s/ 단어 숙달도 80%↑', test:()=>WORLDS.s&&WORLDS.s.words.every(w=>mastery(w.w)>=0.8)},
+  {id:'lv5',      emoji:'⭐', name:'Lv.5',      cond:'레벨 5 달성',           test:()=>lvl()>=5},
+];
+function checkBadges(){
+  if(!SAVE.badges)SAVE.badges=[];
+  BADGES.forEach(b=>{
+    if(!SAVE.badges.includes(b.id)&&b.test(SAVE)){
+      SAVE.badges.push(b.id);
+      banner(b.emoji+' '+b.name+' 획득!');
+      vibe([10,30,10]);
+    }
+  });
+  save();
+}
+
 /* =====================================================================
    SAVE
    ===================================================================== */
 const DEFAULT={pearls:0,streak:0,lastStamp:null,owned:[],equipped:{},words:[],cards:[],chars:["s"],
-  missionDate:null,missions:{},missionDone:{},chestDone:{},playedToday:[],xp:0,best:{},curWorld:"s",muted:false,castleStartBook:null,currentBook:null,nickname:null};
+  missionDate:null,missions:{},missionDone:{},chestDone:{},playedToday:[],xp:0,best:{},curWorld:"s",muted:false,castleStartBook:null,currentBook:null,nickname:null,
+  badges:[],wordOfDay:null,wordOfDayDate:null,wordOfDayClaimed:false,reviewDate:null};
 let SAVE=load();
 if(SAVE.curWorld&&WORLDS[SAVE.curWorld]&&!WORLDS[SAVE.curWorld].locked)CUR=SAVE.curWorld;
 function load(){try{const r=localStorage.getItem("soripang");if(r)return Object.assign({},JSON.parse(JSON.stringify(DEFAULT)),JSON.parse(r));}catch(e){}return JSON.parse(JSON.stringify(DEFAULT));}
@@ -288,6 +310,14 @@ function go(id){if(id==='home')homeView=getLaunchRoute();document.querySelectorA
 function go2(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');emitNavigate(id);}
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function lvl(){return Math.floor(SAVE.xp/50)+1;}
+/* 숙달도 낮을수록 가중치↑ — 약점 우선 출제 (CR-4-1) */
+function pickTargetWord(words){
+  const w=(words&&words.length)?words:POOL().words;
+  const wt=w.map(x=>({x,k:(1-mastery(x.w))+0.15}));
+  let r=Math.random()*wt.reduce((s,e)=>s+e.k,0);
+  for(const e of wt){if((r-=e.k)<=0)return e.x;}
+  return wt[wt.length-1].x;
+}
 
 const WORD_AUDIO_BASE="https://app.yoons.com/smartbefly/contents/word/"; // 단어 mp3 (소문자.mp3)
 let _wa=null;
@@ -382,7 +412,24 @@ function renderHome(){
   $('chestIco').onclick=(allDone&&!chestOpened)?(()=>go('chest')):null;
   emitCastleState();
 }
-function doStamp(){if(SAVE.lastStamp===today())return;const y=new Date(Date.now()-86400000).toISOString().slice(0,10);SAVE.streak=(SAVE.lastStamp===y)?SAVE.streak+1:1;SAVE.lastStamp=today();addPearls(5);sfxGood();banner('🔥 '+SAVE.streak+' day streak!');save();renderHome();}
+function doStamp(){if(SAVE.lastStamp===today())return;const y=new Date(Date.now()-86400000).toISOString().slice(0,10);SAVE.streak=(SAVE.lastStamp===y)?SAVE.streak+1:1;SAVE.lastStamp=today();addPearls(5);sfxGood();banner('🔥 '+SAVE.streak+' day streak!');save();checkBadges();renderHome();}
+/* ---- 오늘의 단어 (CR-4-3) ---- */
+function getWordOfDay(){
+  const allWords=POOL().words;
+  if(SAVE.wordOfDayDate!==today()||!SAVE.wordOfDay){
+    const weak=weakWords(allWords);
+    const pick=(weak.length?weak[Math.floor(Math.random()*weak.length)]:shuffle(allWords)[0]);
+    SAVE.wordOfDay=pick?pick.w:(allWords[0]&&allWords[0].w)||'';
+    SAVE.wordOfDayDate=today();SAVE.wordOfDayClaimed=false;save();
+  }
+  const wObj=allWords.find(x=>x.w===SAVE.wordOfDay)||{w:SAVE.wordOfDay,emo:WORD_EMOJI[SAVE.wordOfDay]||'🔤'};
+  return wObj;
+}
+function claimWordOfDay(){
+  if(SAVE.wordOfDayDate===today()&&!SAVE.wordOfDayClaimed){
+    SAVE.wordOfDayClaimed=true;addPearls(3);save();return true;
+  }return false;
+}
 function renderWorlds(){const wp=$('worldPick');if(!wp)return;wp.innerHTML='';
   Object.keys(WORLDS).forEach(k=>{const w=WORLDS[k];const b=document.createElement('button');
     b.className='wchip'+(k===CUR?' sel':'')+(w.locked?' lock':'');
@@ -446,8 +493,12 @@ function getVillageState(){
   if(active){const k=recommendedWorldForBook(active);const w=WORLDS[k];if(w){curFriend=friendOf(w);
     const m=(SAVE.missions||{})[k]||[],d=(SAVE.missionDone||{})[k]||[];doneCount=d.length;
     mission=m.map(gk=>Object.assign({key:gk,emoji:(GAMES.find(g=>g.key===gk)||{}).emoji,done:d.includes(gk)},gameCopy(gk)));}}
+  const wodObj=getWordOfDay();
   return {homeView,route:getLaunchRoute(),pearls:SAVE.pearls,streak:SAVE.streak,muted:SAVE.muted,nickname:SAVE.nickname||null,
-    villages,activeBook:active,activeTheme:active?villageTheme(active):null,curFriend,mission,doneCount};
+    villages,activeBook:active,activeTheme:active?villageTheme(active):null,curFriend,mission,doneCount,
+    xp:SAVE.xp,level:lvl(),xpProgress:(SAVE.xp%50)/50,
+    wordOfDay:wodObj,wordOfDayClaimed:!!SAVE.wordOfDayClaimed,
+    reviewCount:_reviewWords(6).length,reviewDoneToday:SAVE.reviewDate===today()};
 }
 function showHomeSurface(){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$('home').classList.add('active');stopGame();renderHome();emitNavigate('home');}
 function enterVillage(book){const target=recommendedWorldForBook(book);if(setWorldKey(target,false)){SAVE.currentBook=book;save();}homeView='mission';showHomeSurface();}
@@ -483,7 +534,7 @@ function timePenalty(sec){if(G&&G.maxTime){G.time=Math.max(0,G.time-sec);updateT
 
 function finishGame(){
   if(!G||G._done)return;G._done=true;stopGame();try{flushEvents();}catch(e){}
-  const earned=G.score;addPearls(earned);SAVE.xp+=earned;
+  const earned=G.score;addPearls(earned);const prevLvl=lvl();SAVE.xp+=earned;
   if(!SAVE.cards)SAVE.cards=[];
   G.words.forEach(w=>{
     if(!SAVE.words.includes(w))SAVE.words.push(w);
@@ -495,6 +546,9 @@ function finishGame(){
   let chestPending=false;
   if(G.isMission){if(!SAVE.missionDone[CUR])SAVE.missionDone[CUR]=[];const dw=SAVE.missionDone[CUR];if(!dw.includes(G.key))dw.push(G.key);if(dw.length>=3&&!(SAVE.chestDone&&SAVE.chestDone[CUR]))chestPending=true;}
   save();
+  if(_quizOverrideWords){SAVE.reviewDate=today();_quizOverrideWords=null;addPearls(5);}
+  if(lvl()>prevLvl){fanfare();banner('⬆️ Level '+lvl()+'! ⭐');}
+  checkBadges();
   $('res_title').textContent=isRec?'🏆 New Record!':(G.bestCombo>=8?'Awesome! 🌟':'Great job!');
   {const rc=$('res_char');if(rc)rc.textContent=(WORLDS[CUR]&&WORLDS[CUR].emoji)||'🌟';}
   $('res_pearls').textContent=earned;$('res_combo').textContent=G.bestCombo;
@@ -520,7 +574,7 @@ function startBubble(){
 }
 function setBubbleTarget(prevWord,playSound){
   const words=POOL().words,choices=words.filter(w=>w.w!==prevWord);
-  bubTarget=shuffle(choices.length?choices:words)[0];bubHits=0;
+  bubTarget=pickTargetWord(choices.length?choices:words);bubHits=0;
   $('bub_prompt').innerHTML='듣고 같은 단어 3개를 찾아요! 🔊 <span style="font-size:14px;opacity:.7">0/'+BUBBLE_TARGET_NEED+'</span>';
   $('bub_prompt').onclick=()=>say(bubTarget.w);if(playSound)setTimeout(()=>say(bubTarget.w),160);
 }
@@ -548,12 +602,19 @@ function spawnBubble(area){
 /* =====================================================================
    GAME 2 — Quick Quiz  실타이머 + 스피드보너스 + 미세청취 + 스캐폴드
    ===================================================================== */
+let _quizOverrideWords=null; // CR-4-2: 복습 퀴즈 모드 시 단어 풀 교체
+function startReviewQuiz(){
+  const rws=_reviewWords(6);if(!rws.length)return;
+  const allWords=Object.values(WORLDS).flatMap(w=>w.words||[]);
+  _quizOverrideWords=rws.map(w=>allWords.find(x=>x.w===w)||{w,emo:WORD_EMOJI[w]||'🔤'});
+  playGame('quiz',false);
+}
 const QUIZ_N=8,Q_TIME=6;let quizRound=0,quizCur=null,quizWrong=0,quizStart=0,quizLeft=0;
 function startQuiz(){quizRound=0;$('quiz_score').textContent='0';$('quiz_char').textContent=POOL().emoji;go2('g_quiz');nextQuiz();}
 function nextQuiz(){
   if(!G||G.ended)return;if(quizRound>=QUIZ_N){finishGame();return;}
-  quizWrong=0;const p=POOL();quizCur=shuffle(p.words)[0];
-  let pool=(quizRound>=5)?p.words.filter(w=>w.w!==quizCur.w):p.distractors; // 후반: 보기 전부 /s/ → 미세청취
+  quizWrong=0;const p=POOL();const wordsPool=_quizOverrideWords||p.words;quizCur=pickTargetWord(wordsPool);
+  let pool=(quizRound>=5)?wordsPool.filter(w=>w.w!==quizCur.w):p.distractors; // 후반: 보기 전부 /s/ → 미세청취
   const opts=shuffle([quizCur,...shuffle(pool).slice(0,2)]);
   const grid=$('quizGrid');grid.innerHTML='';
   opts.forEach(o=>{const c=document.createElement('div');c.className='qcard';c.dataset.w=o.w;
@@ -687,7 +748,7 @@ function startJump(){
 function jumpCaught(){if(!G||G._done)return;const j=$('jumper');if(j)j.classList.add('slip');banner('🌋 Caught by lava!');finishGame();}
 function jumpRound(){
   if(!G||G.ended)return;const p=POOL();
-  const correct=shuffle(p.words)[0];
+  const correct=pickTargetWord(p.words);
   let wrong=(Math.random()<0.5)?shuffle(p.words.filter(w=>w.w!==correct.w))[0]:shuffle(p.distractors)[0];
   if(!wrong||wrong.w===correct.w)wrong=shuffle(p.distractors)[0];
   $('jump_prompt').innerHTML='🌋 잘 듣고 같은 단어를 밟아요! 🔊';$('jump_prompt').onclick=()=>say(correct.w);say(correct.w);
@@ -764,7 +825,7 @@ function aimHunt(area,x,y){area.style.setProperty('--sx',x+'px');area.style.setP
 function moveHuntCards(area,el){if(!G||G.ended)return;const bd=huntBounds(area),sp=1+el*0.0015;huntCards.forEach(c=>{if(Math.random()<0.025){c.vx=(Math.random()-.5)*0.45;c.vy=(Math.random()-.5)*0.45;}
   c.x+=c.vx*sp;c.y+=c.vy*sp;if(c.x<bd.minX||c.x>bd.maxX){c.vx*=-1;c.x=Math.max(bd.minX,Math.min(bd.maxX,c.x));}if(c.y<bd.minY||c.y>bd.maxY){c.vy*=-1;c.y=Math.max(bd.minY,Math.min(bd.maxY,c.y));}placeHuntCard(c);});
   const sx=parseFloat(getComputedStyle(area).getPropertyValue('--sx'))||area.clientWidth/2,sy=parseFloat(getComputedStyle(area).getPropertyValue('--sy'))||area.clientHeight/2;aimHunt(area,sx,sy);}
-function newHuntTarget(){huntTarget=shuffle(huntPresent)[0];$('hunt_prompt').innerHTML='🎯 Target: <b>'+huntTarget.w+'</b> 🔊';say(huntTarget.w);}
+function newHuntTarget(){huntTarget=pickTargetWord(huntPresent);$('hunt_prompt').innerHTML='🎯 Target: <b>'+huntTarget.w+'</b> 🔊';say(huntTarget.w);}
 function pickHunt(d,it){if(!G||G.ended)return;const r=d.getBoundingClientRect(),area=$('huntArea'),ar=area.getBoundingClientRect();const sx=parseFloat(getComputedStyle(area).getPropertyValue('--sx'))||ar.width/2,sy=parseFloat(getComputedStyle(area).getPropertyValue('--sy'))||ar.height/2;
   const cx=r.left+r.width/2-ar.left,cy=r.top+r.height/2-ar.top;if(Math.hypot(cx-sx,cy-sy)>HUNT_SCOPE_RADIUS){fxPop(r.left+r.width/2,r.top,'Aim!');return;}
   if(huntTarget&&it.w===huntTarget.w){hit(it,r.left+r.width/2,r.top,{silent:true});setScoreLabel('hunt');d.classList.add('hit');setTimeout(()=>d.classList.remove('hit'),250);sayThen(it.w,()=>{if(G&&!G.ended)newHuntTarget();});}
@@ -896,5 +957,7 @@ export async function bootstrapGame(){
 Object.assign(window,{toggleMute,openDex,doStamp,openFreePlay,openShop,go,quitGame,quizRepeat,chestTap});
 window.__YPQ={getCastleHomeState,getCollectionState,getVillageState,getLaunchRoute,enterVillage,goMap,startTodayMission,playMission,chooseStartBook,openBookCastle,openCastleFromMap,startCastleQuest,openFreePlay,openShop,openDex,toggleMute,doStamp,go,sayWord:say,sayLetter,
   getNickname,nickSuggest,nickCheck,setNickname,cloudEnabled:cloudEnabledFn,
-  learningStats:()=>{try{return _learningStats();}catch(e){return null;}}};
+  learningStats:()=>{try{return _learningStats();}catch(e){return null;}},
+  startReviewQuiz,claimWordOfDay,
+  getBadges:()=>BADGES.map(b=>({id:b.id,emoji:b.emoji,name:b.name,cond:b.cond,earned:(SAVE.badges||[]).includes(b.id)}))};
 /* telemetry wiring: logAnswer in hit/miss, saveEvents adapter in syncCloud (P0-1) */
