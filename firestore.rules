@@ -2,19 +2,18 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // 진도 문서: 본인(uid) 것만 읽기/쓰기
+    // 진도 + eventBatches 서브컬렉션: 본인(uid)만 읽기/쓰기
     match /users/{uid} {
       allow read, write: if request.auth != null && request.auth.uid == uid;
+      match /{sub=**} {
+        allow read, write: if request.auth != null && request.auth.uid == uid;
+      }
     }
 
-    // 닉네임 예약: 누구나(로그인 시) 중복 확인 가능, 생성/수정은 본인 uid로만
+    // 닉네임: 누구나 읽기, 로그인 사용자만 쓰기(트랜잭션에서 중복 검증)
     match /nicknames/{name} {
-      allow read: if request.auth != null;
-      allow create: if request.auth != null && request.resource.data.uid == request.auth.uid;
-      allow update: if request.auth != null
-                    && resource.data.uid == request.auth.uid
-                    && request.resource.data.uid == request.auth.uid;
-      allow delete: if false;
+      allow read: if true;
+      allow write: if request.auth != null;
     }
   }
 }

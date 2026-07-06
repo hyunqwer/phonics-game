@@ -1,6 +1,7 @@
 import { villageTheme, gameCopy } from './copy.js';
 import { suggestNickname, cleanNickname, isValidNickname } from './nickname.js';
 import { wordVisual } from './wordImage.js';
+import { logAnswer, flushEvents, learningStats as _learningStats } from './engine/telemetry.js';
 /* firebase는 무거우니 초기 번들에서 분리 — 첫 렌더 후 동적 로드(코드 스플릿) */
 let CLOUD=null,_cloudP=null;
 function ensureCloud(){if(CLOUD)return Promise.resolve(CLOUD);if(!_cloudP)_cloudP=import('./cloud.js').then(m=>{CLOUD=m;return m;}).catch(()=>null);return _cloudP;}
@@ -458,7 +459,7 @@ function startTodayMission(){playMission(null);}
    GAME RUNTIME (공통)
    ===================================================================== */
 let G=null;
-function startGameState(key,isMission){G={key,isMission,score:0,combo:0,bestCombo:0,words:new Set(),timers:[],ended:false,_done:false};try{actx()&&AC.resume&&AC.resume();}catch(e){}}
+function startGameState(key,isMission){G={key,isMission,score:0,combo:0,bestCombo:0,words:new Set(),timers:[],ended:false,_done:false,_qStart:Date.now()};try{actx()&&AC.resume&&AC.resume();}catch(e){}}
 function playGame(key,isMission){const g=GAMES.find(x=>x.key===key);if(g){startGameState(key,isMission);g.run();}}
 function gAddTimer(t){G&&G.timers.push(t);}
 function stopGame(){if(G){G.timers.forEach(t=>{clearTimeout(t);clearInterval(t);});G.timers=[];G.ended=true;}}
@@ -466,9 +467,10 @@ function quitGame(){stopGame();go('home');}
 
 function hit(word,x,y,opts){opts=opts||{};G.combo++;G.bestCombo=Math.max(G.bestCombo,G.combo);
   let gain=1+Math.floor(G.combo/5)+(opts.bonus||0);G.score+=gain;G.words.add(word.w);
+  try{logAnswer({game:G.key,phoneme:POOL().phoneme,word:word.w,correct:true,latencyMs:Date.now()-(G._qStart||Date.now()),mode:G.isMission?'mission':'free'});G._qStart=Date.now();}catch(e){}
   correctSfx();vibe(12);burst(x,y);fxPop(x,y,'+'+gain+'🦪');showCombo(G.key);if(!opts.silent)sayHit(word.w);timeFreeze(550);
   if(G.combo>0&&G.combo%5===0){sfxCombo(G.combo);fireworks();timeAdd(2);banner(G.combo+' Combo! +2s 🎆');}}
-function miss(){if(G)G.combo=0;sfxBad();vibe([15,30,15]);timePenalty(3);}
+function miss(){if(G){G.combo=0;try{logAnswer({game:G.key,phoneme:POOL().phoneme,word:'',correct:false,latencyMs:0,mode:G.isMission?'mission':'free'});G._qStart=Date.now();}catch(e){}}sfxBad();vibe([15,30,15]);timePenalty(3);}
 function escaped(x,y,label){if(G)G.combo=0;tone(240,0.14,'sine',0.1);if(x!=null)fxPop(x,y,label||'Miss!');const c=G&&$(G.key+'_combo');if(c)c.classList.remove('show');timePenalty(1.5);}
 function showCombo(key){const c=$(key+'_combo');if(!c)return;if(G.combo>=2){c.textContent='🔥 '+G.combo+' COMBO';c.classList.add('show');clearTimeout(c._t);c._t=setTimeout(()=>c.classList.remove('show'),900);}else c.classList.remove('show');}
 function setScoreLabel(key){const e=$(key+'_score');if(e)e.textContent=G.score;}
@@ -480,7 +482,7 @@ function timeAdd(sec){if(G&&G.maxTime){G.time=Math.min(G.maxTime,G.time+sec);upd
 function timePenalty(sec){if(G&&G.maxTime){G.time=Math.max(0,G.time-sec);updateTimeBar();const b=$(G.barId);if(b){b.style.background='#ff5d5d';setTimeout(()=>{if(b)b.style.background='';},220);}}}
 
 function finishGame(){
-  if(!G||G._done)return;G._done=true;stopGame();
+  if(!G||G._done)return;G._done=true;stopGame();try{flushEvents();}catch(e){}
   const earned=G.score;addPearls(earned);SAVE.xp+=earned;
   if(!SAVE.cards)SAVE.cards=[];
   G.words.forEach(w=>{
@@ -863,6 +865,8 @@ async function syncCloud(){
   if(!C)return; // 청크 로드 실패 → localStorage로 계속
   const id=await C.initCloud();
   if(!id)return; // 오프라인/미설정 → localStorage로 계속
+  // 학습 이벤트 클라우드 전송 어댑터 연결(telemetry는 이걸 통해서만 업로드)
+  try{window.__saveEvents=(batch)=>{try{return C.saveEvents&&C.saveEvents(batch);}catch(e){}};}catch(e){}
   const cloud=await C.cloudLoad();
   if(cloud&&(cloud.pearls!=null||cloud.nickname)){ // 서버 진도 채택
     SAVE=Object.assign(JSON.parse(JSON.stringify(DEFAULT)),cloud);
@@ -891,4 +895,6 @@ export async function bootstrapGame(){
 }
 Object.assign(window,{toggleMute,openDex,doStamp,openFreePlay,openShop,go,quitGame,quizRepeat,chestTap});
 window.__YPQ={getCastleHomeState,getCollectionState,getVillageState,getLaunchRoute,enterVillage,goMap,startTodayMission,playMission,chooseStartBook,openBookCastle,openCastleFromMap,startCastleQuest,openFreePlay,openShop,openDex,toggleMute,doStamp,go,sayWord:say,sayLetter,
-  getNickname,nickSuggest,nickCheck,setNickname,cloudEnabled:cloudEnabledFn};
+  getNickname,nickSuggest,nickCheck,setNickname,cloudEnabled:cloudEnabledFn,
+  learningStats:()=>{try{return _learningStats();}catch(e){return null;}}};
+/* telemetry wiring: logAnswer in hit/miss, saveEvents adapter in syncCloud (P0-1) */

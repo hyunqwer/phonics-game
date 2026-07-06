@@ -1,7 +1,7 @@
 // Firebase 익명 인증 + Firestore 진도 동기화. 설정/네트워크 실패 시 graceful no-op(=오프라인 localStorage).
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc, runTransaction, serverTimestamp } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, setDoc, runTransaction, serverTimestamp, collection, addDoc } from 'firebase/firestore';
 import { firebaseConfig } from './firebaseConfig.js';
 
 let db = null, uid = null, enabled = false, saveTimer = null;
@@ -38,6 +38,13 @@ export function cloudSave(data){
     try{ await setDoc(doc(db,'users',uid), Object.assign({}, data, { _updated: serverTimestamp() }), { merge:true }); }
     catch(e){ console.warn('[cloud] save failed', e && e.message); }
   }, 800);
+}
+
+// 학습 이벤트 배치 저장 — users/{uid}/eventBatches/{autoId} 에 20건씩 한 번의 쓰기
+export async function saveEvents(batch){
+  if(!enabled || !batch || !batch.length) return;
+  try{ await addDoc(collection(db,'users',uid,'eventBatches'), { events: batch, n: batch.length, _t: serverTimestamp() }); }
+  catch(e){ console.warn('[cloud] saveEvents failed', e && e.message); }
 }
 
 export async function nicknameAvailable(name){

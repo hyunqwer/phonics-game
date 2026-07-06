@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { villageTheme } from '../copy.js';
 import './CollectionHome.css';
 
 function getApi() {
@@ -19,29 +20,10 @@ function labelFromCharacter(name, fallback) {
   return name.split(' the ').pop() || name;
 }
 
-const REALMS = [
-  { name: 'Sunny Coast Keep', icon: '🏖️' },
-  { name: 'Keywood Tower', icon: '🌲' },
-  { name: 'Moon River Fort', icon: '🌙' },
-  { name: 'Starfall Gate', icon: '⭐' },
-  { name: 'Apple Rune Hall', icon: '🍎' },
-  { name: 'Lava Lantern Keep', icon: '🌋' },
-  { name: 'Emerald Echo Den', icon: '💎' },
-  { name: 'Dragon Kite Spire', icon: '🐉' },
-  { name: 'Silver Seed Castle', icon: '🌱' },
-  { name: 'Sky Sail Citadel', icon: '⛵' },
-  { name: 'Ocean Owl Harbor', icon: '🦉' },
-  { name: 'Ruby Bridge Bastion', icon: '🌉' },
-  { name: 'Shadow Sprint Yard', icon: '🏃' },
-  { name: 'Crystal Whisper Court', icon: '🔮' },
-  { name: 'Thunder Key Keep', icon: '⚡' },
-  { name: 'Rainbow Reef Vault', icon: '🌈' },
-  { name: 'Blue Flame Library', icon: '🔥' },
-  { name: 'Crown River Ruins', icon: '👑' },
-];
-
+// 마을 이름/아이콘은 copy.js 한 곳에서만 정의 → 지도(AdventureMap)와 도감이 동일한 세계관 사용
 function realmCopy(bookNumber) {
-  return REALMS[(bookNumber || 1) - 1] || { name: `Realm ${bookNumber}`, icon: '🏰' };
+  const t = villageTheme(bookNumber);
+  return { name: t.en, icon: t.emoji, ko: t.ko, color: t.color };
 }
 
 export default function CollectionHome() {

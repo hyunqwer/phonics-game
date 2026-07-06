@@ -83,9 +83,69 @@
 
 ---
 
+## CR-3. 학습 신호 수집(Telemetry) + 숙달도 — P0-1 (Cowork 구현 완료 → Code 검증·배포)
+
+> 대상: **React/Vite 소스**(`src/`). 작성 2026-07-06.
+> 상태: **코드는 Cowork에서 이미 작성함**. Claude Code는 아래 "할 일"만 하면 됨.
+> ⚠️ Cowork 샌드박스 마운트가 편집 파일을 잘림/NUL 손상 사본으로 캐싱하는 이슈(→ `CLAUDE_CODE_TASK.md` 참고)로 **Cowork에서 `vite build` 검증 불가**. 실제 환경에서 빌드·플레이 검증 필수.
+
+### 배경 / 문제
+Firebase(cloud.js)는 있으나 동기화 대상이 `SAVE`(진주·연속·수집단어)뿐이라 **"무엇을 배웠나"라는 학습 신호가 0**. 단어 학습이 *한 번 터치 = 수집*으로만 처리됨. 평가·학부모 리포트·데이터 의사결정의 원천 데이터가 없음.
+
+### 목표
+모든 정답/오답을 이벤트로 적재 → 단어·음소별 **숙달도(mastery)** 산출 → (a) 약점 우선 미션, (b) 학부모 리포트, (c) 교사 대시보드의 원천 확보. **firebase 코드-스플릿은 유지**(telemetry는 firebase를 직접 import하지 않음).
+
+### 변경된 파일 (구현 완료)
+1. **`src/engine/telemetry.js` (신규)** — `logAnswer()`, `flushEvents()`, `mastery(word)`, `weakWords()`, `phonemeStats()`, `learningStats()`. 최근 300건을 localStorage(`ypq_evlog`) 링버퍼에 보관(오프라인 동작). 클라우드 전송은 `window.__saveEvents(batch)` 어댑터로만.
+2. **`src/cloud.js`** — `firebase/firestore`에서 `collection, addDoc` 추가 import. `saveEvents(batch)` 추가: `users/{uid}/eventBatches/{autoId}`에 20건씩 1회 쓰기.
+3. **`src/legacyGame.js`** — telemetry import; `startGameState`에 `_qStart`(반응속도); `hit()`/`miss()`에 `logAnswer` 1줄씩; `finishGame`에서 `flushEvents()`; `syncCloud`에서 인증 성공 시 `window.__saveEvents` 어댑터 연결; `window.__YPQ.learningStats` 노출.
+
+### 데이터 스키마
+```
+이벤트: { game, phoneme, word, correct, latencyMs, mode, ts }
+숙달도: mastery = 최근8회 정답률×0.7 + 빠른정답(<2.5s)률×0.3   // 0~1
+Firestore: users/{uid}/eventBatches/{autoId} = { events:[...20], n, _t }
+```
+
+### Claude Code 할 일
+1. **빌드 검증**: `npm run build` 성공 확인(Cowork 마운트 캐시 이슈로 미검증). 파싱/임포트 에러 시 위 3개 파일 확인.
+2. **플레이 스모크**: 게임 플레이 → 브라우저 콘솔 `window.__YPQ.learningStats()`가 `{answers, accuracy, wordsPracticed, phonemes}` 반환하는지.
+3. **Firestore 보안 규칙 배포**(필수 — 없으면 `eventBatches` 쓰기 실패/무방비). 초안:
+   ```
+   rules_version = '2';
+   service cloud.firestore {
+     match /databases/{db}/documents {
+       match /users/{uid} {
+         allow read, write: if request.auth != null && request.auth.uid == uid;
+         match /{sub=**} { allow read, write: if request.auth != null && request.auth.uid == uid; }
+       }
+       match /nicknames/{name} {
+         allow read: if true;
+         allow write: if request.auth != null;   // 트랜잭션에서 중복 검증
+       }
+     }
+   }
+   ```
+4. **확인**: 실제 플레이 후 Firestore 콘솔에 `users/{uid}/eventBatches` 문서가 쌓이는지.
+
+### 수용 기준
+1. 빌드 성공, 콘솔 에러 없음. 게임 로직·레이아웃 변화 없음.
+2. 정답/오답 시 `ypq_evlog`(localStorage)에 이벤트 적재, 오프라인에서도 `mastery()` 계산됨.
+3. 로그인(온라인) 시 20건마다/게임 종료 시 `eventBatches`로 업로드.
+4. 보안 규칙 배포로 본인 데이터만 접근 가능.
+
+### 다음 단계(후속 CR 후보)
+- 약점 우선 데일리 미션(`pickDailyMission` — `weakWords()` 활용, 현재 완전 랜덤 대체).
+- 학부모 리포트 v0(주간: 배운 단어·정확도·연속일) — `learningStats()` 소비.
+
+---
+
 ## Claude Code 지시 예시
 ```
 이 폴더의 HANDOFF.md와 CHANGE_REQUEST.md를 읽고,
-index.html에 CR-1(오디오 정정)과 CR-2(Claymorphism)를 구현해줘.
-기능/레이아웃은 유지하고, 변경 후 6개 게임이 정상 동작하는지 확인해줘.
+CR-3(학습 Telemetry)의 "할 일"을 수행해줘:
+npm run build 검증 → 플레이 스모크(window.__YPQ.learningStats()) →
+Firestore 보안 규칙 배포 → eventBatches 유입 확인.
+기능/레이아웃은 유지할 것.
+(과거 CR-1 오디오·CR-2 Claymorphism은 이미 반영됨)
 ```
